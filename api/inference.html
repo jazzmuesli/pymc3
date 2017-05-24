@@ -1408,7 +1408,7 @@ Auto-Encoding Variational Bayes. stat, 1050, 1.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>local_rv</strong> (<em>dict</em><em>[</em><em>var-&gt;tuple</em><em>]</em><em></em>) &#8211; mapping {model_variable -&gt; local_variable (<span class="math">\(\\mu\)</span>, <span class="math">\(\\rho\)</span>)}
+<li><strong>local_rv</strong> (<em>dict</em><em>[</em><em>var-&gt;tuple</em><em>]</em><em></em>) &#8211; mapping {model_variable -&gt; local_variable (<span class="math">\(\mu\)</span>, <span class="math">\(\rho\)</span>)}
 Local Vars are used for Autoencoding Variational Bayes
 See (AEVB; Kingma and Welling, 2014) for details</li>
 <li><strong>model</strong> (<code class="xref py py-class docutils literal"><span class="pre">pymc3.Model</span></code>) &#8211; PyMC3 model for inference</li>
@@ -1507,8 +1507,8 @@ they fit target distribution best.</p>
 </dl>
 <p><em>Output:</em> A set of particles <span class="math">\({x_i}^n_{i=1}\)</span> that approximates the target distribution.</p>
 <div class="math">
-\[\begin{split}x_i^{l+1} \leftarrow \epsilon_l \hat{\phi}^{*}(x_i^l) \\
-\hat{\phi}^{*}(x) = \frac{1}{n}\sum^{n}_{j=1}[k(x^l_j,x) \nabla_{x^l_j} logp(x^l_j)+ \nabla_{x^l_j} k(x^l_j,x)]\end{split}\]</div>
+\[\begin{split}x_i^{l+1} &amp;\leftarrow x_i^{l} + \epsilon_l \hat{\phi}^{*}(x_i^l) \\
+\hat{\phi}^{*}(x) &amp;= \frac{1}{n}\sum^{n}_{j=1}[k(x^l_j,x) \nabla_{x^l_j} logp(x^l_j)+ \nabla_{x^l_j} k(x^l_j,x)]\end{split}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1538,6 +1538,73 @@ arXiv:1608.04471</li>
 </dd></dl>
 
 <dl class="class">
+<dt id="pymc3.variational.inference.ASVGD">
+<em class="property">class </em><code class="descclassname">pymc3.variational.inference.</code><code class="descname">ASVGD</code><span class="sig-paren">(</span><em>approx=&lt;class 'pymc3.variational.approximations.FullRank'&gt;</em>, <em>local_rv=None</em>, <em>kernel=&lt;pymc3.variational.test_functions.RBF object&gt;</em>, <em>model=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.ASVGD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Amortized Stein Variational Gradient Descent</p>
+<p>This inference is based on Kernelized Stein Discrepancy
+it&#8217;s main idea is to move initial noisy particles so that
+they fit target distribution best.</p>
+<p>Algorithm is outlined below</p>
+<p><em>Input:</em> Parametrized random generator <span class="math">\(R_{\theta}\)</span></p>
+<p><em>Output:</em> <span class="math">\(R_{\theta^{*}}\)</span> that approximates the target distribution.</p>
+<div class="math">
+\[\begin{split}\Delta x_i &amp;= \hat{\phi}^{*}(x_i) \\
+\hat{\phi}^{*}(x) &amp;= \frac{1}{n}\sum^{n}_{j=1}[k(x_j,x) \nabla_{x_j} logp(x_j)+ \nabla_{x_j} k(x_j,x)] \\
+\Delta_{\theta} &amp;= \frac{1}{n}\sum^{n}_{i=1}\Delta x_i\frac{\partial x_i}{\partial \theta}\end{split}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>approx</strong> (<code class="xref py py-class docutils literal"><span class="pre">Approximation</span></code>) &#8211; </li>
+<li><strong>local_rv</strong> (<em>dict</em><em>[</em><em>var-&gt;tuple</em><em>]</em><em></em>) &#8211; mapping {model_variable -&gt; local_variable (<span class="math">\(\mu\)</span>, <span class="math">\(\rho\)</span>)}
+Local Vars are used for Autoencoding Variational Bayes
+See (AEVB; Kingma and Welling, 2014) for details</li>
+<li><strong>kernel</strong> (<cite>callable</cite>) &#8211; kernel function for KSD <span class="math">\(f(histogram) -&gt; (k(x,.), \nabla_x k(x,.))\)</span></li>
+<li><strong>model</strong> (<code class="xref py py-class docutils literal"><span class="pre">Model</span></code>) &#8211; </li>
+<li><strong>kwargs</strong> (kwargs for <code class="xref py py-class docutils literal"><span class="pre">Approximation</span></code>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Dilin Wang, Yihao Feng, Qiang Liu (2016)
+Learning to Sample Using Stein Discrepancy
+<a class="reference external" href="http://bayesiandeeplearning.org/papers/BDL_21.pdf">http://bayesiandeeplearning.org/papers/BDL_21.pdf</a></li>
+<li>Dilin Wang, Qiang Liu (2016)
+Learning to Draw Samples: With Application to Amortized MLE for Generative Adversarial Learning
+<a class="reference external" href="https://arxiv.org/abs/1611.01722">https://arxiv.org/abs/1611.01722</a></li>
+</ul>
+<dl class="method">
+<dt id="pymc3.variational.inference.ASVGD.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>n=10000</em>, <em>score=None</em>, <em>callbacks=None</em>, <em>progressbar=True</em>, <em>obj_n_mc=30</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.ASVGD.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs Amortized Stein Variational Gradient Descent</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; number of iterations</li>
+<li><strong>score</strong> (<em>bool</em>) &#8211; evaluate loss on each iteration or not</li>
+<li><strong>callbacks</strong> (<em>list</em><em>[</em><em>function :</em><em> (</em><a class="reference internal" href="#pymc3.variational.opvi.Approximation" title="pymc3.variational.opvi.Approximation"><em>Approximation</em></a><em>, </em><em>losses</em><em>, </em><em>i</em><em>) </em><em>-&gt; None</em><em>]</em><em></em>) &#8211; calls provided functions after each iteration step</li>
+<li><strong>progressbar</strong> (<em>bool</em>) &#8211; whether to show progressbar or not</li>
+<li><strong>obj_n_mc</strong> (<em>int</em>) &#8211; sample <cite>n</cite> particles for Stein gradient</li>
+<li><strong>kwargs</strong> (<em>kwargs</em>) &#8211; additional kwargs for <code class="xref py py-func docutils literal"><span class="pre">ObjectiveFunction.step_function()</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>Approximation</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pymc3.variational.inference.Inference">
 <em class="property">class </em><code class="descclassname">pymc3.variational.inference.</code><code class="descname">Inference</code><span class="sig-paren">(</span><em>op</em>, <em>approx</em>, <em>tf</em>, <em>local_rv=None</em>, <em>model=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.Inference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for Variational Inference</p>
@@ -1554,7 +1621,7 @@ arXiv:1608.04471</li>
 Local Vars are used for Autoencoding Variational Bayes
 See (AEVB; Kingma and Welling, 2014) for details</li>
 <li><strong>model</strong> (<em>Model</em>) &#8211; PyMC3 Model</li>
-<li><strong>kwargs</strong> (kwargs for <code class="xref py py-class docutils literal"><span class="pre">Approximation</span></code>) &#8211; </li>
+<li><strong>kwargs</strong> (<em>kwargs</em>) &#8211; additional kwargs for <code class="xref py py-class docutils literal"><span class="pre">Approximation</span></code></li>
 </ul>
 </td>
 </tr>
@@ -1573,7 +1640,7 @@ See (AEVB; Kingma and Welling, 2014) for details</li>
 <li><strong>score</strong> (<em>bool</em>) &#8211; evaluate loss on each iteration or not</li>
 <li><strong>callbacks</strong> (<em>list</em><em>[</em><em>function :</em><em> (</em><a class="reference internal" href="#pymc3.variational.opvi.Approximation" title="pymc3.variational.opvi.Approximation"><em>Approximation</em></a><em>, </em><em>losses</em><em>, </em><em>i</em><em>) </em><em>-&gt; None</em><em>]</em><em></em>) &#8211; calls provided functions after each iteration step</li>
 <li><strong>progressbar</strong> (<em>bool</em>) &#8211; whether to show progressbar or not</li>
-<li><strong>kwargs</strong> (kwargs for <code class="xref py py-func docutils literal"><span class="pre">ObjectiveFunction.step_function()</span></code>) &#8211; </li>
+<li><strong>kwargs</strong> (<em>kwargs</em>) &#8211; additional kwargs for <code class="xref py py-func docutils literal"><span class="pre">ObjectiveFunction.step_function()</span></code></li>
 </ul>
 </td>
 </tr>
@@ -1588,7 +1655,7 @@ See (AEVB; Kingma and Welling, 2014) for details</li>
 
 <dl class="function">
 <dt id="pymc3.variational.inference.fit">
-<code class="descclassname">pymc3.variational.inference.</code><code class="descname">fit</code><span class="sig-paren">(</span><em>n=10000</em>, <em>local_rv=None</em>, <em>method='advi'</em>, <em>model=None</em>, <em>random_seed=None</em>, <em>start=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.variational.inference.</code><code class="descname">fit</code><span class="sig-paren">(</span><em>n=10000</em>, <em>local_rv=None</em>, <em>method='advi'</em>, <em>model=None</em>, <em>random_seed=None</em>, <em>start=None</em>, <em>inf_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handy shortcut for using inference methods in functional way</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1599,10 +1666,11 @@ See (AEVB; Kingma and Welling, 2014) for details</li>
 <li><strong>local_rv</strong> (<em>dict</em><em>[</em><em>var-&gt;tuple</em><em>]</em><em></em>) &#8211; mapping {model_variable -&gt; local_variable (<span class="math">\(\mu\)</span>, <span class="math">\(\rho\)</span>)}
 Local Vars are used for Autoencoding Variational Bayes
 See (AEVB; Kingma and Welling, 2014) for details</li>
-<li><strong>method</strong> (str or <a class="reference internal" href="#pymc3.variational.inference.Inference" title="pymc3.variational.inference.Inference"><code class="xref py py-class docutils literal"><span class="pre">Inference</span></code></a>) &#8211; string name is case insensitive in {&#8216;advi&#8217;, &#8216;fullrank_advi&#8217;, &#8216;advi-&gt;fullrank_advi&#8217;, &#8216;svgd&#8217;}</li>
+<li><strong>method</strong> (str or <a class="reference internal" href="#pymc3.variational.inference.Inference" title="pymc3.variational.inference.Inference"><code class="xref py py-class docutils literal"><span class="pre">Inference</span></code></a>) &#8211; string name is case insensitive in {&#8216;advi&#8217;, &#8216;fullrank_advi&#8217;, &#8216;advi-&gt;fullrank_advi&#8217;, &#8216;svgd&#8217;, &#8216;asvgd&#8217;}</li>
 <li><strong>model</strong> (<code class="xref py py-class docutils literal"><span class="pre">pymc3.Model</span></code>) &#8211; PyMC3 model for inference</li>
 <li><strong>random_seed</strong> (<em>None</em><em> or </em><em>int</em>) &#8211; leave None to use package global RandomStream or other
 valid value to create instance specific one</li>
+<li><strong>inf_kwargs</strong> (<em>dict</em>) &#8211; additional kwargs passed to <a class="reference internal" href="#pymc3.variational.inference.Inference" title="pymc3.variational.inference.Inference"><code class="xref py py-class docutils literal"><span class="pre">Inference</span></code></a></li>
 <li><strong>start</strong> (<cite>Point</cite>) &#8211; starting point for inference</li>
 </ul>
 </td>
@@ -1610,7 +1678,7 @@ valid value to create instance specific one</li>
 <tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
 <li><strong>frac</strong> (<cite>float</cite>) &#8211; if method is &#8216;advi-&gt;fullrank_advi&#8217; represents advi fraction when training</li>
-<li><strong>kwargs</strong> (kwargs for <a class="reference internal" href="#pymc3.variational.inference.Inference.fit" title="pymc3.variational.inference.Inference.fit"><code class="xref py py-func docutils literal"><span class="pre">Inference.fit()</span></code></a>)</li>
+<li><strong>kwargs</strong> (<em>kwargs</em>) &#8211; additional kwargs for <a class="reference internal" href="#pymc3.variational.inference.Inference.fit" title="pymc3.variational.inference.Inference.fit"><code class="xref py py-func docutils literal"><span class="pre">Inference.fit()</span></code></a></li>
 </ul>
 </td>
 </tr>
@@ -1868,6 +1936,12 @@ valid value to create instance specific one</li>
 Stein Variational Gradient Descent: A General Purpose Bayesian Inference Algorithm
 arXiv:1608.04471</li>
 </ul>
+<dl class="attribute">
+<dt id="pymc3.variational.operators.KSD.OBJECTIVE">
+<code class="descname">OBJECTIVE</code><a class="headerlink" href="#pymc3.variational.operators.KSD.OBJECTIVE" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">KSDObjective</span></code></p>
+</dd></dl>
+
 </dd></dl>
 
 </div>

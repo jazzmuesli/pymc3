@@ -261,7 +261,7 @@ samples are shown (no effect on frequency plots).</p>
 
 <dl class="function">
 <dt id="pymc3.plots.plot_posterior">
-<code class="descclassname">pymc3.plots.</code><code class="descname">plot_posterior</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>alpha_level=0.05</em>, <em>round_to=3</em>, <em>point_estimate='mean'</em>, <em>rope=None</em>, <em>ref_val=None</em>, <em>kde_plot=False</em>, <em>plot_transformed=False</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.plot_posterior" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.plots.</code><code class="descname">plot_posterior</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>text_size=16</em>, <em>alpha_level=0.05</em>, <em>round_to=3</em>, <em>point_estimate='mean'</em>, <em>rope=None</em>, <em>ref_val=None</em>, <em>kde_plot=False</em>, <em>plot_transformed=False</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.plot_posterior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot Posterior densities in style of John K. Kruschke book.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -272,6 +272,7 @@ samples are shown (no effect on frequency plots).</p>
 <li><strong>varnames</strong> (<em>list of variable names</em>) &#8211; Variables to be plotted, if None all variable are plotted</li>
 <li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
 <li><strong>figsize</strong> (<em>figure size tuple</em>) &#8211; If None, size is (12, num of variables * 2) inch</li>
+<li><strong>text_size</strong> (<em>int</em>) &#8211; Text size of the point_estimates and HPD (Default:16)</li>
 <li><strong>alpha_level</strong> (<em>float</em>) &#8211; Defines range for High Posterior Density</li>
 <li><strong>round_to</strong> (<em>int</em>) &#8211; Controls formatting for floating point numbers</li>
 <li><strong>point_estimate</strong> (<em>str</em>) &#8211; Must be in (&#8216;mode&#8217;, &#8216;mean&#8217;, &#8216;median&#8217;)</li>

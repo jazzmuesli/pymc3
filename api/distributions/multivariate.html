@@ -506,7 +506,7 @@ freedom.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This distribution is unusable in a PyMC3 model. You should instead
-use WishartBartlett or LKJCholeskyCov, LKJCorr.</p>
+use LKJCholeskyCov or LKJCorr.</p>
 </div>
 </dd></dl>
 
@@ -547,9 +547,11 @@ of the covariance matrix.</li>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is not a standard Distribution class but follows a similar
+<p>This is not a standard Distribution class but follows a similar
 interface. Besides the Wishart distribution, it will add RVs
 c and z to your model which make up the matrix.</p>
+<p class="last">This distribution is usually a bad idea to use as a prior for multivariate
+normal. You should instead use LKJCholeskyCov or LKJCorr.</p>
 </div>
 </dd></dl>
 

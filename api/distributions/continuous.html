@@ -1118,11 +1118,16 @@ approaching plus/minus infinite we get a half-normal distribution.</p>
 <dl class="class">
 <dt id="pymc3.distributions.continuous.Interpolated">
 <em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">Interpolated</code><span class="sig-paren">(</span><em>x_points</em>, <em>pdf_points</em>, <em>transform='interval'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.Interpolated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Probability distribution defined as a linear interpolation of
-of a set of points and values of probability density function
-evaluated on them.</p>
-<p>The points are not variables, but plain array-like objects, so
-they are constant and cannot be sampled.</p>
+<dd><p>Univariate probability distribution defined as a linear interpolation
+of probability density function evaluated on some lattice of points.</p>
+<p>The lattice can be uneven, so the steps between different points can have
+different size and it is possible to vary the precision between regions
+of the support.</p>
+<p>The probability density function values don not have to be normalized, as the
+interpolated density is any way normalized to make the total probability
+equal to $1$.</p>
+<p>Both parameters <cite>x_points</cite> and values <cite>pdf_points</cite> are not variables, but
+plain array-like objects, so they are constant and cannot be sampled.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="16%" />
@@ -1130,7 +1135,7 @@ they are constant and cannot be sampled.</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Support</td>
-<td><span class="math">\(x \in [x_points[0], x_points[-1]]\)</span></td>
+<td><span class="math">\(x \in [x\_points[0], x\_points[-1]]\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -1140,7 +1145,7 @@ they are constant and cannot be sampled.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>x_points</strong> (<em>array-like</em>) &#8211; A monotonically growing list of values</li>
-<li><strong>pdf_points</strong> (<em>array-like</em>) &#8211; Probability density function evaluated at points from <cite>x</cite></li>
+<li><strong>pdf_points</strong> (<em>array-like</em>) &#8211; Probability density function evaluated on lattice <cite>x_points</cite></li>
 </ul>
 </td>
 </tr>
