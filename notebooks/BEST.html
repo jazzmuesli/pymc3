@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bayesian Estimation Supersedes the T-Test &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Bayesian Estimation Supersedes the T-Test &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="Stochastic Volatility model" href="stochastic_volatility.html"/>
+        <link rel="next" title="A Primer on Bayesian Methods for Multilevel Modeling" href="multilevel_modeling.html"/>
         <link rel="prev" title="Live sample plots" href="live_sample_plots.html"/> 
 
   
@@ -100,6 +100,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#The-Problem">The Problem</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="multilevel_modeling.html">A Primer on Bayesian Methods for Multilevel Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stochastic_volatility.html">Stochastic Volatility model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rugby_analytics.html">A Hierarchical model for Rugby prediction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="survival_analysis.html">Bayesian Survival Analysis</a></li>
@@ -419,7 +420,7 @@ inherent stochasticity of the system (aleatory uncertainty).</p>
 <p>To illustrate how this Bayesian estimation approach works in practice,
 we will use a fictitious example from Kruschke (2012) concerning the
 evaluation of a clinical trial for drug evaluation. The trial aims to
-evaluate the efficacy of a &#8220;smart drug&#8221; that is supposed to increase
+evaluate the efficacy of a “smart drug” that is supposed to increase
 intelligence by comparing IQ scores of individuals in a treatment arm
 (those receiving the drug) to those in a control arm (those recieving a
 placebo). There are 47 individuals and 42 individuals in the treatment
@@ -480,7 +481,7 @@ Student-t distribution allows for the specification of a mean
 degrees-of-freedom parameter <span class="math">\(\nu\)</span>:</p>
 <div class="math">
 \[f(x|\mu,\lambda,\nu) = \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})} \left(\frac{\lambda}{\pi\nu}\right)^{\frac{1}{2}} \left[1+\frac{\lambda(x-\mu)^2}{\nu}\right]^{-\frac{\nu+1}{2}}\]</div>
-<p>the degrees-of-freedom parameter essentially specifies the &#8220;normality&#8221;
+<p>the degrees-of-freedom parameter essentially specifies the “normality”
 of the data, since larger values of <span class="math">\(\nu\)</span> make the distribution
 converge to a normal distribution, while small values (close to zero)
 result in heavier tails.</p>
@@ -518,13 +519,13 @@ does not favor one or the other <em>a priori</em>).</p>
 <p>The group standard deviations will be given a uniform prior over a
 plausible range of values for the variability of the outcome variable,
 IQ.</p>
-<p>In Kruschke&#8217;s original model, he uses a very wide uniform prior for the
+<p>In Kruschke’s original model, he uses a very wide uniform prior for the
 group standard deviations, from the pooled empirical standard deviation
 divided by 1000 to the pooled standard deviation multiplied by 1000.
 This is a poor choice of prior, because very basic prior knowledge about
 measures of human coginition dictate that the variation cannot ever be
 as high as this upper bound. IQ is a standardized measure, and hence
-this constrains how variable a given population&#8217;s IQ values can be. When
+this constrains how variable a given population’s IQ values can be. When
 you place such a wide uniform prior on these values, you are essentially
 giving a lot of prior weight on inadmissable values. In this example,
 there is little practical difference, but in general it is best to apply
@@ -596,8 +597,8 @@ deterministic nodes in our model for the difference between the group
 means and the difference between the group standard deviations. Wrapping
 them in named <code class="docutils literal"><span class="pre">Deterministic</span></code> objects signals to PyMC that we wish to
 record the sampled values as part of the output.</p>
-<p>As a joint measure of the groups, we will also estimate the &#8220;effect
-size&#8221;, which is the difference in means scaled by the pooled estimates
+<p>As a joint measure of the groups, we will also estimate the “effect
+size”, which is the difference in means scaled by the pooled estimates
 of standard deviation. This quantity can be harder to interpret, since
 it is no longer in the same units as our data, but the quantity is a
 function of all four estimated parameters.</p>
@@ -641,7 +642,7 @@ Assigned NUTS to ν_minus_one_log_
 100%|██████████| 2000/2000 [00:22&lt;00:00, 89.46it/s]
 </pre></div></div>
 </div>
-<p>We can plot the stochastic parameters of the model. PyMC&#8217;s
+<p>We can plot the stochastic parameters of the model. PyMC’s
 <code class="docutils literal"><span class="pre">plot_posterior</span></code> function replicates the informative histograms
 portrayed in Kruschke (2012). These summarize the posterior
 distributions of the parameters, and present a 95% credible interval and
@@ -675,7 +676,7 @@ value. Thus, for the difference in means, 99.4% of the posterior
 probability is greater than zero, which suggests the group means are
 credibly different. The effect size and differences in standard
 deviation are similarly positive.</p>
-<p>These estimates suggest that the &#8220;smart drug&#8221; increased both the
+<p>These estimates suggest that the “smart drug” increased both the
 expected scores, but also the variability in scores across the sample.
 So, this does not rule out the possibility that some recipients may be
 adversely affected by the drug at the same time others benefit.</p>
@@ -843,7 +844,7 @@ Gen. 2013;142(2):573-603. doi:10.1037/a0029146.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="stochastic_volatility.html" class="btn btn-neutral float-right" title="Stochastic Volatility model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="multilevel_modeling.html" class="btn btn-neutral float-right" title="A Primer on Bayesian Methods for Multilevel Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="live_sample_plots.html" class="btn btn-neutral" title="Live sample plots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -877,7 +878,7 @@ Gen. 2013;142(2):573-603. doi:10.1037/a0029146.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -887,7 +888,7 @@ Gen. 2013;142(2):573-603. doi:10.1037/a0029146.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

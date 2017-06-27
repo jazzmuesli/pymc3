@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GLM: Model Selection &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>GLM: Model Selection &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Rolling Regression" href="GLM-rolling-regression.html"/>
         <link rel="prev" title="GLM: Robust Regression with Outlier Detection" href="GLM-robust-with-outlier-detection.html"/> 
@@ -397,7 +397,7 @@ and Watanabe - Akaike (or Widest Available) Information Criterion
 <li>DIC (<code class="docutils literal"><span class="pre">stats.dic</span></code>) and WAIC (<code class="docutils literal"><span class="pre">stats.waic</span></code>) are new additions to
 PyMC3, so this example shows their usage in a more concrete fashion,
 also usage of the new <code class="docutils literal"><span class="pre">glm</span></code> submodule.</li>
-<li>The example was inspired by Jake Vanderplas&#8217; <a class="reference external" href="https://jakevdp.github.io/blog/2015/08/07/frequentism-and-bayesianism-5-model-selection/">recent
+<li>The example was inspired by Jake Vanderplas’ <a class="reference external" href="https://jakevdp.github.io/blog/2015/08/07/frequentism-and-bayesianism-5-model-selection/">recent
 blogpost</a>
 on model selection, although in this first iteration,
 Cross-Validation and Bayes Factor comparison are not implemented.</li>
@@ -407,7 +407,7 @@ contain errors in the measured value (y) only.</li>
 <p>For more information on Model Selection in PyMC3, and about DIC and
 WAIC, you could start with:</p>
 <ul class="simple">
-<li>Thomas Wiecki&#8217;s <a class="reference external" href="https://stats.stackexchange.com/questions/161082/bayesian-model-selection-in-pymc3/166383#166383">detailed
+<li>Thomas Wiecki’s <a class="reference external" href="https://stats.stackexchange.com/questions/161082/bayesian-model-selection-in-pymc3/166383#166383">detailed
 response</a>
 to a question on Cross Validated</li>
 <li>The Deviance Information Criterion: 12 Years On <a class="reference external" href="http://onlinelibrary.wiley.com/doi/10.1111/rssb.12062/abstract">(Speigelhalter et al
@@ -649,7 +649,7 @@ $&gt; pip install --process-dependency-links git+https://github.com/pymc-devs/py
         <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">models</span><span class="p">[</span><span class="n">nm</span><span class="p">]:</span>
 
             <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Running: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nm</span><span class="p">))</span>
-            <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">glm</span><span class="p">(</span><span class="n">fml</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Normal</span><span class="p">())</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">GLM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">fml</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Normal</span><span class="p">())</span>
 
             <span class="c1"># For speed, we&#39;re using Metropolis here</span>
             <span class="n">traces</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Metropolis</span><span class="p">())[</span><span class="mi">1000</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
@@ -705,7 +705,7 @@ $&gt; pip install --process-dependency-links git+https://github.com/pymc-devs/py
 <h2>Generate Toy Datasets<a class="headerlink" href="#Generate-Toy-Datasets" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="Interactively-Draft-Data">
 <h3>Interactively Draft Data<a class="headerlink" href="#Interactively-Draft-Data" title="Permalink to this headline">¶</a></h3>
-<p>Throughout the rest of the Notebook, we&#8217;ll use two toy datasets created
+<p>Throughout the rest of the Notebook, we’ll use two toy datasets created
 by a linear and a quadratic model respectively, so that we can better
 evaluate the fit of the model selection.</p>
 <p>Right now, lets use an interactive session to play around with the data
@@ -721,7 +721,7 @@ possibilities of data we could generate.</p>
 <p><strong>NOTE on outliers:</strong></p>
 <ul class="simple">
 <li>We can use value <code class="docutils literal"><span class="pre">p</span></code> to set the (approximate) proportion of
-&#8216;outliers&#8217; under a bernoulli distribution.</li>
+‘outliers’ under a bernoulli distribution.</li>
 <li>These outliers have a 10x larger <code class="docutils literal"><span class="pre">latent_sigma_y</span></code></li>
 <li>These outliers are labelled in the returned datasets and may be
 useful for other modelling, see another example Notebook
@@ -747,9 +747,9 @@ useful for other modelling, see another example Notebook
 </div>
 <p><strong>Observe:</strong></p>
 <ul class="simple">
-<li>I&#8217;ve shown the <code class="docutils literal"><span class="pre">latent_error</span></code> in errorbars, but this is for
+<li>I’ve shown the <code class="docutils literal"><span class="pre">latent_error</span></code> in errorbars, but this is for
 interest only, since this shows the <em>inherent noise</em> in whatever
-&#8216;physical process&#8217; we imagine created the data.</li>
+‘physical process’ we imagine created the data.</li>
 <li>There is no <em>measurement error</em>.</li>
 <li>Datapoints created as outliers are shown in <strong>red</strong>, again for
 interest only.</li>
@@ -758,10 +758,10 @@ interest only.</li>
 <div class="section" id="Create-Datasets-for-Modelling">
 <h3>Create Datasets for Modelling<a class="headerlink" href="#Create-Datasets-for-Modelling" title="Permalink to this headline">¶</a></h3>
 <p>We can use the above interactive plot to get a feel for the effect of
-the params. Now we&#8217;ll create 2 fixed datasets to use for the remainder
+the params. Now we’ll create 2 fixed datasets to use for the remainder
 of the Notebook.</p>
 <ol class="arabic simple">
-<li>For a start, we&#8217;ll create a linear model with small noise. Keep it
+<li>For a start, we’ll create a linear model with small noise. Keep it
 simple.</li>
 <li>Secondly, a quadratic model with small noise</li>
 </ol>
@@ -921,8 +921,8 @@ noise.</li>
 <p>PyMC3 has a quite recently developed method - <code class="docutils literal"><span class="pre">glm</span></code> - for defining
 models using a <code class="docutils literal"><span class="pre">patsy</span></code>-style formula syntax. This seems really useful,
 especially for defining simple regression models in fewer lines of code.</p>
-<p>I couldn&#8217;t find a direct comparison in the the examples, so before I
-launch into using <code class="docutils literal"><span class="pre">glm</span></code> for the rest of the Notebook, here&#8217;s the same
+<p>I couldn’t find a direct comparison in the the examples, so before I
+launch into using <code class="docutils literal"><span class="pre">glm</span></code> for the rest of the Notebook, here’s the same
 OLS model as above, defined using <code class="docutils literal"><span class="pre">glm</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -932,7 +932,7 @@ OLS model as above, defined using <code class="docutils literal"><span class="pr
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mdl_ols_glm</span><span class="p">:</span>
     <span class="c1"># setup model with Normal likelihood (which uses HalfCauchy for error prior)</span>
-    <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">glm</span><span class="p">(</span><span class="s1">&#39;y ~ 1 + x&#39;</span><span class="p">,</span> <span class="n">df_lin</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Normal</span><span class="p">())</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">GLM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="s1">&#39;y ~ 1 + x&#39;</span><span class="p">,</span> <span class="n">df_lin</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Normal</span><span class="p">())</span>
 
     <span class="n">traces_ols_glm</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
 </pre></div>
@@ -997,11 +997,11 @@ since it allows us to create a small model factory very easily.</p>
 <div class="section" id="Create-Higher-Order-Linear-Models">
 <h2>Create Higher-Order Linear Models<a class="headerlink" href="#Create-Higher-Order-Linear-Models" title="Permalink to this headline">¶</a></h2>
 <p>Back to the real purpose of this Notebook: demonstrate model selection.</p>
-<p>First, let&#8217;s create and run a set of polynomial models on each of our
+<p>First, let’s create and run a set of polynomial models on each of our
 toy datasets. By default this is for models of order 1 to 5.</p>
 <div class="section" id="Create-and-run-polynomial-models">
 <h3>Create and run polynomial models<a class="headerlink" href="#Create-and-run-polynomial-models" title="Permalink to this headline">¶</a></h3>
-<p>Please see <code class="docutils literal"><span class="pre">run_models()</span></code> above for details. Generally, we&#8217;re creating
+<p>Please see <code class="docutils literal"><span class="pre">run_models()</span></code> above for details. Generally, we’re creating
 5 polynomial models and fitting each to the chosen dataset</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -1234,7 +1234,7 @@ Running: k5
 </div>
 <p><strong>Observe:</strong></p>
 <ul class="simple">
-<li>Again we&#8217;re showing the linear-generated data at left (Blue) and the
+<li>Again we’re showing the linear-generated data at left (Blue) and the
 quadratic-generated data on the right (Green)</li>
 <li>For both datasets, as the models get more complex, the likelhood
 increases monotonically</li>
@@ -1368,7 +1368,7 @@ our model fits for both datasets.</p>
 </div>
 <p><strong>Observe:</strong></p>
 <ul class="simple">
-<li>It&#8217;s good to see the manual method agrees with the implemented
+<li>It’s good to see the manual method agrees with the implemented
 package method</li>
 </ul>
 <div class="nbinput docutils container">
@@ -1447,7 +1447,7 @@ about our model fits for both datasets.</p>
 </div>
 <p><strong>Observe:</strong></p>
 <ul class="simple">
-<li>Well, we get a number... not much to tell from just one though, so
+<li>Well, we get a number… not much to tell from just one though, so
 lets compare all models</li>
 </ul>
 <div class="nbinput docutils container">
@@ -1482,7 +1482,7 @@ lets compare all models</li>
 <li>Linear-generated data (lhs):<ul>
 <li>The WAIC seems quite flat across models</li>
 <li>The WAIC seems best (lowest) for simpler models, but <strong>k1</strong>
-doesn&#8217;t stand out as much as it did when using DIC</li>
+doesn’t stand out as much as it did when using DIC</li>
 </ul>
 </li>
 <li>Quadratic-generated data (rhs):<ul>
@@ -1577,7 +1577,7 @@ of the model grows beyond a few.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1587,7 +1587,7 @@ of the model grows beyond a few.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

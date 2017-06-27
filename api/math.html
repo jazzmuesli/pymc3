@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Math &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Math &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Data" href="data.html"/>
         <link rel="prev" title="Backends" href="backends.html"/> 
@@ -234,7 +234,7 @@ expressions rather than NumPy or Python code.</p>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">ones_like</span></code>(model[,&nbsp;dtype,&nbsp;opt])</td>
 <td>equivalent of numpy.ones_like</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">stack</span></code>(\*tensors,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">stack</span></code>(*tensors,&nbsp;**kwargs)</td>
 <td>Stack tensors in sequence on given axis (default is 0).</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">concatenate</span></code>(tensor_list[,&nbsp;axis])</td>
@@ -243,7 +243,7 @@ expressions rather than NumPy or Python code.</p>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">sum</span></code>(input[,&nbsp;axis,&nbsp;dtype,&nbsp;keepdims,&nbsp;acc_dtype])</td>
 <td>Computes the sum along the given axis(es) of a tensor <cite>input</cite>.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">prod</span></code>(input[,&nbsp;axis,&nbsp;dtype,&nbsp;keepdims,&nbsp;...])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">prod</span></code>(input[,&nbsp;axis,&nbsp;dtype,&nbsp;keepdims,&nbsp;…])</td>
 <td>Computes the product along the given axis(es) of a tensor <cite>input</cite>.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">lt</span></code></td>
@@ -345,7 +345,7 @@ expressions rather than NumPy or Python code.</p>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">extract_diag</span></code></td>
 <td>Return the diagonal of a matrix.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">matrix_dot</span></code>(\*args)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">matrix_dot</span></code>(*args)</td>
 <td>Shorthand for product between several dots.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">trace</span></code>(X)</td>
@@ -396,10 +396,10 @@ the elements by row like this (for lower or upper triangular matrices):</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em>) &#8211; The number of rows of the triangular matrix.</li>
-<li><strong>packed</strong> (<em>theano.vector</em>) &#8211; The matrix in packed format.</li>
-<li><strong>lower</strong> (<em>bool</em><em>, </em><em>default=True</em>) &#8211; If true, assume that the matrix is lower triangular.</li>
-<li><strong>diagonal_only</strong> (<em>bool</em>) &#8211; If true, return only the diagonal of the matrix.</li>
+<li><strong>n</strong> (<em>int</em>) – The number of rows of the triangular matrix.</li>
+<li><strong>packed</strong> (<em>theano.vector</em>) – The matrix in packed format.</li>
+<li><strong>lower</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If true, assume that the matrix is lower triangular.</li>
+<li><strong>diagonal_only</strong> (<em>bool</em>) – If true, return only the diagonal of the matrix.</li>
 </ul>
 </td>
 </tr>
@@ -460,7 +460,7 @@ when the warning disappears.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -470,7 +470,7 @@ when the warning disappears.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

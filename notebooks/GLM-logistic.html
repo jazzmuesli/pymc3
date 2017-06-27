@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GLM: Logistic Regression &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>GLM: Logistic Regression &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/> 
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -396,7 +396,7 @@ the model creation/ model selection process.</li>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -417,10 +417,9 @@ the model creation/ model selection process.</li>
         <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">models</span><span class="p">[</span><span class="n">nm</span><span class="p">]:</span>
 
             <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Running: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nm</span><span class="p">))</span>
-            <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">glm</span><span class="p">(</span><span class="n">fml</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Normal</span><span class="p">())</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">GLM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">fml</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Normal</span><span class="p">())</span>
 
-            <span class="n">start_MAP</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">find_MAP</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="n">fmin_powell</span><span class="p">,</span> <span class="n">disp</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="n">traces</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start_MAP</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(),</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">traces</span><span class="p">[</span><span class="n">nm</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">models</span><span class="p">,</span> <span class="n">traces</span>
 
@@ -480,7 +479,7 @@ how to use Odd Ratio in Bayesian Regression.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">data</span>
+<span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -491,6 +490,19 @@ how to use Odd Ratio in Bayesian Regression.</p>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -693,927 +705,8 @@ how to use Odd Ratio in Bayesian Regression.</p>
       <td>United-States</td>
       <td>&gt;50K</td>
     </tr>
-    <tr>
-      <th>10</th>
-      <td>37</td>
-      <td>Private</td>
-      <td>280464</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Married-civ-spouse</td>
-      <td>Exec-managerial</td>
-      <td>Husband</td>
-      <td>Black</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>80</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>30</td>
-      <td>State-gov</td>
-      <td>141297</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Married-civ-spouse</td>
-      <td>Prof-specialty</td>
-      <td>Husband</td>
-      <td>Asian-Pac-Islander</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>India</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>23</td>
-      <td>Private</td>
-      <td>122272</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Never-married</td>
-      <td>Adm-clerical</td>
-      <td>Own-child</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>30</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>32</td>
-      <td>Private</td>
-      <td>205019</td>
-      <td>Assoc-acdm</td>
-      <td>12</td>
-      <td>Never-married</td>
-      <td>Sales</td>
-      <td>Not-in-family</td>
-      <td>Black</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>50</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>40</td>
-      <td>Private</td>
-      <td>121772</td>
-      <td>Assoc-voc</td>
-      <td>11</td>
-      <td>Married-civ-spouse</td>
-      <td>Craft-repair</td>
-      <td>Husband</td>
-      <td>Asian-Pac-Islander</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>?</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>34</td>
-      <td>Private</td>
-      <td>245487</td>
-      <td>7th-8th</td>
-      <td>4</td>
-      <td>Married-civ-spouse</td>
-      <td>Transport-moving</td>
-      <td>Husband</td>
-      <td>Amer-Indian-Eskimo</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>45</td>
-      <td>Mexico</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>25</td>
-      <td>Self-emp-not-inc</td>
-      <td>176756</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Never-married</td>
-      <td>Farming-fishing</td>
-      <td>Own-child</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>35</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>32</td>
-      <td>Private</td>
-      <td>186824</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Never-married</td>
-      <td>Machine-op-inspct</td>
-      <td>Unmarried</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>38</td>
-      <td>Private</td>
-      <td>28887</td>
-      <td>11th</td>
-      <td>7</td>
-      <td>Married-civ-spouse</td>
-      <td>Sales</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>50</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>43</td>
-      <td>Self-emp-not-inc</td>
-      <td>292175</td>
-      <td>Masters</td>
-      <td>14</td>
-      <td>Divorced</td>
-      <td>Exec-managerial</td>
-      <td>Unmarried</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>45</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>40</td>
-      <td>Private</td>
-      <td>193524</td>
-      <td>Doctorate</td>
-      <td>16</td>
-      <td>Married-civ-spouse</td>
-      <td>Prof-specialty</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>60</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>54</td>
-      <td>Private</td>
-      <td>302146</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Separated</td>
-      <td>Other-service</td>
-      <td>Unmarried</td>
-      <td>Black</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>20</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>35</td>
-      <td>Federal-gov</td>
-      <td>76845</td>
-      <td>9th</td>
-      <td>5</td>
-      <td>Married-civ-spouse</td>
-      <td>Farming-fishing</td>
-      <td>Husband</td>
-      <td>Black</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>43</td>
-      <td>Private</td>
-      <td>117037</td>
-      <td>11th</td>
-      <td>7</td>
-      <td>Married-civ-spouse</td>
-      <td>Transport-moving</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>2042</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>59</td>
-      <td>Private</td>
-      <td>109015</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Divorced</td>
-      <td>Tech-support</td>
-      <td>Unmarried</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>56</td>
-      <td>Local-gov</td>
-      <td>216851</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Married-civ-spouse</td>
-      <td>Tech-support</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>19</td>
-      <td>Private</td>
-      <td>168294</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Never-married</td>
-      <td>Craft-repair</td>
-      <td>Own-child</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>54</td>
-      <td>?</td>
-      <td>180211</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Married-civ-spouse</td>
-      <td>?</td>
-      <td>Husband</td>
-      <td>Asian-Pac-Islander</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>60</td>
-      <td>South</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>39</td>
-      <td>Private</td>
-      <td>367260</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Divorced</td>
-      <td>Exec-managerial</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>80</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>49</td>
-      <td>Private</td>
-      <td>193366</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Married-civ-spouse</td>
-      <td>Craft-repair</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>32531</th>
-      <td>30</td>
-      <td>?</td>
-      <td>33811</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Never-married</td>
-      <td>?</td>
-      <td>Not-in-family</td>
-      <td>Asian-Pac-Islander</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>99</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32532</th>
-      <td>34</td>
-      <td>Private</td>
-      <td>204461</td>
-      <td>Doctorate</td>
-      <td>16</td>
-      <td>Married-civ-spouse</td>
-      <td>Prof-specialty</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>60</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32533</th>
-      <td>54</td>
-      <td>Private</td>
-      <td>337992</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Married-civ-spouse</td>
-      <td>Exec-managerial</td>
-      <td>Husband</td>
-      <td>Asian-Pac-Islander</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>50</td>
-      <td>Japan</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32534</th>
-      <td>37</td>
-      <td>Private</td>
-      <td>179137</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Divorced</td>
-      <td>Adm-clerical</td>
-      <td>Unmarried</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>39</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32535</th>
-      <td>22</td>
-      <td>Private</td>
-      <td>325033</td>
-      <td>12th</td>
-      <td>8</td>
-      <td>Never-married</td>
-      <td>Protective-serv</td>
-      <td>Own-child</td>
-      <td>Black</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>35</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32536</th>
-      <td>34</td>
-      <td>Private</td>
-      <td>160216</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Never-married</td>
-      <td>Exec-managerial</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>55</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32537</th>
-      <td>30</td>
-      <td>Private</td>
-      <td>345898</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Never-married</td>
-      <td>Craft-repair</td>
-      <td>Not-in-family</td>
-      <td>Black</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>46</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32538</th>
-      <td>38</td>
-      <td>Private</td>
-      <td>139180</td>
-      <td>Bachelors</td>
-      <td>13</td>
-      <td>Divorced</td>
-      <td>Prof-specialty</td>
-      <td>Unmarried</td>
-      <td>Black</td>
-      <td>Female</td>
-      <td>15020</td>
-      <td>0</td>
-      <td>45</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32539</th>
-      <td>71</td>
-      <td>?</td>
-      <td>287372</td>
-      <td>Doctorate</td>
-      <td>16</td>
-      <td>Married-civ-spouse</td>
-      <td>?</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>10</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32540</th>
-      <td>45</td>
-      <td>State-gov</td>
-      <td>252208</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Separated</td>
-      <td>Adm-clerical</td>
-      <td>Own-child</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32541</th>
-      <td>41</td>
-      <td>?</td>
-      <td>202822</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Separated</td>
-      <td>?</td>
-      <td>Not-in-family</td>
-      <td>Black</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>32</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32542</th>
-      <td>72</td>
-      <td>?</td>
-      <td>129912</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Married-civ-spouse</td>
-      <td>?</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>25</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32543</th>
-      <td>45</td>
-      <td>Local-gov</td>
-      <td>119199</td>
-      <td>Assoc-acdm</td>
-      <td>12</td>
-      <td>Divorced</td>
-      <td>Prof-specialty</td>
-      <td>Unmarried</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>48</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32544</th>
-      <td>31</td>
-      <td>Private</td>
-      <td>199655</td>
-      <td>Masters</td>
-      <td>14</td>
-      <td>Divorced</td>
-      <td>Other-service</td>
-      <td>Not-in-family</td>
-      <td>Other</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>30</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32545</th>
-      <td>39</td>
-      <td>Local-gov</td>
-      <td>111499</td>
-      <td>Assoc-acdm</td>
-      <td>12</td>
-      <td>Married-civ-spouse</td>
-      <td>Adm-clerical</td>
-      <td>Wife</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>20</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32546</th>
-      <td>37</td>
-      <td>Private</td>
-      <td>198216</td>
-      <td>Assoc-acdm</td>
-      <td>12</td>
-      <td>Divorced</td>
-      <td>Tech-support</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32547</th>
-      <td>43</td>
-      <td>Private</td>
-      <td>260761</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Married-civ-spouse</td>
-      <td>Machine-op-inspct</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>Mexico</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32548</th>
-      <td>65</td>
-      <td>Self-emp-not-inc</td>
-      <td>99359</td>
-      <td>Prof-school</td>
-      <td>15</td>
-      <td>Never-married</td>
-      <td>Prof-specialty</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>1086</td>
-      <td>0</td>
-      <td>60</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32549</th>
-      <td>43</td>
-      <td>State-gov</td>
-      <td>255835</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Divorced</td>
-      <td>Adm-clerical</td>
-      <td>Other-relative</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32550</th>
-      <td>43</td>
-      <td>Self-emp-not-inc</td>
-      <td>27242</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Married-civ-spouse</td>
-      <td>Craft-repair</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>50</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32551</th>
-      <td>32</td>
-      <td>Private</td>
-      <td>34066</td>
-      <td>10th</td>
-      <td>6</td>
-      <td>Married-civ-spouse</td>
-      <td>Handlers-cleaners</td>
-      <td>Husband</td>
-      <td>Amer-Indian-Eskimo</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32552</th>
-      <td>43</td>
-      <td>Private</td>
-      <td>84661</td>
-      <td>Assoc-voc</td>
-      <td>11</td>
-      <td>Married-civ-spouse</td>
-      <td>Sales</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>45</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32553</th>
-      <td>32</td>
-      <td>Private</td>
-      <td>116138</td>
-      <td>Masters</td>
-      <td>14</td>
-      <td>Never-married</td>
-      <td>Tech-support</td>
-      <td>Not-in-family</td>
-      <td>Asian-Pac-Islander</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>11</td>
-      <td>Taiwan</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32554</th>
-      <td>53</td>
-      <td>Private</td>
-      <td>321865</td>
-      <td>Masters</td>
-      <td>14</td>
-      <td>Married-civ-spouse</td>
-      <td>Exec-managerial</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32555</th>
-      <td>22</td>
-      <td>Private</td>
-      <td>310152</td>
-      <td>Some-college</td>
-      <td>10</td>
-      <td>Never-married</td>
-      <td>Protective-serv</td>
-      <td>Not-in-family</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32556</th>
-      <td>27</td>
-      <td>Private</td>
-      <td>257302</td>
-      <td>Assoc-acdm</td>
-      <td>12</td>
-      <td>Married-civ-spouse</td>
-      <td>Tech-support</td>
-      <td>Wife</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>38</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32557</th>
-      <td>40</td>
-      <td>Private</td>
-      <td>154374</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Married-civ-spouse</td>
-      <td>Machine-op-inspct</td>
-      <td>Husband</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
-    <tr>
-      <th>32558</th>
-      <td>58</td>
-      <td>Private</td>
-      <td>151910</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Widowed</td>
-      <td>Adm-clerical</td>
-      <td>Unmarried</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>0</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32559</th>
-      <td>22</td>
-      <td>Private</td>
-      <td>201490</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Never-married</td>
-      <td>Adm-clerical</td>
-      <td>Own-child</td>
-      <td>White</td>
-      <td>Male</td>
-      <td>0</td>
-      <td>0</td>
-      <td>20</td>
-      <td>United-States</td>
-      <td>&lt;=50K</td>
-    </tr>
-    <tr>
-      <th>32560</th>
-      <td>52</td>
-      <td>Self-emp-inc</td>
-      <td>287927</td>
-      <td>HS-grad</td>
-      <td>9</td>
-      <td>Married-civ-spouse</td>
-      <td>Exec-managerial</td>
-      <td>Wife</td>
-      <td>White</td>
-      <td>Female</td>
-      <td>15024</td>
-      <td>0</td>
-      <td>40</td>
-      <td>United-States</td>
-      <td>&gt;50K</td>
-    </tr>
   </tbody>
 </table>
-<p>32561 rows × 15 columns</p>
 </div></div>
 </div>
 <div class="section" id="Scrubbing-and-cleaning">
@@ -1648,6 +741,19 @@ restrict this study to the United States.</p>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2822,7 +1928,7 @@ Name: income, dtype: int64
 <div class="section" id="Exploring-the-data">
 <h2>Exploring the data<a class="headerlink" href="#Exploring-the-data" title="Permalink to this headline">¶</a></h2>
 <p>Let us get a feel for the parameters. * We see that age is a tailed
-distribution. Certainly not Gaussian! * We don&#8217;t see much of a
+distribution. Certainly not Gaussian! * We don’t see much of a
 correlation between many of the features, with the exception of Age and
 Age2. * Hours worked has some interesting behaviour. How would one
 describe this distribution?</p>
@@ -2832,7 +1938,6 @@ describe this distribution?</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-
 <span></span><span class="n">g</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2875,7 +1980,7 @@ describe this distribution?</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x11443d5f8&gt;
+<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f9c105c9fd0&gt;
 </pre></div>
 </div>
 </div>
@@ -2914,7 +2019,7 @@ numerator.</p>
 <p>Getting back to logistic regression, we need to specify a prior and a
 likelihood in order to draw samples from the posterior. We could use
 sociological knowledge about the effects of age and education on income,
-but instead, let&#8217;s use the default prior specification for GLM
+but instead, let’s use the default prior specification for GLM
 coefficients that PyMC3 gives us, which is <span class="math">\(p(θ)=N(0,10^{12}I)\)</span>.
 This is a very vague prior that will let the data speak for themselves.</p>
 <p>The likelihood is the product of n Bernoulli trials,
@@ -2927,17 +2032,17 @@ and <span class="math">\(y_{i} = 1\)</span> if income is greater than 50K and
 PyMC3 to draw samples from the posterior. The sampling algorithm used is
 NUTS, which is a form of Hamiltonian Monte Carlo, in which parameteres
 are tuned automatically. Notice, that we get to borrow the syntax of
-specifying GLM&#8217;s from R, very convenient! I use a convenience function
+specifying GLM’s from R, very convenient! I use a convenience function
 from above to plot the trace infromation from the first 1000 parameters.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">logistic_model</span><span class="p">:</span>
-    <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">glm</span><span class="p">(</span><span class="s1">&#39;income ~ age + age2 + educ&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Binomial</span><span class="p">())</span>
-    <span class="n">trace_logistic_model</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">GLM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="s1">&#39;income ~ age + age2 + educ + hours&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Binomial</span><span class="p">())</span>
+    <span class="n">trace_logistic_model</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">4000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2947,18 +2052,28 @@ from above to plot the trace infromation from the first 1000 parameters.</p>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using advi...
-  7%|▋         | 34842/500000 [01:13&lt;15:33, 498.45it/s]
+Initializing NUTS using ADVI...
+Average Loss = 18,443:  27%|██▋       | 53098/200000 [06:10&lt;23:38, 103.58it/s]
+Convergence archived at 53100
+Interrupted at 53,100 [26%]: Average Loss = 1.3951e+06
+100%|██████████| 4500/4500 [29:39&lt;00:00,  2.53it/s]
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">plot_traces</span><span class="p">(</span><span class="n">trace_logistic_model</span><span class="p">,</span> <span class="n">retain</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_GLM-logistic_18_0.png" src="../_images/notebooks_GLM-logistic_18_0.png" />
 </div>
 </div>
 </div>
@@ -2969,10 +2084,10 @@ extra computational effort in many circumstances is that we can be
 explicit about our uncertainty. Maximum likelihood returns a number, but
 how certain can we be that we found the right number? Instead, Bayesian
 inference returns a distribution over parameter values.</p>
-<p>I&#8217;ll use seaborn to look at the distribution of some of these factors.</p>
+<p>I’ll use seaborn to look at the distribution of some of these factors.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -2989,7 +2104,7 @@ inference returns a distribution over parameter values.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.figure.Figure at 0x12732d4e0&gt;
+<span></span>&lt;matplotlib.figure.Figure at 0x7f9c1292ec18&gt;
 </pre></div>
 </div>
 </div>
@@ -3012,7 +2127,7 @@ models: one with educ == 12 (finished high school), one with educ == 16
 school).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -3053,14 +2168,14 @@ low uncertainty and light, spread out portions of the curve as places
 where we have somewhat higher uncertainty about our coefficient values.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Plot the posterior predictive distributions of P(income &gt; $50K) vs. age</span>
-<span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">plot_posterior_predictive</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">plot_posterior_predictive</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm2</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">plot_posterior_predictive</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm3</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm2</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm3</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib.lines</span> <span class="kn">as</span> <span class="nn">mlines</span>
 <span class="n">blue_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="s1">&#39;lm&#39;</span><span class="p">],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;High School Education&#39;</span><span class="p">)</span>
 <span class="n">green_line</span> <span class="o">=</span> <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([</span><span class="s1">&#39;lm2&#39;</span><span class="p">],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Bachelors&#39;</span><span class="p">)</span>
@@ -3081,7 +2196,7 @@ where we have somewhat higher uncertainty about our coefficient values.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -3102,12 +2217,12 @@ where we have somewhat higher uncertainty about our coefficient values.</p>
 <p>Finally, we can find a credible interval (remember kids - credible
 intervals are Bayesian and confidence intervals are frequentist) for
 this quantity. This may be the best part about Bayesian statistics: we
-get to interpret credibility intervals the way we&#8217;ve always wanted to
+get to interpret credibility intervals the way we’ve always wanted to
 interpret them. We are 95% confident that the odds ratio lies within our
 interval!</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -3122,7 +2237,7 @@ interval!</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-P(1.000 &lt; O.R. &lt; 1.000) = 0.95
+P(2.612 &lt; O.R. &lt; 2.829) = 0.95
 </pre></div></div>
 </div>
 </div>
@@ -3133,20 +2248,32 @@ P(1.000 &lt; O.R. &lt; 1.000) = 0.95
 is a fairly unsophisticated method for comparing the deviance of
 likelhood across the the sample traces of a model run. However, this
 simplicity apparently yields quite good results in a variety of cases.
-We&#8217;ll run the model with a few changes to see what effect higher order
+We’ll run the model with a few changes to see what effect higher order
 terms have on this model.</p>
 <p>One question that was immediately asked was what effect does age have on
-the model, and why should it be age^2 versus age? We&#8217;ll use the DIC to
+the model, and why should it be age^2 versus age? We’ll use the DIC to
 answer this question.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">models_lin</span><span class="p">,</span> <span class="n">traces_lin</span> <span class="o">=</span> <span class="n">run_models</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+Assigned NUTS to Intercept
+Assigned NUTS to educ
+Assigned NUTS to hours
+Assigned NUTS to age
+Assigned NUTS to sd_log__
+</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -3162,7 +2289,13 @@ Running: k1
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-  1%|          | 18/2000 [00:28&lt;53:34,  1.62s/it]
+100%|██████████| 2500/2500 [00:35&lt;00:00, 70.76it/s]
+Assigned NUTS to Intercept
+Assigned NUTS to educ
+Assigned NUTS to hours
+Assigned NUTS to age
+Assigned NUTS to np.power(age, 2)
+Assigned NUTS to sd_log__
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -3174,141 +2307,66 @@ Running: k1
 Running: k2
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2500/2500 [01:15&lt;00:00, 33.11it/s]
+Assigned NUTS to Intercept
+Assigned NUTS to educ
+Assigned NUTS to hours
+Assigned NUTS to age
+Assigned NUTS to np.power(age, 2)
+Assigned NUTS to np.power(age, 3)
+Assigned NUTS to sd_log__
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-19-976ca5ac1f6d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>models_lin<span class="ansi-blue-fg">,</span> traces_lin <span class="ansi-blue-fg">=</span> run_models<span class="ansi-blue-fg">(</span>data<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">4</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-green-fg">&lt;ipython-input-2-5c6baeee651e&gt;</span> in <span class="ansi-cyan-fg">run_models</span><span class="ansi-blue-fg">(df, upper_order)</span>
-<span class="ansi-green-intense-fg ansi-bold">     18</span>             pm<span class="ansi-blue-fg">.</span>glm<span class="ansi-blue-fg">.</span>glm<span class="ansi-blue-fg">(</span>fml<span class="ansi-blue-fg">,</span> df<span class="ansi-blue-fg">,</span> family<span class="ansi-blue-fg">=</span>pm<span class="ansi-blue-fg">.</span>glm<span class="ansi-blue-fg">.</span>families<span class="ansi-blue-fg">.</span>Normal<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     19</span>
-<span class="ansi-green-fg">---&gt; 20</span><span class="ansi-red-fg">             </span>start_MAP <span class="ansi-blue-fg">=</span> pm<span class="ansi-blue-fg">.</span>find_MAP<span class="ansi-blue-fg">(</span>fmin<span class="ansi-blue-fg">=</span>fmin_powell<span class="ansi-blue-fg">,</span> disp<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     21</span>             traces<span class="ansi-blue-fg">[</span>nm<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> pm<span class="ansi-blue-fg">.</span>sample<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">2000</span><span class="ansi-blue-fg">,</span> start<span class="ansi-blue-fg">=</span>start_MAP<span class="ansi-blue-fg">,</span> step<span class="ansi-blue-fg">=</span>pm<span class="ansi-blue-fg">.</span>NUTS<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> progressbar<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     22</span>
+Running: k3
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2500/2500 [03:19&lt;00:00, 12.51it/s]
+Assigned NUTS to Intercept
+Assigned NUTS to educ
+Assigned NUTS to hours
+Assigned NUTS to age
+Assigned NUTS to np.power(age, 2)
+Assigned NUTS to np.power(age, 3)
+Assigned NUTS to np.power(age, 4)
+Assigned NUTS to sd_log__
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/pymc3/pymc3/tuning/starting.py</span> in <span class="ansi-cyan-fg">find_MAP</span><span class="ansi-blue-fg">(start, vars, fmin, return_raw, model, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     74</span>     bij <span class="ansi-blue-fg">=</span> DictToArrayBijection<span class="ansi-blue-fg">(</span>ArrayOrdering<span class="ansi-blue-fg">(</span>vars<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> start<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     75</span>
-<span class="ansi-green-fg">---&gt; 76</span><span class="ansi-red-fg">     </span>logp <span class="ansi-blue-fg">=</span> bij<span class="ansi-blue-fg">.</span>mapf<span class="ansi-blue-fg">(</span>model<span class="ansi-blue-fg">.</span>fastlogp<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     77</span>     dlogp <span class="ansi-blue-fg">=</span> bij<span class="ansi-blue-fg">.</span>mapf<span class="ansi-blue-fg">(</span>model<span class="ansi-blue-fg">.</span>fastdlogp<span class="ansi-blue-fg">(</span>vars<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     78</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/pymc3/pymc3/model.py</span> in <span class="ansi-cyan-fg">fastlogp</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    153</span>     <span class="ansi-green-fg">def</span> fastlogp<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    154</span>         <span class="ansi-blue-fg">&#34;&#34;&#34;Compiled log probability density function&#34;&#34;&#34;</span>
-<span class="ansi-green-fg">--&gt; 155</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>model<span class="ansi-blue-fg">.</span>fastfn<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>logpt<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    156</span>
-<span class="ansi-green-intense-fg ansi-bold">    157</span>     <span class="ansi-green-fg">def</span> fastdlogp<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> vars<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/pymc3/pymc3/model.py</span> in <span class="ansi-cyan-fg">fastfn</span><span class="ansi-blue-fg">(self, outs, mode, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    367</span>         Compiled Theano function <span class="ansi-green-fg">as</span> point function<span class="ansi-blue-fg">.</span>
-<span class="ansi-green-intense-fg ansi-bold">    368</span>         &#34;&#34;&#34;
-<span class="ansi-green-fg">--&gt; 369</span><span class="ansi-red-fg">         </span>f <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>makefn<span class="ansi-blue-fg">(</span>outs<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    370</span>         <span class="ansi-green-fg">return</span> FastPointFunc<span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    371</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/pymc3/pymc3/memoize.py</span> in <span class="ansi-cyan-fg">memoizer</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     13</span>
-<span class="ansi-green-intense-fg ansi-bold">     14</span>         <span class="ansi-green-fg">if</span> key <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> cache<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 15</span><span class="ansi-red-fg">             </span>cache<span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> obj<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     16</span>
-<span class="ansi-green-intense-fg ansi-bold">     17</span>         <span class="ansi-green-fg">return</span> cache<span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/pymc3/pymc3/model.py</span> in <span class="ansi-cyan-fg">makefn</span><span class="ansi-blue-fg">(self, outs, mode, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    337</span>                                on_unused_input<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;ignore&#39;</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    338</span>                                accept_inplace<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">--&gt; 339</span><span class="ansi-red-fg">                                mode=mode, *args, **kwargs)
-</span><span class="ansi-green-intense-fg ansi-bold">    340</span>
-<span class="ansi-green-intense-fg ansi-bold">    341</span>     <span class="ansi-green-fg">def</span> fn<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> outs<span class="ansi-blue-fg">,</span> mode<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/compile/function.py</span> in <span class="ansi-cyan-fg">function</span><span class="ansi-blue-fg">(inputs, outputs, mode, updates, givens, no_default_updates, accept_inplace, name, rebuild_strict, allow_input_downcast, profile, on_unused_input)</span>
-<span class="ansi-green-intense-fg ansi-bold">    324</span>                    on_unused_input<span class="ansi-blue-fg">=</span>on_unused_input<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    325</span>                    profile<span class="ansi-blue-fg">=</span>profile<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">--&gt; 326</span><span class="ansi-red-fg">                    output_keys=output_keys)
-</span><span class="ansi-green-intense-fg ansi-bold">    327</span>     <span class="ansi-red-fg"># We need to add the flag check_aliased inputs if we have any mutable or</span>
-<span class="ansi-green-intense-fg ansi-bold">    328</span>     <span class="ansi-red-fg"># borrowed used defined inputs</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/compile/pfunc.py</span> in <span class="ansi-cyan-fg">pfunc</span><span class="ansi-blue-fg">(params, outputs, mode, updates, givens, no_default_updates, accept_inplace, name, rebuild_strict, allow_input_downcast, profile, on_unused_input, output_keys)</span>
-<span class="ansi-green-intense-fg ansi-bold">    484</span>                          accept_inplace<span class="ansi-blue-fg">=</span>accept_inplace<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">=</span>name<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    485</span>                          profile<span class="ansi-blue-fg">=</span>profile<span class="ansi-blue-fg">,</span> on_unused_input<span class="ansi-blue-fg">=</span>on_unused_input<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">--&gt; 486</span><span class="ansi-red-fg">                          output_keys=output_keys)
-</span><span class="ansi-green-intense-fg ansi-bold">    487</span>
-<span class="ansi-green-intense-fg ansi-bold">    488</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/compile/function_module.py</span> in <span class="ansi-cyan-fg">orig_function</span><span class="ansi-blue-fg">(inputs, outputs, mode, accept_inplace, name, profile, on_unused_input, output_keys)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1781</span>                    profile<span class="ansi-blue-fg">=</span>profile<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1782</span>                    on_unused_input<span class="ansi-blue-fg">=</span>on_unused_input<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">-&gt; 1783</span><span class="ansi-red-fg">                    </span>output_keys<span class="ansi-blue-fg">=</span>output_keys<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>create<span class="ansi-blue-fg">(</span>
-<span class="ansi-green-intense-fg ansi-bold">   1784</span>             defaults)
-<span class="ansi-green-intense-fg ansi-bold">   1785</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/compile/function_module.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, inputs, outputs, mode, accept_inplace, function_builder, profile, on_unused_input, fgraph, output_keys)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1463</span>                         optimizer, inputs, outputs)
-<span class="ansi-green-intense-fg ansi-bold">   1464</span>                 <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 1465</span><span class="ansi-red-fg">                     </span>optimizer_profile <span class="ansi-blue-fg">=</span> optimizer<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1466</span>
-<span class="ansi-green-intense-fg ansi-bold">   1467</span>                 end_optimizer <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/opt.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, fgraph)</span>
-<span class="ansi-green-intense-fg ansi-bold">     96</span>
-<span class="ansi-green-intense-fg ansi-bold">     97</span>         &#34;&#34;&#34;
-<span class="ansi-green-fg">---&gt; 98</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>optimize<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     99</span>
-<span class="ansi-green-intense-fg ansi-bold">    100</span>     <span class="ansi-green-fg">def</span> add_requirements<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> fgraph<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/opt.py</span> in <span class="ansi-cyan-fg">optimize</span><span class="ansi-blue-fg">(self, fgraph, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     85</span>             orig <span class="ansi-blue-fg">=</span> theano<span class="ansi-blue-fg">.</span>tensor<span class="ansi-blue-fg">.</span>basic<span class="ansi-blue-fg">.</span>constant<span class="ansi-blue-fg">.</span>enable
-<span class="ansi-green-intense-fg ansi-bold">     86</span>             theano<span class="ansi-blue-fg">.</span>tensor<span class="ansi-blue-fg">.</span>basic<span class="ansi-blue-fg">.</span>constant<span class="ansi-blue-fg">.</span>enable <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">False</span>
-<span class="ansi-green-fg">---&gt; 87</span><span class="ansi-red-fg">             </span>ret <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>apply<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     88</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     89</span>             theano<span class="ansi-blue-fg">.</span>tensor<span class="ansi-blue-fg">.</span>basic<span class="ansi-blue-fg">.</span>constant<span class="ansi-blue-fg">.</span>enable <span class="ansi-blue-fg">=</span> orig
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/opt.py</span> in <span class="ansi-cyan-fg">apply</span><span class="ansi-blue-fg">(self, fgraph)</span>
-<span class="ansi-green-intense-fg ansi-bold">    233</span>                 nb_nodes_before <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">.</span>apply_nodes<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    234</span>                 t0 <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 235</span><span class="ansi-red-fg">                 </span>sub_prof <span class="ansi-blue-fg">=</span> optimizer<span class="ansi-blue-fg">.</span>optimize<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    236</span>                 l<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>float<span class="ansi-blue-fg">(</span>time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> t0<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    237</span>                 sub_profs<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>sub_prof<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/opt.py</span> in <span class="ansi-cyan-fg">optimize</span><span class="ansi-blue-fg">(self, fgraph, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     85</span>             orig <span class="ansi-blue-fg">=</span> theano<span class="ansi-blue-fg">.</span>tensor<span class="ansi-blue-fg">.</span>basic<span class="ansi-blue-fg">.</span>constant<span class="ansi-blue-fg">.</span>enable
-<span class="ansi-green-intense-fg ansi-bold">     86</span>             theano<span class="ansi-blue-fg">.</span>tensor<span class="ansi-blue-fg">.</span>basic<span class="ansi-blue-fg">.</span>constant<span class="ansi-blue-fg">.</span>enable <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">False</span>
-<span class="ansi-green-fg">---&gt; 87</span><span class="ansi-red-fg">             </span>ret <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>apply<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     88</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     89</span>             theano<span class="ansi-blue-fg">.</span>tensor<span class="ansi-blue-fg">.</span>basic<span class="ansi-blue-fg">.</span>constant<span class="ansi-blue-fg">.</span>enable <span class="ansi-blue-fg">=</span> orig
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/opt.py</span> in <span class="ansi-cyan-fg">apply</span><span class="ansi-blue-fg">(self, fgraph, start_from)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2378</span>             <span class="ansi-red-fg"># apply local optimizer</span>
-<span class="ansi-green-intense-fg ansi-bold">   2379</span>             topo_t0 <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">-&gt; 2380</span><span class="ansi-red-fg">             </span>q <span class="ansi-blue-fg">=</span> deque<span class="ansi-blue-fg">(</span>graph<span class="ansi-blue-fg">.</span>io_toposort<span class="ansi-blue-fg">(</span>fgraph<span class="ansi-blue-fg">.</span>inputs<span class="ansi-blue-fg">,</span> start_from<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2381</span>             io_toposort_timing<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> topo_t0<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2382</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/graph.py</span> in <span class="ansi-cyan-fg">io_toposort</span><span class="ansi-blue-fg">(inputs, outputs, orderings, clients)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1028</span>     topo = general_toposort(outputs, deps=compute_deps,
-<span class="ansi-green-intense-fg ansi-bold">   1029</span>                             compute_deps_cache<span class="ansi-blue-fg">=</span>compute_deps_cache<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">-&gt; 1030</span><span class="ansi-red-fg">                             deps_cache=deps_cache, clients=clients)
-</span><span class="ansi-green-intense-fg ansi-bold">   1031</span>     <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">[</span>o <span class="ansi-green-fg">for</span> o <span class="ansi-green-fg">in</span> topo <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>o<span class="ansi-blue-fg">,</span> Apply<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">   1032</span>
-
-<span class="ansi-green-fg">/Users/fonnescj/Repositories/Theano/theano/gof/graph.py</span> in <span class="ansi-cyan-fg">general_toposort</span><span class="ansi-blue-fg">(r_out, deps, debug_print, compute_deps_cache, deps_cache, clients)</span>
-<span class="ansi-green-intense-fg ansi-bold">    948</span>             rset<span class="ansi-blue-fg">.</span>add<span class="ansi-blue-fg">(</span>node<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    949</span>             <span class="ansi-green-fg">for</span> client <span class="ansi-green-fg">in</span> _clients<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>node<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 950</span><span class="ansi-red-fg">                 deps_cache[client] = [a for a in deps_cache[client]
-</span><span class="ansi-green-intense-fg ansi-bold">    951</span>                                       if a is not node]
-<span class="ansi-green-intense-fg ansi-bold">    952</span>                 <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> deps_cache<span class="ansi-blue-fg">[</span>client<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">KeyboardInterrupt</span>:
+Running: k4
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2500/2500 [21:35&lt;00:00,  2.28it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -3316,7 +2374,7 @@ Running: k2
 <span class="n">dfdic</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;model&#39;</span>
 
 <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">dfdic</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-    <span class="n">dfdic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nm</span><span class="p">,</span> <span class="s1">&#39;lin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">dic</span><span class="p">(</span><span class="n">traces_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span><span class="n">models_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">])</span>
+    <span class="n">dfdic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nm</span><span class="p">,</span> <span class="s1">&#39;lin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">dic</span><span class="p">(</span><span class="n">traces_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span> <span class="n">models_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">])</span>
 
 
 <span class="n">dfdic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">dfdic</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">],</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;dic&#39;</span><span class="p">)</span>
@@ -3329,27 +2387,17 @@ Running: k2
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-20-752c2dd1a5ec&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">for</span> nm <span class="ansi-green-fg">in</span> dfdic<span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg">     </span>dfdic<span class="ansi-blue-fg">.</span>loc<span class="ansi-blue-fg">[</span>nm<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;lin&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> pm<span class="ansi-blue-fg">.</span>stats<span class="ansi-blue-fg">.</span>dic<span class="ansi-blue-fg">(</span>traces_lin<span class="ansi-blue-fg">[</span>nm<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>models_lin<span class="ansi-blue-fg">[</span>nm<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;traces_lin&#39; is not defined
-</pre></div></div>
+<img alt="../_images/notebooks_GLM-logistic_30_0.png" src="../_images/notebooks_GLM-logistic_30_0.png" />
 </div>
-<p>There isn&#8217;t a lot of difference between these models in terms of DIC. So
-our choice is fine in the model above, and there isn&#8217;t much to be gained
+</div>
+<p>There isn’t a lot of difference between these models in terms of DIC. So
+our choice is fine in the model above, and there isn’t much to be gained
 for going up to age^3 for example. Next we look at
 <a class="reference external" href="http://watanabe-www.math.dis.titech.ac.jp/users/swatanab/dicwaic.html">WAIC</a>.
 Which is another model selection technique.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -3357,13 +2405,20 @@ Which is another model selection technique.</p>
 <span class="n">dfdic</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;model&#39;</span>
 
 <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">dfdic</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-    <span class="n">dfdic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nm</span><span class="p">,</span> <span class="s1">&#39;lin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">waic</span><span class="p">(</span><span class="n">traces_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span><span class="n">models_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">])</span>
+    <span class="n">dfdic</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nm</span><span class="p">,</span> <span class="s1">&#39;lin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">waic</span><span class="p">(</span><span class="n">traces_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">],</span><span class="n">models_lin</span><span class="p">[</span><span class="n">nm</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <span class="n">dfdic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">dfdic</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">],</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;waic&#39;</span><span class="p">)</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">seaborn</span><span class="o">.</span><span class="n">factorplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;waic&#39;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dfdic</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_GLM-logistic_32_0.png" src="../_images/notebooks_GLM-logistic_32_0.png" />
 </div>
 </div>
 <p>The WAIC confirms our decision to use age^2.</p>
@@ -3405,7 +2460,7 @@ Which is another model selection technique.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -3415,7 +2470,7 @@ Which is another model selection technique.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

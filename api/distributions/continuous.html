@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Continuous &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Continuous &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../../index.html"/>
         <link rel="up" title="Distributions" href="../distributions.html"/>
         <link rel="next" title="Discrete" href="discrete.html"/>
         <link rel="prev" title="Distributions" href="../distributions.html"/> 
@@ -225,7 +225,7 @@
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Uniform" title="pymc3.distributions.continuous.Uniform"><code class="xref py py-obj docutils literal"><span class="pre">Uniform</span></code></a>([lower,&nbsp;upper,&nbsp;transform])</td>
 <td>Continuous uniform log-likelihood.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Flat" title="pymc3.distributions.continuous.Flat"><code class="xref py py-obj docutils literal"><span class="pre">Flat</span></code></a>(\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Flat" title="pymc3.distributions.continuous.Flat"><code class="xref py py-obj docutils literal"><span class="pre">Flat</span></code></a>(*args,&nbsp;**kwargs)</td>
 <td>Uninformative log-likelihood that returns 0 regardless of the passed value.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Normal" title="pymc3.distributions.continuous.Normal"><code class="xref py py-obj docutils literal"><span class="pre">Normal</span></code></a>([mu,&nbsp;sd,&nbsp;tau])</td>
@@ -234,34 +234,34 @@
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Beta" title="pymc3.distributions.continuous.Beta"><code class="xref py py-obj docutils literal"><span class="pre">Beta</span></code></a>([alpha,&nbsp;beta,&nbsp;mu,&nbsp;sd])</td>
 <td>Beta log-likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Exponential" title="pymc3.distributions.continuous.Exponential"><code class="xref py py-obj docutils literal"><span class="pre">Exponential</span></code></a>(lam,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Exponential" title="pymc3.distributions.continuous.Exponential"><code class="xref py py-obj docutils literal"><span class="pre">Exponential</span></code></a>(lam,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Exponential log-likelihood.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Laplace" title="pymc3.distributions.continuous.Laplace"><code class="xref py py-obj docutils literal"><span class="pre">Laplace</span></code></a>(mu,&nbsp;b,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Laplace" title="pymc3.distributions.continuous.Laplace"><code class="xref py py-obj docutils literal"><span class="pre">Laplace</span></code></a>(mu,&nbsp;b,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Laplace log-likelihood.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.StudentT" title="pymc3.distributions.continuous.StudentT"><code class="xref py py-obj docutils literal"><span class="pre">StudentT</span></code></a>(nu[,&nbsp;mu,&nbsp;lam,&nbsp;sd])</td>
-<td>Non-central Student&#8217;s T log-likelihood.</td>
+<td>Non-central Student’s T log-likelihood.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Cauchy" title="pymc3.distributions.continuous.Cauchy"><code class="xref py py-obj docutils literal"><span class="pre">Cauchy</span></code></a>(alpha,&nbsp;beta,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Cauchy" title="pymc3.distributions.continuous.Cauchy"><code class="xref py py-obj docutils literal"><span class="pre">Cauchy</span></code></a>(alpha,&nbsp;beta,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Cauchy log-likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.HalfCauchy" title="pymc3.distributions.continuous.HalfCauchy"><code class="xref py py-obj docutils literal"><span class="pre">HalfCauchy</span></code></a>(beta,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.HalfCauchy" title="pymc3.distributions.continuous.HalfCauchy"><code class="xref py py-obj docutils literal"><span class="pre">HalfCauchy</span></code></a>(beta,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Half-Cauchy log-likelihood.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Gamma" title="pymc3.distributions.continuous.Gamma"><code class="xref py py-obj docutils literal"><span class="pre">Gamma</span></code></a>([alpha,&nbsp;beta,&nbsp;mu,&nbsp;sd])</td>
 <td>Gamma log-likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Weibull" title="pymc3.distributions.continuous.Weibull"><code class="xref py py-obj docutils literal"><span class="pre">Weibull</span></code></a>(alpha,&nbsp;beta,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Weibull" title="pymc3.distributions.continuous.Weibull"><code class="xref py py-obj docutils literal"><span class="pre">Weibull</span></code></a>(alpha,&nbsp;beta,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Weibull log-likelihood.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">StudentTpos</span></code>(\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">StudentTpos</span></code>(*args,&nbsp;**kwargs)</td>
 <td></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Lognormal" title="pymc3.distributions.continuous.Lognormal"><code class="xref py py-obj docutils literal"><span class="pre">Lognormal</span></code></a>([mu,&nbsp;sd,&nbsp;tau])</td>
 <td>Log-normal log-likelihood.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.ChiSquared" title="pymc3.distributions.continuous.ChiSquared"><code class="xref py py-obj docutils literal"><span class="pre">ChiSquared</span></code></a>(nu,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.ChiSquared" title="pymc3.distributions.continuous.ChiSquared"><code class="xref py py-obj docutils literal"><span class="pre">ChiSquared</span></code></a>(nu,&nbsp;*args,&nbsp;**kwargs)</td>
 <td><span class="math">\(\chi^2\)</span> log-likelihood.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.HalfNormal" title="pymc3.distributions.continuous.HalfNormal"><code class="xref py py-obj docutils literal"><span class="pre">HalfNormal</span></code></a>([sd,&nbsp;tau])</td>
@@ -270,13 +270,13 @@
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.Wald" title="pymc3.distributions.continuous.Wald"><code class="xref py py-obj docutils literal"><span class="pre">Wald</span></code></a>([mu,&nbsp;lam,&nbsp;phi,&nbsp;alpha])</td>
 <td>Wald log-likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Pareto" title="pymc3.distributions.continuous.Pareto"><code class="xref py py-obj docutils literal"><span class="pre">Pareto</span></code></a>(alpha,&nbsp;m,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.Pareto" title="pymc3.distributions.continuous.Pareto"><code class="xref py py-obj docutils literal"><span class="pre">Pareto</span></code></a>(alpha,&nbsp;m,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Pareto log-likelihood.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.continuous.InverseGamma" title="pymc3.distributions.continuous.InverseGamma"><code class="xref py py-obj docutils literal"><span class="pre">InverseGamma</span></code></a>(alpha[,&nbsp;beta])</td>
 <td>Inverse gamma log-likelihood, the reciprocal of the gamma distribution.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.ExGaussian" title="pymc3.distributions.continuous.ExGaussian"><code class="xref py py-obj docutils literal"><span class="pre">ExGaussian</span></code></a>(mu,&nbsp;sigma,&nbsp;nu,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.continuous.ExGaussian" title="pymc3.distributions.continuous.ExGaussian"><code class="xref py py-obj docutils literal"><span class="pre">ExGaussian</span></code></a>(mu,&nbsp;sigma,&nbsp;nu,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Exponentially modified Gaussian log-likelihood.</td>
 </tr>
 </tbody>
@@ -286,7 +286,7 @@
 nodes in PyMC.</p>
 <dl class="class">
 <dt id="pymc3.distributions.continuous.Uniform">
-<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">Uniform</code><span class="sig-paren">(</span><em>lower=0</em>, <em>upper=1</em>, <em>transform='interval'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.Uniform" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">Uniform</code><span class="sig-paren">(</span><em>lower=0</em>, <em>upper=1</em>, <em>transform=’interval’</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.Uniform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Continuous uniform log-likelihood.</p>
 <div class="math">
 \[f(x \mid lower, upper) = \frac{1}{upper-lower}\]</div>
@@ -312,8 +312,8 @@ nodes in PyMC.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>lower</strong> (<em>float</em>) &#8211; Lower limit.</li>
-<li><strong>upper</strong> (<em>float</em>) &#8211; Upper limit.</li>
+<li><strong>lower</strong> (<em>float</em>) – Lower limit.</li>
+<li><strong>upper</strong> (<em>float</em>) – Upper limit.</li>
 </ul>
 </td>
 </tr>
@@ -363,9 +363,9 @@ given by</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em>) &#8211; Mean.</li>
-<li><strong>sd</strong> (<em>float</em>) &#8211; Standard deviation (sd &gt; 0).</li>
-<li><strong>tau</strong> (<em>float</em>) &#8211; Precision (tau &gt; 0).</li>
+<li><strong>mu</strong> (<em>float</em>) – Mean.</li>
+<li><strong>sd</strong> (<em>float</em>) – Standard deviation (sd &gt; 0).</li>
+<li><strong>tau</strong> (<em>float</em>) – Precision (tau &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -408,10 +408,10 @@ parametrizations is given by</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>float</em>) &#8211; alpha &gt; 0.</li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; beta &gt; 0.</li>
-<li><strong>mu</strong> (<em>float</em>) &#8211; Alternative mean (0 &lt; mu &lt; 1).</li>
-<li><strong>sd</strong> (<em>float</em>) &#8211; Alternative standard deviation (sd &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em>) – alpha &gt; 0.</li>
+<li><strong>beta</strong> (<em>float</em>) – beta &gt; 0.</li>
+<li><strong>mu</strong> (<em>float</em>) – Alternative mean (0 &lt; mu &lt; 1).</li>
+<li><strong>sd</strong> (<em>float</em>) – Alternative standard deviation (sd &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -449,7 +449,7 @@ the binomial distribution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lam</strong> (<em>float</em>) &#8211; Rate or inverse scale (lam &gt; 0)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lam</strong> (<em>float</em>) – Rate or inverse scale (lam &gt; 0)</td>
 </tr>
 </tbody>
 </table>
@@ -484,8 +484,8 @@ the binomial distribution.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em>) &#8211; Location parameter.</li>
-<li><strong>b</strong> (<em>float</em>) &#8211; Scale parameter (b &gt; 0).</li>
+<li><strong>mu</strong> (<em>float</em>) – Location parameter.</li>
+<li><strong>b</strong> (<em>float</em>) – Scale parameter (b &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -496,10 +496,10 @@ the binomial distribution.</p>
 <dl class="class">
 <dt id="pymc3.distributions.continuous.StudentT">
 <em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">StudentT</code><span class="sig-paren">(</span><em>nu</em>, <em>mu=0</em>, <em>lam=None</em>, <em>sd=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.StudentT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Non-central Student&#8217;s T log-likelihood.</p>
+<dd><p>Non-central Student’s T log-likelihood.</p>
 <p>Describes a normal variable whose precision is gamma distributed.
 If only nu parameter is passed, this specifies a standard (central)
-Student&#8217;s T.</p>
+Student’s T.</p>
 <div class="math">
 \[f(x|\mu,\lambda,\nu) =
     \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})}
@@ -521,9 +521,9 @@ Student&#8217;s T.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nu</strong> (<em>int</em>) &#8211; Degrees of freedom (nu &gt; 0).</li>
-<li><strong>mu</strong> (<em>float</em>) &#8211; Location parameter.</li>
-<li><strong>lam</strong> (<em>float</em>) &#8211; Scale parameter (lam &gt; 0).</li>
+<li><strong>nu</strong> (<em>int</em>) – Degrees of freedom (nu &gt; 0).</li>
+<li><strong>mu</strong> (<em>float</em>) – Location parameter.</li>
+<li><strong>lam</strong> (<em>float</em>) – Scale parameter (lam &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -564,8 +564,8 @@ Student&#8217;s T.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Location parameter</li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; Scale parameter &gt; 0</li>
+<li><strong>alpha</strong> (<em>float</em>) – Location parameter</li>
+<li><strong>beta</strong> (<em>float</em>) – Scale parameter &gt; 0</li>
 </ul>
 </td>
 </tr>
@@ -603,7 +603,7 @@ Student&#8217;s T.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>beta</strong> (<em>float</em>) &#8211; Scale parameter (beta &gt; 0).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>beta</strong> (<em>float</em>) – Scale parameter (beta &gt; 0).</td>
 </tr>
 </tbody>
 </table>
@@ -646,10 +646,10 @@ parametrizations is given by</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Shape parameter (alpha &gt; 0).</li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; Rate parameter (beta &gt; 0).</li>
-<li><strong>mu</strong> (<em>float</em>) &#8211; Alternative shape parameter (mu &gt; 0).</li>
-<li><strong>sd</strong> (<em>float</em>) &#8211; Alternative scale parameter (sd &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em>) – Shape parameter (alpha &gt; 0).</li>
+<li><strong>beta</strong> (<em>float</em>) – Rate parameter (beta &gt; 0).</li>
+<li><strong>mu</strong> (<em>float</em>) – Alternative shape parameter (mu &gt; 0).</li>
+<li><strong>sd</strong> (<em>float</em>) – Alternative scale parameter (sd &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -687,8 +687,8 @@ parametrizations is given by</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Shape parameter (alpha &gt; 0).</li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; Scale parameter (beta &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em>) – Shape parameter (alpha &gt; 0).</li>
+<li><strong>beta</strong> (<em>float</em>) – Scale parameter (beta &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -730,8 +730,8 @@ independent factors.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em>) &#8211; Location parameter.</li>
-<li><strong>tau</strong> (<em>float</em>) &#8211; Scale parameter (tau &gt; 0).</li>
+<li><strong>mu</strong> (<em>float</em>) – Location parameter.</li>
+<li><strong>tau</strong> (<em>float</em>) – Scale parameter (tau &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -766,7 +766,7 @@ independent factors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nu</strong> (<em>int</em>) &#8211; Degrees of freedom (nu &gt; 0).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nu</strong> (<em>int</em>) – Degrees of freedom (nu &gt; 0).</td>
 </tr>
 </tbody>
 </table>
@@ -802,8 +802,8 @@ independent factors.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sd</strong> (<em>float</em>) &#8211; Standard deviation (sd &gt; 0).</li>
-<li><strong>tau</strong> (<em>float</em>) &#8211; Precision (tau &gt; 0).</li>
+<li><strong>sd</strong> (<em>float</em>) – Standard deviation (sd &gt; 0).</li>
+<li><strong>tau</strong> (<em>float</em>) – Precision (tau &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -847,10 +847,10 @@ The link between the two parametrizations is given by</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; Mean of the distribution (mu &gt; 0).</li>
-<li><strong>lam</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; Relative precision (lam &gt; 0).</li>
-<li><strong>phi</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; Alternative shape parameter (phi &gt; 0).</li>
-<li><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) &#8211; Shift/location parameter (alpha &gt;= 0).</li>
+<li><strong>mu</strong> (<em>float</em><em>, </em><em>optional</em>) – Mean of the distribution (mu &gt; 0).</li>
+<li><strong>lam</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative precision (lam &gt; 0).</li>
+<li><strong>phi</strong> (<em>float</em><em>, </em><em>optional</em>) – Alternative shape parameter (phi &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – Shift/location parameter (alpha &gt;= 0).</li>
 </ul>
 </td>
 </tr>
@@ -914,8 +914,8 @@ for <span class="math">\(\alpha &gt; 2\)</span></td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Shape parameter (alpha &gt; 0).</li>
-<li><strong>m</strong> (<em>float</em>) &#8211; Scale parameter (m &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em>) – Shape parameter (alpha &gt; 0).</li>
+<li><strong>m</strong> (<em>float</em>) – Scale parameter (m &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -954,8 +954,8 @@ for <span class="math">\(\alpha &gt; 2\)</span></td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Shape parameter (alpha &gt; 0).</li>
-<li><strong>beta</strong> (<em>float</em>) &#8211; Scale parameter (beta &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em>) – Shape parameter (alpha &gt; 0).</li>
+<li><strong>beta</strong> (<em>float</em>) – Scale parameter (beta &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -998,9 +998,9 @@ standard normal distribution.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em>) &#8211; Mean of the normal distribution.</li>
-<li><strong>sigma</strong> (<em>float</em>) &#8211; Standard deviation of the normal distribution (sigma &gt; 0).</li>
-<li><strong>nu</strong> (<em>float</em>) &#8211; Mean of the exponential distribution (nu &gt; 0).</li>
+<li><strong>mu</strong> (<em>float</em>) – Mean of the normal distribution.</li>
+<li><strong>sigma</strong> (<em>float</em>) – Standard deviation of the normal distribution (sigma &gt; 0).</li>
+<li><strong>nu</strong> (<em>float</em>) – Mean of the exponential distribution (nu &gt; 0).</li>
 </ul>
 </td>
 </tr>
@@ -1011,7 +1011,7 @@ standard normal distribution.</p>
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[Rigby2005]</td><td>Rigby R.A. and Stasinopoulos D.M. (2005).
-&#8220;Generalized additive models for location, scale and shape&#8221;
+“Generalized additive models for location, scale and shape”
 Applied Statististics., 54, part 3, pp 507-554.</td></tr>
 </tbody>
 </table>
@@ -1019,8 +1019,8 @@ Applied Statististics., 54, part 3, pp 507-554.</td></tr>
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[Lacouture2008]</td><td>Lacouture, Y. and Couseanou, D. (2008).
-&#8220;How to use MATLAB to fit the ex-Gaussian and other probability
-functions to a distribution of response times&#8221;.
+“How to use MATLAB to fit the ex-Gaussian and other probability
+functions to a distribution of response times”.
 Tutorials in Quantitative Methods for Psychology,
 Vol. 4, No. 1, pp 35-45.</td></tr>
 </tbody>
@@ -1029,7 +1029,7 @@ Vol. 4, No. 1, pp 35-45.</td></tr>
 
 <dl class="class">
 <dt id="pymc3.distributions.continuous.VonMises">
-<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">VonMises</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>kappa=None</em>, <em>transform='circular'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.VonMises" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">VonMises</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>kappa=None</em>, <em>transform=’circular’</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.VonMises" title="Permalink to this definition">¶</a></dt>
 <dd><p>Univariate VonMises log-likelihood.</p>
 <div class="math">
 \[f(x \mid \mu, \kappa) =
@@ -1057,8 +1057,8 @@ Vol. 4, No. 1, pp 35-45.</td></tr>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em>) &#8211; Mean.</li>
-<li><strong>kappa</strong> (<em>float</em>) &#8211; Concentration (frac{1}{kappa} is analogous to sigma^2).</li>
+<li><strong>mu</strong> (<em>float</em>) – Mean.</li>
+<li><strong>kappa</strong> (<em>float</em>) – Concentration (frac{1}{kappa} is analogous to sigma^2).</li>
 </ul>
 </td>
 </tr>
@@ -1100,10 +1100,10 @@ given by</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>float</em>) &#8211; Location parameter.</li>
-<li><strong>sd</strong> (<em>float</em>) &#8211; Scale parameter (sd &gt; 0).</li>
-<li><strong>tau</strong> (<em>float</em>) &#8211; Alternative scale parameter (tau &gt; 0).</li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Skewness parameter.</li>
+<li><strong>mu</strong> (<em>float</em>) – Location parameter.</li>
+<li><strong>sd</strong> (<em>float</em>) – Scale parameter (sd &gt; 0).</li>
+<li><strong>tau</strong> (<em>float</em>) – Alternative scale parameter (tau &gt; 0).</li>
+<li><strong>alpha</strong> (<em>float</em>) – Skewness parameter.</li>
 </ul>
 </td>
 </tr>
@@ -1117,7 +1117,7 @@ approaching plus/minus infinite we get a half-normal distribution.</p>
 
 <dl class="class">
 <dt id="pymc3.distributions.continuous.Interpolated">
-<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">Interpolated</code><span class="sig-paren">(</span><em>x_points</em>, <em>pdf_points</em>, <em>transform='interval'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.Interpolated" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">Interpolated</code><span class="sig-paren">(</span><em>x_points</em>, <em>pdf_points</em>, <em>transform=’interval’</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.Interpolated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Univariate probability distribution defined as a linear interpolation
 of probability density function evaluated on some lattice of points.</p>
 <p>The lattice can be uneven, so the steps between different points can have
@@ -1144,8 +1144,8 @@ plain array-like objects, so they are constant and cannot be sampled.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x_points</strong> (<em>array-like</em>) &#8211; A monotonically growing list of values</li>
-<li><strong>pdf_points</strong> (<em>array-like</em>) &#8211; Probability density function evaluated on lattice <cite>x_points</cite></li>
+<li><strong>x_points</strong> (<em>array-like</em>) – A monotonically growing list of values</li>
+<li><strong>pdf_points</strong> (<em>array-like</em>) – Probability density function evaluated on lattice <cite>x_points</cite></li>
 </ul>
 </td>
 </tr>
@@ -1199,7 +1199,7 @@ plain array-like objects, so they are constant and cannot be sampled.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1209,7 +1209,7 @@ plain array-like objects, so they are constant and cannot be sampled.</p>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

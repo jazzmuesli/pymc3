@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stats &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Stats &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Diagnostics" href="diagnostics.html"/>
         <link rel="prev" title="Plots" href="plots.html"/> 
@@ -218,8 +218,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> (<em>Numpy array</em>) &#8211; An array containing MCMC samples</li>
-<li><strong>lag</strong> (<em>int</em>) &#8211; The desidered lag to take in consideration</li>
+<li><strong>x</strong> (<em>Numpy array</em>) – An array containing MCMC samples</li>
+<li><strong>lag</strong> (<em>int</em>) – The desidered lag to take in consideration</li>
 </ul>
 </td>
 </tr>
@@ -236,8 +236,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>Numpy array</em>) &#8211; An array containing MCMC samples</li>
-<li><strong>lag</strong> (<em>int</em>) &#8211; The desidered lag to take in consideration</li>
+<li><strong>x</strong> (<em>Numpy array</em>) – An array containing MCMC samples</li>
+<li><strong>lag</strong> (<em>int</em>) – The desidered lag to take in consideration</li>
 </ul>
 </td>
 </tr>
@@ -264,8 +264,8 @@ dx.doi.org/10.1111/1467-9868.00353</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>model</strong> (<em>PyMC Model</em>) &#8211; Optional model. Default None, taken from context.</li>
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>model</strong> (<em>PyMC Model</em>) – Optional model. Default None, taken from context.</li>
 </ul>
 </td>
 </tr>
@@ -287,8 +287,8 @@ dx.doi.org/10.1111/1467-9868.00353</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>model</strong> (<em>PyMC Model</em>) &#8211; Optional model. Default None, taken from context.</li>
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>model</strong> (<em>PyMC Model</em>) – Optional model. Default None, taken from context.</li>
 </ul>
 </td>
 </tr>
@@ -308,9 +308,9 @@ Model Selection - dx.doi.org/10.1111/1467-9868.00353</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>model</strong> (<em>PyMC Model</em>) &#8211; Optional model. Default None, taken from context.</li>
-<li><strong>pointwise</strong> (<em>bool</em>) &#8211; if True the pointwise predictive accuracy will be returned.
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>model</strong> (<em>PyMC Model</em>) – Optional model. Default None, taken from context.</li>
+<li><strong>pointwise</strong> (<em>bool</em>) – if True the pointwise predictive accuracy will be returned.
 Default False</li>
 </ul>
 </td>
@@ -340,9 +340,9 @@ Pareto-smoothed importance sampling (PSIS).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>model</strong> (<em>PyMC Model</em>) &#8211; Optional model. Default None, taken from context.</li>
-<li><strong>pointwise</strong> (<em>bool</em>) &#8211; if True the pointwise predictive accuracy will be returned.
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>model</strong> (<em>PyMC Model</em>) – Optional model. Default None, taken from context.</li>
+<li><strong>pointwise</strong> (<em>bool</em>) – if True the pointwise predictive accuracy will be returned.
 Default False</li>
 </ul>
 </td>
@@ -371,14 +371,14 @@ minimum width Bayesian credible interval (BCI).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><dl class="first last docutils">
-<dt>x</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">Numpy array</span><dd><p class="first last">An array containing MCMC samples</p>
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">Numpy array</span></dt>
+<dd><p class="first last">An array containing MCMC samples</p>
 </dd>
-<dt>alpha</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">Desired probability of type I error (defaults to 0.05)</p>
+<dt>alpha <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Desired probability of type I error (defaults to 0.05)</p>
 </dd>
-<dt>transform</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">callable</span><dd><p class="first last">Function to transform data (defaults to identity)</p>
+<dt>transform <span class="classifier-delimiter">:</span> <span class="classifier">callable</span></dt>
+<dd><p class="first last">Function to transform data (defaults to identity)</p>
 </dd>
 </dl>
 </td>
@@ -396,9 +396,9 @@ minimum width Bayesian credible interval (BCI).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>Numpy array</em>) &#8211; An array containing MCMC samples</li>
-<li><strong>qlist</strong> (<em>tuple</em><em> or </em><em>list</em>) &#8211; A list of desired quantiles (defaults to (2.5, 25, 50, 75, 97.5))</li>
-<li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
+<li><strong>x</strong> (<em>Numpy array</em>) – An array containing MCMC samples</li>
+<li><strong>qlist</strong> (<em>tuple</em><em> or </em><em>list</em>) – A list of desired quantiles (defaults to (2.5, 25, 50, 75, 97.5))</li>
+<li><strong>transform</strong> (<em>callable</em>) – Function to transform data (defaults to identity)</li>
 </ul>
 </td>
 </tr>
@@ -422,8 +422,8 @@ the batch means is calculated.</dd>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>Numpy array</em>) &#8211; An array containing MCMC samples</li>
-<li><strong>batches</strong> (<em>integer</em>) &#8211; Number of batches</li>
+<li><strong>x</strong> (<em>Numpy array</em>) – An array containing MCMC samples</li>
+<li><strong>batches</strong> (<em>integer</em>) – Number of batches</li>
 </ul>
 </td>
 </tr>
@@ -443,21 +443,21 @@ the batch means is calculated.</dd>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>trace</strong> (<em>Trace object</em>) &#8211; Trace containing MCMC sample</li>
-<li><strong>varnames</strong> (<em>list of strings</em>) &#8211; List of variables to summarize. Defaults to None, which results
+<li><strong>trace</strong> (<em>Trace object</em>) – Trace containing MCMC sample</li>
+<li><strong>varnames</strong> (<em>list of strings</em>) – List of variables to summarize. Defaults to None, which results
 in all variables summarized.</li>
-<li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; The alpha level for generating posterior intervals. Defaults to
+<li><strong>transform</strong> (<em>callable</em>) – Function to transform data (defaults to identity)</li>
+<li><strong>alpha</strong> (<em>float</em>) – The alpha level for generating posterior intervals. Defaults to
 0.05.</li>
-<li><strong>start</strong> (<em>int</em>) &#8211; The starting index from which to summarize (each) chain. Defaults
+<li><strong>start</strong> (<em>int</em>) – The starting index from which to summarize (each) chain. Defaults
 to zero.</li>
-<li><strong>batches</strong> (<em>None</em><em> or </em><em>int</em>) &#8211; Batch size for calculating standard deviation for non-independent
+<li><strong>batches</strong> (<em>None</em><em> or </em><em>int</em>) – Batch size for calculating standard deviation for non-independent
 samples. Defaults to the smaller of 100 or the number of samples.
 This is only meaningful when <cite>stat_funcs</cite> is None.</li>
-<li><strong>roundto</strong> (<em>int</em>) &#8211; The number of digits to round posterior statistics.</li>
-<li><strong>include_transformed</strong> (<em>bool</em>) &#8211; Flag for summarizing automatically transformed variables in addition to
+<li><strong>roundto</strong> (<em>int</em>) – The number of digits to round posterior statistics.</li>
+<li><strong>include_transformed</strong> (<em>bool</em>) – Flag for summarizing automatically transformed variables in addition to
 original variables (defaults to False).</li>
-<li><strong>to_file</strong> (<em>None</em><em> or </em><em>string</em>) &#8211; File to write results to. If not given, print to stdout.</li>
+<li><strong>to_file</strong> (<em>None</em><em> or </em><em>string</em>) – File to write results to. If not given, print to stdout.</li>
 </ul>
 </td>
 </tr>
@@ -474,16 +474,16 @@ original variables (defaults to False).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>trace</strong> (<em>MultiTrace instance</em>) &#8211; </li>
-<li><strong>varnames</strong> (<em>list</em>) &#8211; Names of variables to include in summary</li>
-<li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
-<li><strong>stat_funcs</strong> (<em>None</em><em> or </em><em>list</em>) &#8211; <p>A list of functions used to calculate statistics. By default,
+<li><strong>trace</strong> (<em>MultiTrace instance</em>) – </li>
+<li><strong>varnames</strong> (<em>list</em>) – Names of variables to include in summary</li>
+<li><strong>transform</strong> (<em>callable</em>) – Function to transform data (defaults to identity)</li>
+<li><strong>stat_funcs</strong> (<em>None</em><em> or </em><em>list</em>) – <p>A list of functions used to calculate statistics. By default,
 the mean, standard deviation, simulation standard error, and
 highest posterior density intervals are included.</p>
 <p>The functions will be given one argument, the samples for a
 variable as a 2 dimensional array, where the first axis
 corresponds to sampling iterations and the second axis
-represents the flattened variable (e.g., x__0, x__1,...). Each
+represents the flattened variable (e.g., x__0, x__1,…). Each
 function should return either</p>
 <ol class="arabic">
 <li>A <cite>pandas.Series</cite> instance containing the result of
@@ -495,16 +495,16 @@ The column names will be taken as the names of the
 statistics.</li>
 </ol>
 </li>
-<li><strong>extend</strong> (<em>boolean</em>) &#8211; If True, use the statistics returned by <cite>stat_funcs</cite> in
+<li><strong>extend</strong> (<em>boolean</em>) – If True, use the statistics returned by <cite>stat_funcs</cite> in
 addition to, rather than in place of, the default statistics.
 This is only meaningful when <cite>stat_funcs</cite> is not None.</li>
-<li><strong>include_transformed</strong> (<em>bool</em>) &#8211; Flag for reporting automatically transformed variables in addition
+<li><strong>include_transformed</strong> (<em>bool</em>) – Flag for reporting automatically transformed variables in addition
 to original variables (defaults to False).</li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; The alpha level for generating posterior intervals. Defaults
+<li><strong>alpha</strong> (<em>float</em>) – The alpha level for generating posterior intervals. Defaults
 to 0.05. This is only meaningful when <cite>stat_funcs</cite> is None.</li>
-<li><strong>start</strong> (<em>int</em>) &#8211; The starting index from which to summarize (each) chain. Defaults
+<li><strong>start</strong> (<em>int</em>) – The starting index from which to summarize (each) chain. Defaults
 to zero.</li>
-<li><strong>batches</strong> (<em>None</em><em> or </em><em>int</em>) &#8211; Batch size for calculating standard deviation for non-independent
+<li><strong>batches</strong> (<em>None</em><em> or </em><em>int</em>) – Batch size for calculating standard deviation for non-independent
 samples. Defaults to the smaller of 100 or the number of samples.
 This is only meaningful when <cite>stat_funcs</cite> is None.</li>
 </ul>
@@ -555,7 +555,7 @@ This is only meaningful when <cite>stat_funcs</cite> is None.</li>
 
 <dl class="function">
 <dt id="pymc3.stats.compare">
-<code class="descclassname">pymc3.stats.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>traces</em>, <em>models</em>, <em>ic='WAIC'</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.compare" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.stats.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>traces</em>, <em>models</em>, <em>ic=’WAIC’</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare models based on the widely available information criterion (WAIC)
 or leave-one-out (LOO) cross-validation.
 Read more theory here - in a paper by some of the leading authorities on
@@ -565,9 +565,9 @@ Model Selection - dx.doi.org/10.1111/1467-9868.00353</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>traces</strong> (<em>list of PyMC3 traces</em>) &#8211; </li>
-<li><strong>models</strong> (<em>list of PyMC3 models</em>) &#8211; in the same order as traces.</li>
-<li><strong>ic</strong> (<em>string</em>) &#8211; Information Criterion (WAIC or LOO) used to compare models.
+<li><strong>traces</strong> (<em>list of PyMC3 traces</em>) – </li>
+<li><strong>models</strong> (<em>list of PyMC3 models</em>) – in the same order as traces.</li>
+<li><strong>ic</strong> (<em>string</em>) – Information Criterion (WAIC or LOO) used to compare models.
 Default WAIC.</li>
 </ul>
 </td>
@@ -575,18 +575,18 @@ Default WAIC.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
 <li><em>A DataFrame, ordered from lowest to highest IC. The index reflects</em></li>
 <li><em>the order in which the models are passed to this function. The columns are</em></li>
-<li><strong>IC</strong> (<em>Information Criteria (WAIC or LOO).</em>) &#8211; Smaller IC indicates higher out-of-sample predictive fit (&#8220;better&#8221; model).
+<li><strong>IC</strong> (<em>Information Criteria (WAIC or LOO).</em>) – Smaller IC indicates higher out-of-sample predictive fit (“better” model).
 Default WAIC.</li>
 <li><strong>pIC</strong> (<em>Estimated effective number of parameters.</em>)</li>
 <li><strong>dIC</strong> (<em>Relative difference between each IC (WAIC or LOO)</em>)</li>
-<li><em>and the lowest IC (WAIC or LOO).</em> &#8211; It&#8217;s always 0 for the top-ranked model.</li>
-<li><strong>weight</strong> (<em>Akaike weights for each model.</em>) &#8211; This can be loosely interpreted as the probability of each model
+<li><em>and the lowest IC (WAIC or LOO).</em> – It’s always 0 for the top-ranked model.</li>
+<li><strong>weight</strong> (<em>Akaike weights for each model.</em>) – This can be loosely interpreted as the probability of each model
 (among the compared model) given the data. Be careful that these
 weights are based on point estimates of the IC (uncertainty is ignored).</li>
-<li><strong>SE</strong> (<em>Standard error of the IC estimate.</em>) &#8211; For a &#8220;large enough&#8221; sample size this is an estimate of the uncertainty
+<li><strong>SE</strong> (<em>Standard error of the IC estimate.</em>) – For a “large enough” sample size this is an estimate of the uncertainty
 in the computation of the IC.</li>
 <li><strong>dSE</strong> (<em>Standard error of the difference in IC between each model and</em>)</li>
-<li><em>the top-ranked model.</em> &#8211; It&#8217;s always 0 for the top-ranked model.</li>
+<li><em>the top-ranked model.</em> – It’s always 0 for the top-ranked model.</li>
 <li><strong>warning</strong> (<em>A value of 1 indicates that the computation of the IC may not be</em>)</li>
 <li><strong>reliable see http</strong> (<em>//arxiv.org/abs/1507.04544 for details.</em>)</li>
 </ul>
@@ -643,7 +643,7 @@ in the computation of the IC.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -653,7 +653,7 @@ in the computation of the IC.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

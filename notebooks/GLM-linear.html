@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GLM: Linear regression &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>GLM: Linear regression &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="GLM: Robust Linear Regression" href="GLM-robust.html"/>
         <link rel="prev" title="The Dawid-Skene model with priors" href="dawid-skene.html"/> 
@@ -382,9 +382,9 @@ div.nboutput div.output_area.stderr {
 <div class="section" id="GLM:-Linear-regression">
 <h1>GLM: Linear regression<a class="headerlink" href="#GLM:-Linear-regression" title="Permalink to this headline">¶</a></h1>
 <p>Author: Thomas Wiecki</p>
-<p>This tutorial is adapted from a <a class="reference external" href="http://twiecki.github.io/blog/2013/08/12/bayesian-glms-1/">blog post by Thomas Wiecki called &#8220;The
+<p>This tutorial is adapted from a <a class="reference external" href="http://twiecki.github.io/blog/2013/08/12/bayesian-glms-1/">blog post by Thomas Wiecki called “The
 Inference Button: Bayesian GLMs made easy with
-PyMC3&#8221;</a>.</p>
+PyMC3”</a>.</p>
 <p>This tutorial appeared as a post in a small series on Bayesian GLMs on
 my blog:</p>
 <ol class="arabic simple">
@@ -412,7 +412,7 @@ in R.</li>
 The Bayesian Revolution.</p>
 <p>While the theoretical benefits of Bayesian over Frequentist stats have
 been discussed at length elsewhere (see <em>Further Reading</em> below), there
-is a major obstacle that hinders wider adoption &#8211; <em>usability</em> (this is
+is a major obstacle that hinders wider adoption – <em>usability</em> (this is
 one of the reasons DARPA wrote out a huge grant to <a class="reference external" href="http://www.darpa.mil/program/probabilistic-programming-for-advancing-machine-Learning">improve
 Probabilistic
 Programming</a>).</p>
@@ -424,7 +424,7 @@ running the magical MCMC sampling algorithm).</p>
 <p>Yet when I ask my colleagues why they use frequentist stats (even though
 they would like to use Bayesian stats) the answer is that software
 packages like SPSS or R make it very easy to run all those individuals
-tests with a single command (and more often then not, they don&#8217;t know
+tests with a single command (and more often then not, they don’t know
 the exact model and inference method being used).</p>
 <p>While there are great Bayesian software packages like
 <a class="reference external" href="http://mcmc-jags.sourceforge.net/">JAGS</a>,
@@ -433,10 +433,10 @@ the exact model and inference method being used).</p>
 <a class="reference external" href="http://pymc-devs.github.io/pymc/">PyMC</a>, they are written for
 Bayesians statisticians who know very well what model they want to
 build.</p>
-<p>Unfortunately, <a class="reference external" href="http://simplystatistics.org/2013/06/14/the-vast-majority-of-statistical-analysis-is-not-performed-by-statisticians/">&#8220;the vast majority of statistical analysis is not
+<p>Unfortunately, <a class="reference external" href="http://simplystatistics.org/2013/06/14/the-vast-majority-of-statistical-analysis-is-not-performed-by-statisticians/">“the vast majority of statistical analysis is not
 performed by
-statisticians&#8221;</a>
-&#8211; so what we really need are tools for <em>scientists</em> and not for
+statisticians”</a>
+– so what we really need are tools for <em>scientists</em> and not for
 statisticians.</p>
 <p>In the interest of putting my code where my mouth is I wrote a submodule
 for the upcoming
@@ -446,7 +446,7 @@ Frequentist ones in R.</p>
 <div class="section" id="Linear-Regression">
 <h2>Linear Regression<a class="headerlink" href="#Linear-Regression" title="Permalink to this headline">¶</a></h2>
 <p>While future blog posts will explore more complex models, I will start
-here with the simplest GLM &#8211; linear regression. In general,
+here with the simplest GLM – linear regression. In general,
 frequentists think about Linear Regression as follows:</p>
 <div class="math">
 \[Y = X\beta + \epsilon\]</div>
@@ -480,7 +480,7 @@ mass on low values.</li>
 <span class="math">\(\beta\)</span> as above but instead a complete posterior distribution
 about how likely different values of <span class="math">\(\beta\)</span> are. For example,
 with few data points our uncertainty in <span class="math">\(\beta\)</span> will be very
-high and we&#8217;d be getting very wide posteriors.</li>
+high and we’d be getting very wide posteriors.</li>
 </ul>
 </div>
 <div class="section" id="Bayesian-GLMs-in-PyMC3">
@@ -493,7 +493,7 @@ more complex models.</p>
 <span></span>In [1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="kn">from</span> <span class="nn">pymc3</span> <span class="kn">import</span>  <span class="o">*</span>
@@ -514,7 +514,7 @@ the regression line.</p>
 <span></span>In [2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">true_intercept</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">true_slope</span> <span class="o">=</span> <span class="mi">2</span>
@@ -534,7 +534,7 @@ the regression line.</p>
 <span></span>In [3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Generated data and underlying model&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;sampled data&#39;</span><span class="p">)</span>
@@ -564,7 +564,7 @@ draw 2000 posterior samples.</p>
 <span></span>In [4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span> <span class="c1"># model specifications in PyMC3 are wrapped in a with-statement</span>
     <span class="c1"># Define priors</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">HalfCauchy</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">testval</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
@@ -576,35 +576,21 @@ draw 2000 posterior samples.</p>
                         <span class="n">sd</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
     <span class="c1"># Inference!</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">find_MAP</span><span class="p">()</span> <span class="c1"># Find starting value by optimization</span>
-    <span class="n">step</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">scaling</span><span class="o">=</span><span class="n">start</span><span class="p">)</span> <span class="c1"># Instantiate MCMC sampling algorithm</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c1"># draw 2000 posterior samples using NUTS sampling</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># draw 3000 posterior samples using NUTS sampling</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully.
-         Current function value: 154.547724
-         Iterations: 14
-         Function evaluations: 20
-         Gradient evaluations: 20
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-/Users/bhargavvader/Open_Source/pymc3/pymc3/sampling.py:188: UserWarning: Instantiated step methods cannot be automatically initialized. init argument ignored.
-  warnings.warn(&#39;Instantiated step methods cannot be automatically initialized. init argument ignored.&#39;)
-/Users/bhargavvader/Open_Source/pymc3/pymc3/step_methods/hmc/nuts.py:238: UserWarning: Step size tuning was enabled throughout the whole trace. You might want to specify the number of tuning steps.
-  warnings.warn(&#39;Step size tuning was enabled throughout the whole &#39;
-/Users/bhargavvader/Open_Source/pymc3/venv/lib/python2.7/site-packages/numpy/core/fromnumeric.py:2889: RuntimeWarning: Mean of empty slice.
-  out=out, **kwargs)
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 175.98:   6%|▋         | 12609/200000 [00:00&lt;00:11, 15847.31it/s]
+Convergence archived at 13800
+Interrupted at 13,800 [6%]: Average Loss = 359.45
+100%|██████████| 3500/3500 [00:04&lt;00:00, 804.61it/s]
 </pre></div></div>
 </div>
 <p>This should be fairly readable for people who know probabilistic
@@ -623,27 +609,26 @@ appopriate likelihood to the model.</p>
 <span></span>In [5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
     <span class="c1"># specify glm and pass in data. The resulting linear model, its likelihood and</span>
     <span class="c1"># and all its parameters are automatically added to our model.</span>
     <span class="n">glm</span><span class="o">.</span><span class="n">GLM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="s1">&#39;y ~ x&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">find_MAP</span><span class="p">()</span>
-    <span class="n">step</span> <span class="o">=</span> <span class="n">NUTS</span><span class="p">(</span><span class="n">scaling</span><span class="o">=</span><span class="n">start</span><span class="p">)</span> <span class="c1"># Instantiate MCMC sampling algorithm</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c1"># draw 2000 posterior samples using NUTS sampling</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># draw 3000 posterior samples using NUTS sampling</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Optimization terminated successfully.
-         Current function value: 154.538701
-         Iterations: 14
-         Function evaluations: 20
-         Gradient evaluations: 20
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 171.74:   7%|▋         | 13463/200000 [00:00&lt;00:12, 14993.68it/s]
+Convergence archived at 14100
+Interrupted at 14,100 [7%]: Average Loss = 341.38
+100%|██████████| 3500/3500 [00:04&lt;00:00, 809.71it/s]
 </pre></div></div>
 </div>
 <p>Much shorter, but this code does the exact same thing as the above model
@@ -654,7 +639,7 @@ case), adds a likelihood (by default, a Normal is chosen), and all other
 variables (<code class="docutils literal"><span class="pre">sigma</span></code>). Finally, <code class="docutils literal"><span class="pre">glm()</span></code> then initializes the
 parameters to a good starting point by estimating a frequentist linear
 model using <a class="reference external" href="http://statsmodels.sourceforge.net/devel/">statsmodels</a>.</p>
-<p>If you are not familiar with R&#8217;s syntax, <code class="docutils literal"><span class="pre">'y</span> <span class="pre">~</span> <span class="pre">x'</span></code> specifies that we
+<p>If you are not familiar with R’s syntax, <code class="docutils literal"><span class="pre">'y</span> <span class="pre">~</span> <span class="pre">x'</span></code> specifies that we
 have an output variable <code class="docutils literal"><span class="pre">y</span></code> that we want to estimate as a linear
 function of <code class="docutils literal"><span class="pre">x</span></code>.</p>
 </div>
@@ -669,7 +654,7 @@ parameters and the individual samples we drew.</p>
 <span></span>In [6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">100</span><span class="p">:])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span>
@@ -680,7 +665,7 @@ parameters and the individual samples we drew.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.figure.Figure at 0x112ede790&gt;
+<span></span>&lt;matplotlib.figure.Figure at 0x7f4122bcf908&gt;
 </pre></div>
 </div>
 </div>
@@ -691,7 +676,7 @@ parameters and the individual samples we drew.</p>
 <img alt="../_images/notebooks_GLM-linear_15_1.png" src="../_images/notebooks_GLM-linear_15_1.png" />
 </div>
 </div>
-<p>The left side shows our marginal posterior &#8211; for each parameter value
+<p>The left side shows our marginal posterior – for each parameter value
 on the x-axis we get a probability on the y-axis that tells us how
 likely that parameter value is.</p>
 <p>There are a couple of things to see here. The first is that our sampling
@@ -704,14 +689,14 @@ is the standard deviation of our normal).</p>
 <p>In the GLM we thus do not only have one best fitting regression line,
 but many. A posterior predictive plot takes multiple samples from the
 posterior (intercepts and slopes) and plots a regression line for each
-of them. Here we are using the <code class="docutils literal"><span class="pre">glm.plot_posterior_predictive()</span></code>
+of them. Here we are using the <code class="docutils literal"><span class="pre">plot_posterior_predictive_glm()</span></code>
 convenience function for this.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
 <span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -757,7 +742,7 @@ be used to perform robust linear regression.</p>
 <ul class="simple">
 <li>The excellent book <a class="reference external" href="http://www.indiana.edu/~kruschke/DoingBayesianDataAnalysis/">Doing Bayesian Data Analysis by John
 Kruschke</a>.</li>
-<li><a class="reference external" href="http://andrewgelman.com/">Andrew Gelman&#8217;s blog</a></li>
+<li><a class="reference external" href="http://andrewgelman.com/">Andrew Gelman’s blog</a></li>
 <li><a class="reference external" href="https://plus.google.com/u/0/107971134877020469960/posts/KpeRdJKR6Z1">Baeu Cronins blog post on Probabilistic
 Programming</a></li>
 </ul>
@@ -809,7 +794,7 @@ Programming</a></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -819,7 +804,7 @@ Programming</a></li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

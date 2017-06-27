@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Multivariate &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Multivariate &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../../index.html"/>
         <link rel="up" title="Distributions" href="../distributions.html"/>
         <link rel="next" title="Mixture" href="mixture.html"/>
         <link rel="prev" title="Discrete" href="discrete.html"/> 
@@ -225,16 +225,16 @@
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.multivariate.MvNormal" title="pymc3.distributions.multivariate.MvNormal"><code class="xref py py-obj docutils literal"><span class="pre">MvNormal</span></code></a>(mu[,&nbsp;cov,&nbsp;tau,&nbsp;chol,&nbsp;lower])</td>
 <td>Multivariate normal log-likelihood.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.multivariate.Wishart" title="pymc3.distributions.multivariate.Wishart"><code class="xref py py-obj docutils literal"><span class="pre">Wishart</span></code></a>(nu,&nbsp;V,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.multivariate.Wishart" title="pymc3.distributions.multivariate.Wishart"><code class="xref py py-obj docutils literal"><span class="pre">Wishart</span></code></a>(nu,&nbsp;V,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Wishart log-likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.multivariate.LKJCholeskyCov" title="pymc3.distributions.multivariate.LKJCholeskyCov"><code class="xref py py-obj docutils literal"><span class="pre">LKJCholeskyCov</span></code></a>(eta,&nbsp;n,&nbsp;sd_dist,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.multivariate.LKJCholeskyCov" title="pymc3.distributions.multivariate.LKJCholeskyCov"><code class="xref py py-obj docutils literal"><span class="pre">LKJCholeskyCov</span></code></a>(eta,&nbsp;n,&nbsp;sd_dist,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Covariance matrix with LKJ distributed correlations.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.multivariate.LKJCorr" title="pymc3.distributions.multivariate.LKJCorr"><code class="xref py py-obj docutils literal"><span class="pre">LKJCorr</span></code></a>([eta,&nbsp;n,&nbsp;p,&nbsp;transform])</td>
 <td>The LKJ (Lewandowski, Kurowicka and Joe) log-likelihood.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.multivariate.Multinomial" title="pymc3.distributions.multivariate.Multinomial"><code class="xref py py-obj docutils literal"><span class="pre">Multinomial</span></code></a>(n,&nbsp;p,&nbsp;\*args,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.distributions.multivariate.Multinomial" title="pymc3.distributions.multivariate.Multinomial"><code class="xref py py-obj docutils literal"><span class="pre">Multinomial</span></code></a>(n,&nbsp;p,&nbsp;*args,&nbsp;**kwargs)</td>
 <td>Multinomial log-likelihood.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.distributions.multivariate.Dirichlet" title="pymc3.distributions.multivariate.Dirichlet"><code class="xref py py-obj docutils literal"><span class="pre">Dirichlet</span></code></a>(a[,&nbsp;transform])</td>
@@ -272,12 +272,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> (<em>array</em>) &#8211; Vector of means.</li>
-<li><strong>cov</strong> (<em>array</em>) &#8211; Covariance matrix. Exactly one of cov, tau, or chol is needed.</li>
-<li><strong>tau</strong> (<em>array</em>) &#8211; Precision matrix. Exactly one of cov, tau, or chol is needed.</li>
-<li><strong>chol</strong> (<em>array</em>) &#8211; Cholesky decomposition of covariance matrix. Exactly one of cov,
+<li><strong>mu</strong> (<em>array</em>) – Vector of means.</li>
+<li><strong>cov</strong> (<em>array</em>) – Covariance matrix. Exactly one of cov, tau, or chol is needed.</li>
+<li><strong>tau</strong> (<em>array</em>) – Precision matrix. Exactly one of cov, tau, or chol is needed.</li>
+<li><strong>chol</strong> (<em>array</em>) – Cholesky decomposition of covariance matrix. Exactly one of cov,
 tau, or chol is needed.</li>
-<li><strong>lower</strong> (<em>bool</em><em>, </em><em>default=True</em>) &#8211; Whether chol is the lower tridiagonal cholesky factor.</li>
+<li><strong>lower</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether chol is the lower tridiagonal cholesky factor.</li>
 </ul>
 </td>
 </tr>
@@ -361,9 +361,9 @@ parametrization:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nu</strong> (<em>int</em>) &#8211; Degrees of freedom.</li>
-<li><strong>Sigma</strong> (<em>matrix</em>) &#8211; Covariance matrix.</li>
-<li><strong>mu</strong> (<em>array</em>) &#8211; Vector of means.</li>
+<li><strong>nu</strong> (<em>int</em>) – Degrees of freedom.</li>
+<li><strong>Sigma</strong> (<em>matrix</em>) – Covariance matrix.</li>
+<li><strong>mu</strong> (<em>array</em>) – Vector of means.</li>
 </ul>
 </td>
 </tr>
@@ -403,7 +403,7 @@ where <span class="math">\(a_0 = \sum a_i\)</span></td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>a</strong> (<em>array</em>) &#8211; Concentration parameters (a &gt; 0).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>a</strong> (<em>array</em>) – Concentration parameters (a &gt; 0).</td>
 </tr>
 </tbody>
 </table>
@@ -417,9 +417,9 @@ as a parent of Multinomial and Categorical nevertheless.</p>
 <em class="property">class </em><code class="descclassname">pymc3.distributions.multivariate.</code><code class="descname">Multinomial</code><span class="sig-paren">(</span><em>n</em>, <em>p</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.multivariate.Multinomial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multinomial log-likelihood.</p>
 <p>Generalizes binomial distribution, but instead of each trial resulting
-in &#8220;success&#8221; or &#8220;failure&#8221;, each one results in exactly one of some
+in “success” or “failure”, each one results in exactly one of some
 fixed finite number k of possible outcomes over n independent trials.
-&#8216;x[i]&#8217; indicates the number of times outcome number i was observed
+‘x[i]’ indicates the number of times outcome number i was observed
 over the n trials.</p>
 <div class="math">
 \[f(x \mid n, p) = \frac{n!}{\prod_{i=1}^k x_i!} \prod_{i=1}^k p_i^{x_i}\]</div>
@@ -449,8 +449,8 @@ over the n trials.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em><em> or </em><em>array</em>) &#8211; Number of trials (n &gt; 0).</li>
-<li><strong>p</strong> (<em>one-</em><em> or </em><em>two-dimensional array</em>) &#8211; Probability of each one of the different outcomes. Elements must
+<li><strong>n</strong> (<em>int</em><em> or </em><em>array</em>) – Number of trials (n &gt; 0).</li>
+<li><strong>p</strong> (<em>one-</em><em> or </em><em>two-dimensional array</em>) – Probability of each one of the different outcomes. Elements must
 be non-negative and sum to 1 along the last axis. They will be automatically
 rescaled otherwise.</li>
 </ul>
@@ -496,8 +496,8 @@ freedom.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nu</strong> (<em>int</em>) &#8211; Degrees of freedom, &gt; 0.</li>
-<li><strong>V</strong> (<em>array</em>) &#8211; p x p positive definite matrix.</li>
+<li><strong>nu</strong> (<em>int</em>) – Degrees of freedom, &gt; 0.</li>
+<li><strong>V</strong> (<em>array</em>) – p x p positive definite matrix.</li>
 </ul>
 </td>
 </tr>
@@ -532,14 +532,14 @@ for more information.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>S</strong> (<a class="reference internal" href="../backends.html#module-pymc3.backends.ndarray" title="pymc3.backends.ndarray"><em>ndarray</em></a>) &#8211; p x p positive definite matrix
+<li><strong>S</strong> (<a class="reference internal" href="../backends.html#module-pymc3.backends.ndarray" title="pymc3.backends.ndarray"><em>ndarray</em></a>) – p x p positive definite matrix
 Or:
 p x p lower-triangular matrix that is the Cholesky factor
 of the covariance matrix.</li>
-<li><strong>nu</strong> (<em>int</em>) &#8211; Degrees of freedom, &gt; dim(S).</li>
-<li><strong>is_cholesky</strong> (<em>bool</em><em> (</em><em>default=False</em><em>)</em><em></em>) &#8211; Input matrix S is already Cholesky decomposed as S.T * S</li>
-<li><strong>return_cholesky</strong> (<em>bool</em><em> (</em><em>default=False</em><em>)</em><em></em>) &#8211; Only return the Cholesky decomposed matrix.</li>
-<li><strong>testval</strong> (<a class="reference internal" href="../backends.html#module-pymc3.backends.ndarray" title="pymc3.backends.ndarray"><em>ndarray</em></a>) &#8211; p x p positive definite matrix used to initialize</li>
+<li><strong>nu</strong> (<em>int</em>) – Degrees of freedom, &gt; dim(S).</li>
+<li><strong>is_cholesky</strong> (<em>bool</em><em> (</em><em>default=False</em><em>)</em>) – Input matrix S is already Cholesky decomposed as S.T * S</li>
+<li><strong>return_cholesky</strong> (<em>bool</em><em> (</em><em>default=False</em><em>)</em>) – Only return the Cholesky decomposed matrix.</li>
+<li><strong>testval</strong> (<a class="reference internal" href="../backends.html#module-pymc3.backends.ndarray" title="pymc3.backends.ndarray"><em>ndarray</em></a>) – p x p positive definite matrix used to initialize</li>
 </ul>
 </td>
 </tr>
@@ -557,7 +557,7 @@ normal. You should instead use LKJCholeskyCov or LKJCorr.</p>
 
 <dl class="class">
 <dt id="pymc3.distributions.multivariate.LKJCorr">
-<em class="property">class </em><code class="descclassname">pymc3.distributions.multivariate.</code><code class="descname">LKJCorr</code><span class="sig-paren">(</span><em>eta=None</em>, <em>n=None</em>, <em>p=None</em>, <em>transform='interval'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.multivariate.LKJCorr" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.distributions.multivariate.</code><code class="descname">LKJCorr</code><span class="sig-paren">(</span><em>eta=None</em>, <em>n=None</em>, <em>p=None</em>, <em>transform=’interval’</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.multivariate.LKJCorr" title="Permalink to this definition">¶</a></dt>
 <dd><p>The LKJ (Lewandowski, Kurowicka and Joe) log-likelihood.</p>
 <p>The LKJ distribution is a prior distribution for correlation matrices.
 If eta = 1 this corresponds to the uniform distribution over correlation
@@ -578,8 +578,8 @@ matrices. For eta -&gt; oo the LKJ prior approaches the identity matrix.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em>) &#8211; Dimension of the covariance matrix (n &gt; 0).</li>
-<li><strong>eta</strong> (<em>float</em>) &#8211; The shape parameter (eta &gt; 0) of the LKJ distribution. eta = 1
+<li><strong>n</strong> (<em>int</em>) – Dimension of the covariance matrix (n &gt; 0).</li>
+<li><strong>eta</strong> (<em>float</em>) – The shape parameter (eta &gt; 0) of the LKJ distribution. eta = 1
 implies a uniform distribution of the correlation matrices;
 larger values put more weight on matrices with few correlations.</li>
 </ul>
@@ -603,8 +603,8 @@ the indexes of the elements:</p>
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[LKJ2009]</td><td>Lewandowski, D., Kurowicka, D. and Joe, H. (2009).
-&#8220;Generating random correlation matrices based on vines and
-extended onion method.&#8221; Journal of multivariate analysis,
+“Generating random correlation matrices based on vines and
+extended onion method.” Journal of multivariate analysis,
 100(9), pp.1989-2001.</td></tr>
 </tbody>
 </table>
@@ -623,11 +623,11 @@ distribution specified by the user.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em>) &#8211; Dimension of the covariance matrix (n &gt; 0).</li>
-<li><strong>eta</strong> (<em>float</em>) &#8211; The shape parameter (eta &gt; 0) of the LKJ distribution. eta = 1
+<li><strong>n</strong> (<em>int</em>) – Dimension of the covariance matrix (n &gt; 0).</li>
+<li><strong>eta</strong> (<em>float</em>) – The shape parameter (eta &gt; 0) of the LKJ distribution. eta = 1
 implies a uniform distribution of the correlation matrices;
 larger values put more weight on matrices with few correlations.</li>
-<li><strong>sd_dist</strong> (<em>pm.Distribution</em>) &#8211; A distribution for the standard deviations.</li>
+<li><strong>sd_dist</strong> (<em>pm.Distribution</em>) – A distribution for the standard deviations.</li>
 </ul>
 </td>
 </tr>
@@ -706,15 +706,15 @@ of the determinants of the blocks, we get</p>
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[1]</td><td>Lewandowski, D., Kurowicka, D. and Joe, H. (2009).
-&#8220;Generating random correlation matrices based on vines and
-extended onion method.&#8221; Journal of multivariate analysis,
+“Generating random correlation matrices based on vines and
+extended onion method.” Journal of multivariate analysis,
 100(9), pp.1989-2001.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[2]</td><td>J. M. isn&#8217;t a mathematician (<a class="reference external" href="http://math.stackexchange.com/users/498/">http://math.stackexchange.com/users/498/</a>
+<tr><td class="label">[2]</td><td>J. M. isn’t a mathematician (<a class="reference external" href="http://math.stackexchange.com/users/498/">http://math.stackexchange.com/users/498/</a>
 j-m-isnt-a-mathematician), Different approaches to evaluate this
 determinant, URL (version: 2012-04-14):
 <a class="reference external" href="http://math.stackexchange.com/q/130026">http://math.stackexchange.com/q/130026</a></td></tr>
@@ -768,7 +768,7 @@ determinant, URL (version: 2012-04-14):
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -778,7 +778,7 @@ determinant, URL (version: 2012-04-14):
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

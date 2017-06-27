@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The Dawid-Skene model with priors &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>The Dawid-Skene model with priors &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="GLM: Linear regression" href="GLM-linear.html"/>
         <link rel="prev" title="Bayesian Survival Analysis" href="survival_analysis.html"/> 
@@ -97,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#applied">Applied</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="BEST.html">Bayesian Estimation Supersedes the T-Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multilevel_modeling.html">A Primer on Bayesian Methods for Multilevel Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stochastic_volatility.html">Stochastic Volatility model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rugby_analytics.html">A Hierarchical model for Rugby prediction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="survival_analysis.html">Bayesian Survival Analysis</a></li>
@@ -383,7 +384,7 @@ Since then, there have been multiple models that improve over the basic
 model. This notebook covers the Dawid-Skene model which has been
 enhanced with priors.</p>
 <p>The model follows implementation in Rebecca J. Passonneau, Bob
-Carpenter, &#8220;The Benefits of a Model of Annotation&#8221;, TACL, 2014.</p>
+Carpenter, “The Benefits of a Model of Annotation”, TACL, 2014.</p>
 <div class="section" id="Introduction">
 <h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this headline">¶</a></h2>
 <p>In healthcare, a number of patients can receive potentially noisy
@@ -437,7 +438,7 @@ all observations.</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s create the necessary data structures. In particular, we will
+<p>Let’s create the necessary data structures. In particular, we will
 convert the data cube into triplet format. One data point with index n
 allows to access the following information: jj[n] as annotator ID,
 providing his/her vote y[n] for item ii[n].</p>
@@ -511,12 +512,12 @@ of secondary interest.</p>
 <p>The class prevalence prior tells the proportion of categories in the
 data. Since we are completely ignorant about category proportions, it is
 meaningful to set a flat distribution.</p>
-<p>The annotator-specific confusion matrices will &#8220;describe&#8221; every
+<p>The annotator-specific confusion matrices will “describe” every
 annotator. Notably, a confusion matrix for an annotator j tells us which
 categories the annotator is expert (very high value on diagonal) and
 where his expertise is limited (relatively small value on diagonal and
 relatively big values off-diagonal). We will initialize confusion
-matrices with uniform values with slightly dominant diagonal &#8211; our
+matrices with uniform values with slightly dominant diagonal – our
 annotators are expected to provide meaningful labels.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -532,7 +533,7 @@ annotators are expected to provide meaningful labels.</p>
 </pre></div>
 </div>
 </div>
-<p>Now, the interesting part &#8211; the definition of the model.</p>
+<p>Now, the interesting part – the definition of the model.</p>
 <p>First, we will need two random variables to encode class prevalence (pi)
 and annotator confusion matrices (theta). The two random variables can
 be naturally modeled with Dirichlet.</p>
@@ -544,7 +545,7 @@ variables. This is the variable (Categorical) where the data is
 injected. The parametrization of the variable needs to be explained: the
 observation y[n] is generated according to Categorical distribution by
 worker y[n] for item ii[n], where the true label is z[ ii[n] ].</p>
-<p>The following block will build the model only but won&#8217;t do any
+<p>The following block will build the model only but won’t do any
 inference.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -569,7 +570,7 @@ Metropolis or NUTS for former and CategoricalGibbsMetropolis for latter.</p>
 <p>Note: Running the following block will perform inference for our
 variables of interest and store results in the trace variable. The trace
 variable will contain a wealth of information that will be useful to
-perfom diagnostics and get posteriors for our three hidden variables &#8211;
+perfom diagnostics and get posteriors for our three hidden variables –
 class prevalence, annotator confusion matrices and true categories for
 all work items.</p>
 <div class="nbinput docutils container">
@@ -596,12 +597,12 @@ all work items.</p>
 </div>
 <div class="section" id="Results">
 <h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline">¶</a></h2>
-<p>Let&#8217;s get a global overview of the trace. On the left side of the
+<p>Let’s get a global overview of the trace. On the left side of the
 figure, posterior distributions; on the right - individual samples. The
-samples subplots should show &#8220;uniform band of noise&#8221; as the sampler
+samples subplots should show “uniform band of noise” as the sampler
 locks around the true variable state. It is important to not see any
 jumps, switches or steady increase/decrease.</p>
-<p>Besides the class prevalence variable (&#8220;pi&#8221;), the categories and theta
+<p>Besides the class prevalence variable (“pi”), the categories and theta
 posteriors, the plots are of little utility. We will explore other
 variables in other form.</p>
 <div class="nbinput docutils container">
@@ -632,7 +633,7 @@ variables in other form.</p>
 <img alt="../_images/notebooks_dawid-skene_16_1.png" src="../_images/notebooks_dawid-skene_16_1.png" />
 </div>
 </div>
-<p>We will take 1000 last samples from posterior for random variable (&#8220;z&#8221;).
+<p>We will take 1000 last samples from posterior for random variable (“z”).
 The majority vote from 1000 samples will give us our estimate of true
 item labels.</p>
 <div class="nbinput nblast docutils container">
@@ -675,8 +676,8 @@ Dawid-Skene estimate of true category:
  [  2   1   1 121]]
 </pre></div></div>
 </div>
-<p>Finally, let&#8217;s plot the confusion matrices of annotators. Notice the
-dominant diagonal nature of matrices &#8211; measure of annotator
+<p>Finally, let’s plot the confusion matrices of annotators. Notice the
+dominant diagonal nature of matrices – measure of annotator
 performance. Compare the first annotator (j=0) and the last one (j=4).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -771,7 +772,7 @@ Annotator j=4
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -781,7 +782,7 @@ Annotator j=4
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

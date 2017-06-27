@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API quickstart &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>API quickstart &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Getting started" href="../getting_started.html"/>
-        <link rel="next" title="Examples" href="../examples.html"/>
+        <link rel="next" title="Variational API quickstart" href="variational_api_quickstart.html"/>
         <link rel="prev" title="Getting started with PyMC3" href="getting_started.html"/> 
 
   
@@ -92,34 +92,33 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#howto">Howto</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">API quickstart</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#1.-Model-creation">1. Model creation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#2.-Probability-Distributions">2. Probability Distributions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#3.-Inference">3. Inference</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#4.-Posterior-Predictive-Sampling">4. Posterior Predictive Sampling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#4.1-Predicting-on-hold-out-data">4.1 Predicting on hold-out data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting started with PyMC3</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">API quickstart</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#1.-Model-creation">1. Model creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.-Probability-Distributions">2. Probability Distributions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Unobserved-Random-Variables">Unobserved Random Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Observed-Random-Variables">Observed Random Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Deterministic-transforms">Deterministic transforms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Automatic-transforms-of-bounded-RVs">Automatic transforms of bounded RVs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Lists-of-RVs-/-higher-dimensional-RVs">Lists of RVs / higher-dimensional RVs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Initialization-with-test_values">Initialization with test_values</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html">Sampler statistics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html#Multiple-samplers">Multiple samplers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Diagnosing_biased_Inference_with_Divergences.html">Diagnosing Biased Inference with Divergences</a></li>
-<li class="toctree-l3"><a class="reference internal" href="posterior_predictive.html">Posterior Predictive Checks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="howto_debugging.html">How to debug a model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LKJ.html">LKJ Prior for fitting a Multivariate Normal Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="live_sample_plots.html">Live sample plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.-Inference">3. Inference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#3.1-Sampling">3.1 Sampling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.2-Analyze-sampling-results">3.2 Analyze sampling results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.3-Variational-inference">3.3 Variational inference</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#variational-inference">Variational Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.-Posterior-Predictive-Sampling">4. Posterior Predictive Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.1-Predicting-on-hold-out-data">4.1 Predicting on hold-out data</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="variational_api_quickstart.html">Variational API quickstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 </ul>
 
@@ -417,7 +416,7 @@ context:</p>
 </pre></div>
 </div>
 </div>
-<p>We discuss RVs further below but let&#8217;s create a simple model to explore
+<p>We discuss RVs further below but let’s create a simple model to explore
 the <code class="docutils literal"><span class="pre">Model</span></code> class.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -952,7 +951,7 @@ of inference: sampling and variational inference.</p>
 <h3>3.1 Sampling<a class="headerlink" href="#3.1-Sampling" title="Permalink to this headline">¶</a></h3>
 <p>The main entry point to MCMC sampling algorithms is via the
 <code class="docutils literal"><span class="pre">pm.sample()</span></code> function. By default, this function tries to auto-assign
-the right sampler(s) and auto-initialize if you don&#8217;t pass anything.</p>
+the right sampler(s) and auto-initialize if you don’t pass anything.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [24]:
@@ -1133,7 +1132,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 </div>
 <p>Commonly used step-methods besides NUTS are <code class="docutils literal"><span class="pre">Metropolis</span></code> and
-<code class="docutils literal"><span class="pre">Slice</span></code>. <strong>For almost all continuous models, ``NUTS`` should be
+<code class="docutils literal"><span class="pre">Slice</span></code>. <strong>For almost all continuous models, “NUTS“ should be
 preferred.</strong> There are hard-to-sample models for which <code class="docutils literal"><span class="pre">NUTS</span></code> will be
 very slow causing many users to use <code class="docutils literal"><span class="pre">Metropolis</span></code> instead. This
 practice, however, is rarely successful. NUTS is fast on simple models
@@ -1278,7 +1277,7 @@ you can use the:</p>
 </div>
 </div>
 <p>For high-dimensional models it becomes cumbersome to look at all
-parameter&#8217;s traces. When using <code class="docutils literal"><span class="pre">NUTS</span></code> we can look at the energy plot
+parameter’s traces. When using <code class="docutils literal"><span class="pre">NUTS</span></code> we can look at the energy plot
 to assess problems of convergence:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -1643,7 +1642,7 @@ Interrupted at 15,000 [7%]: Average Loss = 26.836
 </pre></div></div>
 </div>
 <p>Now assume we want to predict on unseen data. For this we have to change
-the values of <code class="docutils literal"><span class="pre">x_shared</span></code> and <code class="docutils literal"><span class="pre">y_shared</span></code>. Theoretically we don&#8217;t need
+the values of <code class="docutils literal"><span class="pre">x_shared</span></code> and <code class="docutils literal"><span class="pre">y_shared</span></code>. Theoretically we don’t need
 to set <code class="docutils literal"><span class="pre">y_shared</span></code> as we want to predict it but it has to match the
 shape of <code class="docutils literal"><span class="pre">x_shared</span></code>.</p>
 <div class="nbinput docutils container">
@@ -1701,7 +1700,7 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="variational_api_quickstart.html" class="btn btn-neutral float-right" title="Variational API quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="getting_started.html" class="btn btn-neutral" title="Getting started with PyMC3" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -1735,7 +1734,7 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1745,7 +1744,7 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

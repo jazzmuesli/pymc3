@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dirichlet process mixtures for density estimation &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Dirichlet process mixtures for density estimation &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Dependent density regression" href="dependent_density_regression.html"/>
         <link rel="prev" title="Gaussian Mixture Model with ADVI" href="gaussian-mixture-model-advi.html"/> 
@@ -573,25 +573,16 @@ the base distribution is <span class="math">\(N(0, 1)\)</span>.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">sample_cdfs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">);</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">P0</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x_plot</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Base CDF&#39;</span><span class="p">);</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">r&#39;$\alpha = {}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">));</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha = {}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">));</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_9_1.png" src="../_images/notebooks_dp_mix_9_1.png" />
+<img alt="../_images/notebooks_dp_mix_9_0.png" src="../_images/notebooks_dp_mix_9_0.png" />
 </div>
 </div>
 <p>As stated above, as <span class="math">\(\alpha \to \infty\)</span>, samples from the
@@ -621,7 +612,7 @@ Dirichlet process converge to the base distribution.</p>
 <span class="n">l_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">sample_cdfs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">);</span>
 <span class="n">l_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">P0</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x_plot</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Base CDF&#39;</span><span class="p">);</span>
 
-<span class="n">l_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">r&#39;$\alpha = {}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">));</span>
+<span class="n">l_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha = {}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">));</span>
 <span class="n">l_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 
 <span class="n">K</span> <span class="o">=</span> <span class="mi">200</span>
@@ -641,25 +632,16 @@ Dirichlet process converge to the base distribution.</p>
 <span class="n">r_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">sample_cdfs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">);</span>
 <span class="n">r_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">P0</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x_plot</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Base CDF&#39;</span><span class="p">);</span>
 
-<span class="n">r_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">r&#39;$\alpha = {}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">));</span>
+<span class="n">r_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\alpha = {}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">));</span>
 <span class="n">r_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_11_1.png" src="../_images/notebooks_dp_mix_11_1.png" />
+<img alt="../_images/notebooks_dp_mix_11_0.png" src="../_images/notebooks_dp_mix_11_0.png" />
 </div>
 </div>
 </div>
@@ -733,20 +715,11 @@ mixture with <span class="math">\(\alpha = 2\)</span>, <span class="math">\(\the
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_15_1.png" src="../_images/notebooks_dp_mix_15_1.png" />
+<img alt="../_images/notebooks_dp_mix_15_0.png" src="../_images/notebooks_dp_mix_15_0.png" />
 </div>
 </div>
 <p>We now focus on a single mixture and decompose it into its individual
@@ -772,20 +745,11 @@ mixture with <span class="math">\(\alpha = 2\)</span>, <span class="math">\(\the
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_17_1.png" src="../_images/notebooks_dp_mix_17_1.png" />
+<img alt="../_images/notebooks_dp_mix_17_0.png" src="../_images/notebooks_dp_mix_17_0.png" />
 </div>
 </div>
 <p>Sampling from these stochastic processes is fun, but these ideas become
@@ -838,6 +802,19 @@ between eruptions.</p>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -892,20 +869,11 @@ between eruptions.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_23_1.png" src="../_images/notebooks_dp_mix_23_1.png" />
+<img alt="../_images/notebooks_dp_mix_23_0.png" src="../_images/notebooks_dp_mix_23_0.png" />
 </div>
 </div>
 <p>Observant readers will have noted that we have not been continuing the
@@ -1026,10 +994,13 @@ may learn its posterior distribution from the observations.</p>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using advi...
-Average ELBO = -9,730.2: 100%|██████████| 50000/50000 [00:42&lt;00:00, 1172.42it/s]
-Finished [100%]: Average ELBO = -9,729.8
-100%|██████████| 2000/2000 [01:25&lt;00:00, 23.40it/s]
+Initializing NUTS using ADVI...
+Average Loss = 416.59:  41%|████      | 20550/50000 [10:59&lt;1:48:30,  4.52it/s]
+Convergence archived at 20700
+Interrupted at 20,700 [41%]: Average Loss = 430.1
+100%|██████████| 2500/2500 [08:55&lt;00:00, 25.48it/s]  /Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 179 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+  % (self._chain_id, n_diverging))
+
 </pre></div></div>
 </div>
 <p>The posterior distribution of <span class="math">\(\alpha\)</span> is highly concentrated
@@ -1044,20 +1015,11 @@ between 0.25 and 1.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_31_1.png" src="../_images/notebooks_dp_mix_31_1.png" />
+<img alt="../_images/notebooks_dp_mix_31_0.png" src="../_images/notebooks_dp_mix_31_0.png" />
 </div>
 </div>
 <p>To verify that truncation is not biasing our results, we plot the
@@ -1081,20 +1043,11 @@ posterior expected mixture weight of each component.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_33_1.png" src="../_images/notebooks_dp_mix_33_1.png" />
+<img alt="../_images/notebooks_dp_mix_33_0.png" src="../_images/notebooks_dp_mix_33_0.png" />
 </div>
 </div>
 <p>We see that only three mixture components have appreciable posterior
@@ -1145,20 +1098,11 @@ to forty components has not appreciably affected our estimates.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_36_1.png" src="../_images/notebooks_dp_mix_36_1.png" />
+<img alt="../_images/notebooks_dp_mix_36_0.png" src="../_images/notebooks_dp_mix_36_0.png" />
 </div>
 </div>
 <p>As above, we can decompose this density estimate into its (weighted)
@@ -1191,20 +1135,11 @@ mixture components.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_38_1.png" src="../_images/notebooks_dp_mix_38_1.png" />
+<img alt="../_images/notebooks_dp_mix_38_0.png" src="../_images/notebooks_dp_mix_38_0.png" />
 </div>
 </div>
 <p>The Dirichlet process mixture model is incredibly flexible in terms of
@@ -1239,6 +1174,19 @@ the density of sunspots per year.</p>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1328,9 +1276,7 @@ the density of sunspots per year.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Metropolis</span><span class="p">()</span>
-    <span class="n">trace_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
-
-<span class="n">trace</span> <span class="o">=</span> <span class="n">trace_</span><span class="p">[</span><span class="mi">50000</span><span class="p">::</span><span class="mi">50</span><span class="p">]</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">90000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1339,7 +1285,7 @@ the density of sunspots per year.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100000/100000 [03:41&lt;00:00, 451.22it/s]
+100%|██████████| 100500/100500 [03:16&lt;00:00, 512.48it/s]
 </pre></div></div>
 </div>
 <p>For the sunspot model, the posterior distribution of <span class="math">\(\alpha\)</span> is
@@ -1356,20 +1302,11 @@ the Old Faithful waiting time model.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_47_1.png" src="../_images/notebooks_dp_mix_47_1.png" />
+<img alt="../_images/notebooks_dp_mix_47_0.png" src="../_images/notebooks_dp_mix_47_0.png" />
 </div>
 </div>
 <p>Indeed, we see that between ten and fifteen mixture components have
@@ -1393,20 +1330,11 @@ appreciable posterior expected weight.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_49_1.png" src="../_images/notebooks_dp_mix_49_1.png" />
+<img alt="../_images/notebooks_dp_mix_49_0.png" src="../_images/notebooks_dp_mix_49_0.png" />
 </div>
 </div>
 <p>We now calculate and plot the fitted density estimate.</p>
@@ -1458,20 +1386,11 @@ appreciable posterior expected weight.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_53_1.png" src="../_images/notebooks_dp_mix_53_1.png" />
+<img alt="../_images/notebooks_dp_mix_53_0.png" src="../_images/notebooks_dp_mix_53_0.png" />
 </div>
 </div>
 <p>Again, we can decompose the posterior expected density into weighted
@@ -1498,20 +1417,11 @@ mixture densities.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/opt/conda/lib/python3.5/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [&#39;sans-serif&#39;] not found. Falling back to DejaVu Sans
-  (prop.get_family(), self.defaultFamily[fontext]))
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_dp_mix_55_1.png" src="../_images/notebooks_dp_mix_55_1.png" />
+<img alt="../_images/notebooks_dp_mix_55_0.png" src="../_images/notebooks_dp_mix_55_0.png" />
 </div>
 </div>
 <p>An earlier version of this example first appeared
@@ -1563,7 +1473,7 @@ mixture densities.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1573,7 +1483,7 @@ mixture densities.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

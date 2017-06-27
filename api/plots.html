@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Plots &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Plots &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Stats" href="stats.html"/>
         <link rel="prev" title="Gaussian Processes" href="gp.html"/> 
@@ -210,38 +210,38 @@
 <h1>Plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-pymc3.plots"></span><dl class="function">
 <dt id="pymc3.plots.traceplot">
-<code class="descclassname">pymc3.plots.</code><code class="descname">traceplot</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>lines=None</em>, <em>combined=False</em>, <em>plot_transformed=False</em>, <em>grid=False</em>, <em>alpha=0.35</em>, <em>priors=None</em>, <em>prior_alpha=1</em>, <em>prior_style='--'</em>, <em>ax=None</em>, <em>live_plot=False</em>, <em>skip_first=0</em>, <em>refresh_every=100</em>, <em>roll_over=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.traceplot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.plots.</code><code class="descname">traceplot</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>lines=None</em>, <em>combined=False</em>, <em>plot_transformed=False</em>, <em>grid=False</em>, <em>alpha=0.35</em>, <em>priors=None</em>, <em>prior_alpha=1</em>, <em>prior_style=’–’</em>, <em>ax=None</em>, <em>live_plot=False</em>, <em>skip_first=0</em>, <em>refresh_every=100</em>, <em>roll_over=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.traceplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot samples histograms and values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>varnames</strong> (<em>list of variable names</em>) &#8211; Variables to be plotted, if None all variable are plotted</li>
-<li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
-<li><strong>figsize</strong> (<em>figure size tuple</em>) &#8211; If None, size is (12, num of variables * 2) inch</li>
-<li><strong>lines</strong> (<em>dict</em>) &#8211; Dictionary of variable name / value  to be overplotted as vertical
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>varnames</strong> (<em>list of variable names</em>) – Variables to be plotted, if None all variable are plotted</li>
+<li><strong>transform</strong> (<em>callable</em>) – Function to transform data (defaults to identity)</li>
+<li><strong>figsize</strong> (<em>figure size tuple</em>) – If None, size is (12, num of variables * 2) inch</li>
+<li><strong>lines</strong> (<em>dict</em>) – Dictionary of variable name / value  to be overplotted as vertical
 lines to the posteriors and horizontal lines on sample values
 e.g. mean of posteriors, true values of a simulation.
 If an array of values, line colors are matched to posterior colors.
 Otherwise, a default red line</li>
-<li><strong>combined</strong> (<em>bool</em>) &#8211; Flag for combining multiple chains into a single chain. If False
+<li><strong>combined</strong> (<em>bool</em>) – Flag for combining multiple chains into a single chain. If False
 (default), chains will be plotted separately.</li>
-<li><strong>plot_transformed</strong> (<em>bool</em>) &#8211; Flag for plotting automatically transformed variables in addition to
+<li><strong>plot_transformed</strong> (<em>bool</em>) – Flag for plotting automatically transformed variables in addition to
 original variables (defaults to False).</li>
-<li><strong>grid</strong> (<em>bool</em>) &#8211; Flag for adding gridlines to histogram. Defaults to True.</li>
-<li><strong>alpha</strong> (<em>float</em>) &#8211; Alpha value for plot line. Defaults to 0.35.</li>
-<li><strong>priors</strong> (<em>iterable of PyMC distributions</em>) &#8211; PyMC prior distribution(s) to be plotted alongside posterior. Defaults
+<li><strong>grid</strong> (<em>bool</em>) – Flag for adding gridlines to histogram. Defaults to True.</li>
+<li><strong>alpha</strong> (<em>float</em>) – Alpha value for plot line. Defaults to 0.35.</li>
+<li><strong>priors</strong> (<em>iterable of PyMC distributions</em>) – PyMC prior distribution(s) to be plotted alongside posterior. Defaults
 to None (no prior plots).</li>
-<li><strong>prior_alpha</strong> (<em>float</em>) &#8211; Alpha value for prior plot. Defaults to 1.</li>
-<li><strong>prior_style</strong> (<em>str</em>) &#8211; Line style for prior plot. Defaults to &#8216;&#8211;&#8217; (dashed line).</li>
-<li><strong>ax</strong> (<em>axes</em>) &#8211; Matplotlib axes. Accepts an array of axes, e.g.:</li>
-<li><strong>live_plot</strong> (<em>bool</em>) &#8211; Flag for updating the current figure while sampling</li>
-<li><strong>skip_first</strong> (<em>int</em>) &#8211; Number of first samples not shown in plots (burn-in). This affects
+<li><strong>prior_alpha</strong> (<em>float</em>) – Alpha value for prior plot. Defaults to 1.</li>
+<li><strong>prior_style</strong> (<em>str</em>) – Line style for prior plot. Defaults to ‘–’ (dashed line).</li>
+<li><strong>ax</strong> (<em>axes</em>) – Matplotlib axes. Accepts an array of axes, e.g.:</li>
+<li><strong>live_plot</strong> (<em>bool</em>) – Flag for updating the current figure while sampling</li>
+<li><strong>skip_first</strong> (<em>int</em>) – Number of first samples not shown in plots (burn-in). This affects
 frequency and stream plots.</li>
-<li><strong>refresh_every</strong> (<em>int</em>) &#8211; Period of plot updates (in sample number)</li>
-<li><strong>roll_over</strong> (<em>int</em>) &#8211; <p>Width of the sliding window for the sample stream plots: last roll_over
+<li><strong>refresh_every</strong> (<em>int</em>) – Period of plot updates (in sample number)</li>
+<li><strong>roll_over</strong> (<em>int</em>) – <p>Width of the sliding window for the sample stream plots: last roll_over
 samples are shown (no effect on frequency plots).</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># 3 RVs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pymc3</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">)</span>
@@ -261,31 +261,32 @@ samples are shown (no effect on frequency plots).</p>
 
 <dl class="function">
 <dt id="pymc3.plots.plot_posterior">
-<code class="descclassname">pymc3.plots.</code><code class="descname">plot_posterior</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>text_size=16</em>, <em>alpha_level=0.05</em>, <em>round_to=3</em>, <em>point_estimate='mean'</em>, <em>rope=None</em>, <em>ref_val=None</em>, <em>kde_plot=False</em>, <em>plot_transformed=False</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.plot_posterior" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.plots.</code><code class="descname">plot_posterior</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>text_size=16</em>, <em>alpha_level=0.05</em>, <em>round_to=3</em>, <em>point_estimate=’mean’</em>, <em>rope=None</em>, <em>ref_val=None</em>, <em>kde_plot=False</em>, <em>plot_transformed=False</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.plot_posterior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot Posterior densities in style of John K. Kruschke book.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>varnames</strong> (<em>list of variable names</em>) &#8211; Variables to be plotted, if None all variable are plotted</li>
-<li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
-<li><strong>figsize</strong> (<em>figure size tuple</em>) &#8211; If None, size is (12, num of variables * 2) inch</li>
-<li><strong>text_size</strong> (<em>int</em>) &#8211; Text size of the point_estimates and HPD (Default:16)</li>
-<li><strong>alpha_level</strong> (<em>float</em>) &#8211; Defines range for High Posterior Density</li>
-<li><strong>round_to</strong> (<em>int</em>) &#8211; Controls formatting for floating point numbers</li>
-<li><strong>point_estimate</strong> (<em>str</em>) &#8211; Must be in (&#8216;mode&#8217;, &#8216;mean&#8217;, &#8216;median&#8217;)</li>
-<li><strong>rope</strong> (<em>list</em><em> or </em><em>numpy array</em>) &#8211; Lower and upper values of the Region Of Practical Equivalence</li>
-<li><strong>ref_val</strong> (<em>bool</em>) &#8211; display the percentage below and above ref_val</li>
-<li><strong>kde_plot</strong> (<em>bool</em>) &#8211; if True plot a KDE instead of a histogram</li>
-<li><strong>plot_transformed</strong> (<em>bool</em>) &#8211; Flag for plotting automatically transformed variables in addition to
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>varnames</strong> (<em>list of variable names</em>) – Variables to be plotted, if None all variable are plotted</li>
+<li><strong>transform</strong> (<em>callable</em>) – Function to transform data (defaults to identity)</li>
+<li><strong>figsize</strong> (<em>figure size tuple</em>) – If None, size is (12, num of variables * 2) inch</li>
+<li><strong>text_size</strong> (<em>int</em>) – Text size of the point_estimates, axis ticks, and HPD (Default:16)</li>
+<li><strong>alpha_level</strong> (<em>float</em>) – Defines range for High Posterior Density</li>
+<li><strong>round_to</strong> (<em>int</em>) – Controls formatting for floating point numbers</li>
+<li><strong>point_estimate</strong> (<em>str</em>) – Must be in (‘mode’, ‘mean’, ‘median’)</li>
+<li><strong>rope</strong> (<em>list</em><em> or </em><em>numpy array</em>) – Lower and upper values of the Region Of Practical Equivalence</li>
+<li><strong>ref_val</strong> (<em>bool</em>) – display the percentage below and above ref_val</li>
+<li><strong>kde_plot</strong> (<em>bool</em>) – if True plot a KDE instead of a histogram. For discrete variables this
+argument is ignored.</li>
+<li><strong>plot_transformed</strong> (<em>bool</em>) – Flag for plotting automatically transformed variables in addition to
 original variables (defaults to False).</li>
-<li><strong>ax</strong> (<em>axes</em>) &#8211; Matplotlib axes. Defaults to None.</li>
-<li><strong>**kwargs</strong> &#8211; Passed as-is to plt.hist() or plt.plot() function, depending on the
+<li><strong>ax</strong> (<em>axes</em>) – Matplotlib axes. Defaults to None.</li>
+<li><strong>**kwargs</strong> – Passed as-is to plt.hist() or plt.plot() function, depending on the
 value of the argument kde_plot
 Some defaults are added, if not specified
-color=&#8217;#87ceeb&#8217; will match the style in the book</li>
+color=’#87ceeb’ will match the style in the book</li>
 </ul>
 </td>
 </tr>
@@ -298,35 +299,37 @@ color=&#8217;#87ceeb&#8217; will match the style in the book</li>
 
 <dl class="function">
 <dt id="pymc3.plots.forestplot">
-<code class="descclassname">pymc3.plots.</code><code class="descname">forestplot</code><span class="sig-paren">(</span><em>trace_obj</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>alpha=0.05</em>, <em>quartiles=True</em>, <em>rhat=True</em>, <em>main=None</em>, <em>xtitle=None</em>, <em>xlim=None</em>, <em>ylabels=None</em>, <em>chain_spacing=0.05</em>, <em>vline=0</em>, <em>gs=None</em>, <em>plot_transformed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.forestplot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.plots.</code><code class="descname">forestplot</code><span class="sig-paren">(</span><em>trace_obj</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>alpha=0.05</em>, <em>quartiles=True</em>, <em>rhat=True</em>, <em>main=None</em>, <em>xtitle=None</em>, <em>xlim=None</em>, <em>ylabels=None</em>, <em>chain_spacing=0.05</em>, <em>vline=0</em>, <em>gs=None</em>, <em>plot_transformed=False</em>, <em>**plot_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.forestplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forest plot (model summary plot).</p>
-<p>Generates a &#8220;forest plot&#8221; of 100*(1-alpha)% credible intervals for either
+<p>Generates a “forest plot” of 100*(1-alpha)% credible intervals for either
 the set of variables in a given model, or a specified set of nodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace_obj</strong> (<em>NpTrace</em><em> or </em><em>MultiTrace object</em>) &#8211; Trace(s) from an MCMC sample.</li>
-<li><strong>varnames</strong> (<em>list</em>) &#8211; List of variables to plot (defaults to None, which results in all
+<li><strong>trace_obj</strong> (<em>NpTrace</em><em> or </em><em>MultiTrace object</em>) – Trace(s) from an MCMC sample.</li>
+<li><strong>varnames</strong> (<em>list</em>) – List of variables to plot (defaults to None, which results in all
 variables plotted).</li>
-<li><strong>transform</strong> (<em>callable</em>) &#8211; Function to transform data (defaults to identity)</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> (<em>vline</em>) &#8211; Alpha value for (1-alpha)*100% credible intervals (defaults to 0.05).</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Flag for plotting the interquartile range, in addition to the
+<li><strong>transform</strong> (<em>callable</em>) – Function to transform data (defaults to identity)</li>
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> (<em>vline</em>) – Alpha value for (1-alpha)*100% credible intervals (defaults to 0.05).</li>
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Flag for plotting the interquartile range, in addition to the
 (1-alpha)*100% intervals (defaults to True).</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Flag for plotting Gelman-Rubin statistics. Requires 2 or more chains
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Flag for plotting Gelman-Rubin statistics. Requires 2 or more chains
 (defaults to True).</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Title for main plot. Passing False results in titles being suppressed;
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Title for main plot. Passing False results in titles being suppressed;
 passing None (default) results in default titles.</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Label for x-axis. Defaults to no label</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Range for x-axis. Defaults to matplotlib&#8217;s best guess.</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; User-defined labels for each variable. If not provided, the node
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Label for x-axis. Defaults to no label</li>
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Range for x-axis. Defaults to matplotlib’s best guess.</li>
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – User-defined labels for each variable. If not provided, the node
 __name__ attributes are used.</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Plot spacing between chains (defaults to 0.05).</li>
-<li><strong></strong><strong>(</strong><strong>optional</strong><strong>)</strong><strong></strong> &#8211; Location of vertical reference line (defaults to 0).</li>
-<li><strong>gs</strong> (<em>GridSpec</em>) &#8211; Matplotlib GridSpec object. Defaults to None.</li>
-<li><strong>plot_transformed</strong> (<em>bool</em>) &#8211; Flag for plotting automatically transformed variables in addition to
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Plot spacing between chains (defaults to 0.05).</li>
+<li><strong>(</strong><strong>optional</strong><strong>)</strong> – Location of vertical reference line (defaults to 0).</li>
+<li><strong>gs</strong> (<em>GridSpec</em>) – Matplotlib GridSpec object. Defaults to None.</li>
+<li><strong>plot_transformed</strong> (<em>bool</em>) – Flag for plotting automatically transformed variables in addition to
 original variables (defaults to False).</li>
+<li><strong>plot_kwargs</strong> (<em>dict</em>) – Optional arguments for plot elements. Currently accepts ‘fontsize’,
+‘linewidth’, ‘color’, ‘marker’, and ‘markersize’.</li>
 </ul>
 </td>
 </tr>
@@ -346,17 +349,17 @@ original variables (defaults to False).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>trace</strong> (<em>result of MCMC run</em>) &#8211; </li>
-<li><strong>varnames</strong> (<em>list of variable names</em>) &#8211; Variables to be plotted, if None all variable are plotted.
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>varnames</strong> (<em>list of variable names</em>) – Variables to be plotted, if None all variable are plotted.
 Vector-value stochastics are handled automatically.</li>
-<li><strong>max_lag</strong> (<em>int</em>) &#8211; Maximum lag to calculate autocorrelation. Defaults to 100.</li>
-<li><strong>burn</strong> (<em>int</em>) &#8211; Number of samples to discard from the beginning of the trace.
+<li><strong>max_lag</strong> (<em>int</em>) – Maximum lag to calculate autocorrelation. Defaults to 100.</li>
+<li><strong>burn</strong> (<em>int</em>) – Number of samples to discard from the beginning of the trace.
 Defaults to 0.</li>
-<li><strong>plot_transformed</strong> (<em>bool</em>) &#8211; Flag for plotting automatically transformed variables in addition to
+<li><strong>plot_transformed</strong> (<em>bool</em>) – Flag for plotting automatically transformed variables in addition to
 original variables (defaults to False).</li>
-<li><strong>symmetric_plot</strong> (<em>boolean</em>) &#8211; Plot from either [0, +lag] or [-lag, lag]. Defaults to False, [-, +lag].</li>
-<li><strong>ax</strong> (<em>axes</em>) &#8211; Matplotlib axes. Defaults to None.</li>
-<li><strong>figsize</strong> (<em>figure size tuple</em>) &#8211; If None, size is (12, num of variables * 2) inches.
+<li><strong>symmetric_plot</strong> (<em>boolean</em>) – Plot from either [0, +lag] or [-lag, lag]. Defaults to False, [-, +lag].</li>
+<li><strong>ax</strong> (<em>axes</em>) – Matplotlib axes. Defaults to None.</li>
+<li><strong>figsize</strong> (<em>figure size tuple</em>) – If None, size is (12, num of variables * 2) inches.
 Note this is not used if ax is supplied.</li>
 </ul>
 </td>
@@ -414,7 +417,7 @@ Note this is not used if ax is supplied.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -424,7 +427,7 @@ Note this is not used if ax is supplied.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

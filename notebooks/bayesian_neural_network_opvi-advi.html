@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changes in API: Variational Inference: Bayesian Neural Networks &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Changes in API: Variational Inference: Bayesian Neural Networks &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="API Reference" href="../api.html"/>
         <link rel="prev" title="Convolutional variational autoencoder with PyMC3 and Keras" href="convolutional_vae_keras_advi.html"/> 
@@ -100,15 +100,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#variational-inference">Variational Inference</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="GLM-hierarchical-ADVI.html">GLM: Hierarchical Linear Regression with ADVI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GLM-hierarchical-advi-minibatch.html">GLM: Mini-batch ADVI on hierarchical regression model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lda-advi-aevb.html">Automatic autoencoding variational Bayes for latent dirichlet allocation with PyMC3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html">Variational Inference: Bayesian Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="convolutional_vae_keras_advi.html">Convolutional variational autoencoder with PyMC3 and Keras</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Changes in API: Variational Inference: Bayesian Neural Networks</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Bayesian-Neural-Networks-in-PyMC3">Bayesian Neural Networks in PyMC3</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Lets-look-at-what-the-classifier-has-learned">Lets look at what the classifier has learned</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Mini-batch-ADVI:-Scaling-data-size">Mini-batch ADVI: Scaling data size</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#Minibatch-ADVI">Minibatch ADVI</a></li>
@@ -388,8 +387,8 @@ bayesian approach in Deep Learning:</p>
 <h2>Bayesian Neural Networks in PyMC3<a class="headerlink" href="#Bayesian-Neural-Networks-in-PyMC3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="Generating-data">
 <h3>Generating data<a class="headerlink" href="#Generating-data" title="Permalink to this headline">¶</a></h3>
-<p>First, lets generate some toy data &#8211; a simple binary classification
-problem that&#8217;s not linearly separable.</p>
+<p>First, lets generate some toy data – a simple binary classification
+problem that’s not linearly separable.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -423,8 +422,8 @@ problem that&#8217;s not linearly separable.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">scale</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floatX</span><span class="p">)</span>
-<span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floatX</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -470,9 +469,9 @@ sufficient for such a simple problem.</p>
     <span class="n">n_hidden</span> <span class="o">=</span> <span class="mi">5</span>
 
     <span class="c1"># Initialize random weights between each layer</span>
-    <span class="n">init_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_hidden</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floatX</span><span class="p">)</span>
-    <span class="n">init_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floatX</span><span class="p">)</span>
-    <span class="n">init_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floatX</span><span class="p">)</span>
+    <span class="n">init_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_hidden</span><span class="p">)</span>
+    <span class="n">init_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
+    <span class="n">init_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">neural_network</span><span class="p">:</span>
         <span class="c1"># Weights from input to hidden layer</span>
@@ -517,9 +516,9 @@ sufficient for such a simple problem.</p>
 </pre></div>
 </div>
 </div>
-<p>That&#8217;s not so bad. The <code class="docutils literal"><span class="pre">Normal</span></code> priors help regularize the weights.
+<p>That’s not so bad. The <code class="docutils literal"><span class="pre">Normal</span></code> priors help regularize the weights.
 Usually we would add a constant <code class="docutils literal"><span class="pre">b</span></code> to the inputs but I omitted it
-here to keep the code cleaner. Let&#8217;s train the model using new ADVI
+here to keep the code cleaner. Let’s train the model using new ADVI
 implemented via <a class="reference external" href="https://arxiv.org/abs/1610.09033">OPVI</a> framework</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -534,7 +533,7 @@ implemented via <a class="reference external" href="https://arxiv.org/abs/1610.0
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -550,7 +549,7 @@ with neural_network:
     # ADVI has nearly converged
     pm.fit(n=20000, method=inference)
     # It is time to set `s` to zero
-    s.set_value(0)
+    s.set_value(pm.floatX(0))
     approx = pm.fit(n=30000)
 </pre></div>
 </div>
@@ -560,10 +559,10 @@ with neural_network:
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 123.45: 100%|██████████| 20000/20000 [00:05&lt;00:00, 3756.62it/s]
-Finished [100%]: Average Loss = 123.48
-Average Loss = 121.91: 100%|██████████| 30000/30000 [00:07&lt;00:00, 3860.27it/s]
-Finished [100%]: Average Loss = 121.87
+Average Loss = 186.09: 100%|██████████| 20000/20000 [00:06&lt;00:00, 3244.78it/s]
+Finished [100%]: Average Loss = 185.99
+Average Loss = 135.65: 100%|██████████| 30000/30000 [00:09&lt;00:00, 3194.79it/s]
+Finished [100%]: Average Loss = 135.68
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -571,14 +570,14 @@ Finished [100%]: Average Loss = 121.87
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 19.3 s, sys: 1.51 s, total: 20.9 s
-Wall time: 40.2 s
+CPU times: user 17.6 s, sys: 504 ms, total: 18.1 s
+Wall time: 19.6 s
 </pre></div></div>
 </div>
-<p>Let&#8217;s compare performance with no grad scaling</p>
+<p>Let’s compare performance with no grad scaling</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -588,7 +587,7 @@ Wall time: 40.2 s
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -605,8 +604,8 @@ with neural_network:
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 121.93: 100%|██████████| 30000/30000 [00:07&lt;00:00, 3790.07it/s]
-Finished [100%]: Average Loss = 121.9
+Average Loss = 136.61: 100%|██████████| 30000/30000 [00:09&lt;00:00, 3302.62it/s]
+Finished [100%]: Average Loss = 136.62
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -614,14 +613,14 @@ Finished [100%]: Average Loss = 121.9
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 10.3 s, sys: 403 ms, total: 10.7 s
-Wall time: 11.1 s
+CPU times: user 9.97 s, sys: 224 ms, total: 10.2 s
+Wall time: 10.6 s
 </pre></div></div>
 </div>
 <p>And using old interface. Performance is nearly the same</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -637,8 +636,8 @@ with neural_network:
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average ELBO = -181.77: 100%|██████████| 30000/30000 [00:06&lt;00:00, 4398.06it/s]
-Finished [100%]: Average ELBO = -165.16
+Average ELBO = -175.52: 100%|██████████| 30000/30000 [00:07&lt;00:00, 4206.95it/s]
+Finished [100%]: Average ELBO = -157.15
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -646,11 +645,11 @@ Finished [100%]: Average ELBO = -165.16
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 8.3 s, sys: 389 ms, total: 8.69 s
-Wall time: 12.6 s
+CPU times: user 8.84 s, sys: 134 ms, total: 8.98 s
+Wall time: 8.98 s
 </pre></div></div>
 </div>
-<p>~ 30 sec on my laptop. That&#8217;s pretty good considering that NUTS is
+<p>~ 30 sec on my laptop. That’s pretty good considering that NUTS is
 having a really hard time. Further below we make this even faster. To
 make it really fly, we probably want to run the Neural Network on the
 GPU.</p>
@@ -660,11 +659,11 @@ samples from the variational posterior using <code class="docutils literal"><spa
 like MCMC):</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">trace</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">sample_vp</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span></span><span class="n">trace</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -672,12 +671,12 @@ like MCMC):</p>
 slowly improves the fit over time.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">-</span><span class="n">inference</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;new ADVI&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">-</span><span class="n">inference_no_s</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;new ADVI no scaling&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">-</span><span class="n">approx</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;new ADVI no scaling&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">advifit</span><span class="o">.</span><span class="n">elbo_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;old ADVI&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;ELBO&#39;</span><span class="p">)</span>
@@ -692,25 +691,25 @@ slowly improves the fit over time.</p>
 <img alt="../_images/notebooks_bayesian_neural_network_opvi-advi_19_0.png" src="../_images/notebooks_bayesian_neural_network_opvi-advi_19_0.png" />
 </div>
 </div>
-<p>Grad scaling seemd to give no effect, but let&#8217;s see difference in
-variance of ELBO, that&#8217;s really what is expected</p>
+<p>Grad scaling seemd to give no effect, but let’s see difference in
+variance of ELBO, that’s really what is expected</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">inference</span><span class="o">.</span><span class="n">hist</span><span class="p">[</span><span class="mi">25000</span><span class="p">:]</span><span class="o">.</span><span class="n">var</span><span class="p">(),</span> <span class="n">inference_no_s</span><span class="o">.</span><span class="n">hist</span><span class="p">[</span><span class="mi">25000</span><span class="p">:]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span></span><span class="n">approx</span><span class="o">.</span><span class="n">hist</span><span class="p">[</span><span class="mi">25000</span><span class="p">:]</span><span class="o">.</span><span class="n">var</span><span class="p">(),</span> <span class="n">inference_no_s</span><span class="o">.</span><span class="n">hist</span><span class="p">[</span><span class="mi">25000</span><span class="p">:]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
+<span></span>Out[12]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(nan, 112.48609441184267)
+<span></span>(726.99405291840856, 757.69014707492715)
 </pre></div>
 </div>
 </div>
@@ -726,7 +725,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </ol>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -737,7 +736,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[14]:
+<span></span>Out[13]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -747,7 +746,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -758,8 +757,9 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 <span class="c1"># Do not forget test_values or set theano.config.compute_test_value = &#39;off&#39;</span>
 <span class="n">x</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
 <span class="n">n</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">_sample_proba</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">sample_node</span><span class="p">(</span><span class="n">neural_network</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
-                                   <span class="n">more_replacements</span><span class="o">=</span><span class="p">{</span><span class="n">ann_input</span><span class="p">:</span><span class="n">x</span><span class="p">})</span>
+<span class="n">_sample_proba</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">sample_node</span><span class="p">(</span><span class="n">neural_network</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">p</span><span class="p">,</span>
+                                   <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                   <span class="n">more_replacements</span><span class="o">=</span><span class="p">{</span><span class="n">ann_input</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
 <span class="c1"># It is time to compile the function</span>
 <span class="c1"># No updates are needed for Approximation random generator</span>
 <span class="c1"># Efficient vectorized form of sampling is used</span>
@@ -769,7 +769,8 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 <span class="k">def</span> <span class="nf">production_step1</span><span class="p">():</span>
     <span class="n">ann_input</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
     <span class="n">ann_output</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
-    <span class="n">ppc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_ppc</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">neural_network</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">neural_network</span><span class="p">:</span>
+        <span class="n">ppc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_ppc</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
     <span class="c1"># Use probability of &gt; 0.5 to assume prediction of class 1</span>
     <span class="n">pred</span> <span class="o">=</span> <span class="n">ppc</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
@@ -782,7 +783,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 <p>See the difference</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -795,12 +796,12 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1 loop, best of 3: 4.89 s per loop
+247 ms ± 33.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -813,12 +814,12 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-10 loops, best of 3: 48.7 ms per loop
+52.8 ms ± 3.71 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -828,7 +829,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -849,7 +850,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -862,7 +863,7 @@ our approximation (<code class="docutils literal"><span class="pre">approx.sampl
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Accuracy = 96.8%
+Accuracy = 94.8%
 </pre></div></div>
 </div>
 <p>Hey, our neural network did all right!</p>
@@ -874,11 +875,11 @@ Accuracy = 96.8%
 the whole input space.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="mi">100j</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="mi">100j</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">floatX</span><span class="p">)</span>
+<span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="mi">100j</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="mi">100j</span><span class="p">])</span>
 <span class="n">grid_2d</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="n">dummy_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
 </pre></div>
@@ -886,7 +887,7 @@ the whole input space.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -899,7 +900,7 @@ the whole input space.</p>
 <h3>Probability surface<a class="headerlink" href="#Probability-surface" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -932,7 +933,7 @@ predictive to get a sense for the uncertainty in our predictions. Here
 is what that looks like:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -962,47 +963,24 @@ want to train the model primarily on samples from that high-uncertainty
 region.</p>
 </div>
 </div>
-<div class="section" id="Mini-batch-ADVI:-Scaling-data-size">
-<h2>Mini-batch ADVI: Scaling data size<a class="headerlink" href="#Mini-batch-ADVI:-Scaling-data-size" title="Permalink to this headline">¶</a></h2>
-<p>So far, we have trained our model on all data at once. Obviously this
-won&#8217;t scale to something like ImageNet. Moreover, training on
-mini-batches of data (stochastic gradient descent) avoids local minima
-and can lead to faster convergence.</p>
-<p>Fortunately, ADVI can be run on mini-batches as well. It just requires
-some setting up:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># Generator that returns mini-batches in each iteration</span>
-<span class="k">def</span> <span class="nf">create_minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="c1"># Return random data samples of set size 100 each iteration</span>
-        <span class="n">ixs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">data</span><span class="p">[</span><span class="n">ixs</span><span class="p">]</span>
-
-</pre></div>
-</div>
-</div>
-</div>
 </div>
 <div class="section" id="Minibatch-ADVI">
 <h1>Minibatch ADVI<a class="headerlink" href="#Minibatch-ADVI" title="Permalink to this headline">¶</a></h1>
-<p>All you need to train with minibatches is to wrap python generators with
-<code class="docutils literal"><span class="pre">pm.generator</span></code> function The rest code should work without changes,
-let&#8217;s see it</p>
+<p>So far, we have trained our model on all data at once. Obviously this
+won’t scale to something like ImageNet. Moreover, training on
+mini-batches of data (stochastic gradient descent) avoids local minima
+and can lead to faster convergence.</p>
+<p>All you need to train with minibatches is to your data with the
+<code class="docutils literal"><span class="pre">pm.Minibatch</span></code> class. The rest code should work without changes, let’s
+see it</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">minibatch_x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">create_minibatch</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
-<span class="n">minibatch_y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">generator</span><span class="p">(</span><span class="n">create_minibatch</span><span class="p">(</span><span class="n">Y_train</span><span class="p">))</span>
+<span></span><span class="n">minibatch_x</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Minibatch</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">minibatch_y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Minibatch</span><span class="p">(</span><span class="n">Y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">neural_network_minibatch</span> <span class="o">=</span> <span class="n">construct_nn</span><span class="p">(</span><span class="n">minibatch_x</span><span class="p">,</span> <span class="n">minibatch_y</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">neural_network_minibatch</span><span class="p">:</span>
     <span class="n">approx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">40000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">ADVI</span><span class="p">())</span>
@@ -1014,8 +992,8 @@ let&#8217;s see it</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 11.782: 100%|██████████| 40000/40000 [00:08&lt;00:00, 4682.06it/s]
-Finished [100%]: Average Loss = 11.798
+Average Loss = 135.58: 100%|██████████| 40000/40000 [00:05&lt;00:00, 6800.30it/s]
+Finished [100%]: Average Loss = 135.64
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1034,7 +1012,7 @@ Finished [100%]: Average Loss = 11.798
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_bayesian_neural_network_opvi-advi_45_0.png" src="../_images/notebooks_bayesian_neural_network_opvi-advi_45_0.png" />
+<img alt="../_images/notebooks_bayesian_neural_network_opvi-advi_43_0.png" src="../_images/notebooks_bayesian_neural_network_opvi-advi_43_0.png" />
 </div>
 </div>
 <p>It works!</p>
@@ -1084,7 +1062,7 @@ Finished [100%]: Average Loss = 11.798
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1094,7 +1072,7 @@ Finished [100%]: Average Loss = 11.798
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

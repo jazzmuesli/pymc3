@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Posterior Predictive Checks &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Posterior Predictive Checks &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="How to debug a model" href="howto_debugging.html"/>
+        <link rel="next" title="Model comparison" href="model_comparison.html"/>
         <link rel="prev" title="Diagnosing Biased Inference with Divergences" href="Diagnosing_biased_Inference_with_Divergences.html"/> 
 
   
@@ -95,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#howto">Howto</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="api_quickstart.html">API quickstart</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sampler-stats.html">Sampler statistics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sampler-stats.html#Multiple-samplers">Multiple samplers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Diagnosing_biased_Inference_with_Divergences.html">Diagnosing Biased Inference with Divergences</a></li>
@@ -103,6 +104,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#Prediction">Prediction</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="model_comparison.html">Model comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="howto_debugging.html">How to debug a model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="LKJ.html">LKJ Prior for fitting a Multivariate Normal Model</a></li>
@@ -383,10 +385,10 @@ sets from the model using parameter settings from draws from the
 posterior.</p>
 <p>Elaborating slightly one can say that - Posterior predictive checks
 (PPCs) analyze the degree to which data generated from the model deviate
-from data generated from the true distribution. So often you&#8217;ll want to
+from data generated from the true distribution. So often you’ll want to
 know if for example your posterior distribution is approximating your
 underlying distribution. The visualization aspect of this model
-evaluation method is also great for a &#8216;sense check&#8217; or explaining your
+evaluation method is also great for a ‘sense check’ or explaining your
 model to others and getting criticism.</p>
 <p><code class="docutils literal"><span class="pre">PyMC3</span></code> has random number support thanks to <a class="reference external" href="https://github.com/mwibrow">Mark
 Wibrow</a> as implemented in
@@ -526,9 +528,9 @@ inferred means to the actual sample mean:</p>
 <div class="section" id="Comparison-between-PPC-and-other-model-evaluation-methods.">
 <h2>Comparison between PPC and other model evaluation methods.<a class="headerlink" href="#Comparison-between-PPC-and-other-model-evaluation-methods." title="Permalink to this headline">¶</a></h2>
 <p>An excellent introduction to this is given on
-<a class="reference external" href="http://edwardlib.org/tutorials/ppc">Edward</a> and since I can&#8217;t write
-this any better I&#8217;ll just quote this:</p>
-<p>&#8220;PPCs are an excellent tool for revising models, simplifying or
+<a class="reference external" href="http://edwardlib.org/tutorials/ppc">Edward</a> and since I can’t write
+this any better I’ll just quote this:</p>
+<p>“PPCs are an excellent tool for revising models, simplifying or
 expanding the current model as one examines how well it fits the data.
 They are inspired by prior checks and classical hypothesis testing,
 under the philosophy that models should be criticized under the
@@ -539,16 +541,16 @@ that while they can be applied as a form of Bayesian hypothesis testing,
 hypothesis testing is generally not recommended: binary decision making
 from a single test is not as common a use case as one might believe. We
 recommend performing many PPCs to get a holistic understanding of the
-model fit.&#8221;</p>
+model fit.”</p>
 <p>An important lesson to learn as someone using Probabilistic Programming
 is to not overfit your understanding or your criticism of models to only
 one metric. Model evaluation is a skill that can be honed with practice.</p>
 </div>
 <div class="section" id="Prediction">
 <h2>Prediction<a class="headerlink" href="#Prediction" title="Permalink to this headline">¶</a></h2>
-<p>The same pattern can be used for prediction. Here we&#8217;re building a
-logistic regression model. Note that since we&#8217;re dealing the full
-posterior, we&#8217;re also getting uncertainty in our predictions for free.</p>
+<p>The same pattern can be used for prediction. Here we’re building a
+logistic regression model. Note that since we’re dealing the full
+posterior, we’re also getting uncertainty in our predictions for free.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [7]:
@@ -722,7 +724,7 @@ Finished [100%]: Average ELBO = -2,434.84
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="howto_debugging.html" class="btn btn-neutral float-right" title="How to debug a model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="model_comparison.html" class="btn btn-neutral float-right" title="Model comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Diagnosing_biased_Inference_with_Divergences.html" class="btn btn-neutral" title="Diagnosing Biased Inference with Divergences" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -756,7 +758,7 @@ Finished [100%]: Average ELBO = -2,434.84
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -766,7 +768,7 @@ Finished [100%]: Average ELBO = -2,434.84
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

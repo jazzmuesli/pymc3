@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>&lt;no title&gt; &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/> 
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -520,7 +520,8 @@ div.nboutput div.output_area.stderr {
 
     <span class="n">dL0_star</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
-    <span class="n">mu</span> <span class="o">=</span> <span class="n">dL0_star</span> <span class="o">*</span> <span class="n">c</span> <span class="c1"># prior mean hazard</span>
+    <span class="c1"># prior mean hazard</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">dL0_star</span> <span class="o">*</span> <span class="n">c</span>
 
     <span class="n">dL0</span> <span class="o">=</span> <span class="n">Gamma</span><span class="p">(</span><span class="s1">&#39;dL0&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
 
@@ -561,9 +562,9 @@ Initializing NUTS using advi_map...
 <div class="highlight"><pre>
 Warning: Desired error not necessarily achieved due to precision loss.
          Current function value: 2811.898224
-         Iterations: 913
+         Iterations: 899
          Function evaluations: 999
-         Gradient evaluations: 988
+         Gradient evaluations: 989
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -571,9 +572,9 @@ Warning: Desired error not necessarily achieved due to precision loss.
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average ELBO = -2,860.41: 100%|██████████| 10000/10000 [00:14&lt;00:00, 674.72it/s]
-Finished [100%]: Average ELBO = -2,845.79
-100%|██████████| 2000/2000 [02:30&lt;00:00, 13.25it/s]
+Average Loss = 85,779: 100%|██████████| 10000/10000 [00:06&lt;00:00, 1476.40it/s]
+Finished [100%]: Average Loss = 85,557
+100%|██████████| 2500/2500 [01:07&lt;00:00, 36.90it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -582,7 +583,7 @@ Finished [100%]: Average ELBO = -2,845.79
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">);</span>
+<span></span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -599,17 +600,8 @@ Finished [100%]: Average ELBO = -2,845.79
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.gridspec.GridSpec at 0x115a44d68&gt;
+<span></span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">],</span>
+           <span class="n">ylabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pscenter&#39;</span><span class="p">,</span> <span class="s1">&#39;hhcenter&#39;</span><span class="p">,</span> <span class="s1">&#39;ncomact&#39;</span><span class="p">,</span> <span class="s1">&#39;rleader&#39;</span><span class="p">,</span> <span class="s1">&#39;dleader&#39;</span><span class="p">,</span> <span class="s1">&#39;inter1&#39;</span><span class="p">,</span> <span class="s1">&#39;inter2&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -617,7 +609,7 @@ Finished [100%]: Average ELBO = -2,845.79
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_cox_model_10_1.png" src="../_images/notebooks_cox_model_10_1.png" />
+<img alt="../_images/notebooks_cox_model_10_0.png" src="../_images/notebooks_cox_model_10_0.png" />
 </div>
 </div>
 
@@ -656,7 +648,7 @@ Finished [100%]: Average ELBO = -2,845.79
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -666,7 +658,7 @@ Finished [100%]: Average ELBO = -2,845.79
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

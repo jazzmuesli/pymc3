@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Diagnostics &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Diagnostics &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Backends" href="backends.html"/>
         <link rel="prev" title="Stats" href="stats.html"/> 
@@ -222,15 +222,15 @@ computed. If the series is converged, this score should oscillate between
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array-like</em>) &#8211; The trace of some stochastic parameter.</li>
-<li><strong>first</strong> (<em>float</em>) &#8211; The fraction of series at the beginning of the trace.</li>
-<li><strong>last</strong> (<em>float</em>) &#8211; The fraction of series at the end to be compared with the section
+<li><strong>x</strong> (<em>array-like</em>) – The trace of some stochastic parameter.</li>
+<li><strong>first</strong> (<em>float</em>) – The fraction of series at the beginning of the trace.</li>
+<li><strong>last</strong> (<em>float</em>) – The fraction of series at the end to be compared with the section
 at the beginning.</li>
-<li><strong>intervals</strong> (<em>int</em>) &#8211; The number of segments.</li>
+<li><strong>intervals</strong> (<em>int</em>) – The number of segments.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>scores</strong> (<em>list [[]]</em>) &#8211; Return a list of [i, score], where i is the starting index for each
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>scores</strong> (<em>list [[]]</em>) – Return a list of [i, score], where i is the starting index for each
 interval and score the Geweke score on the interval.</p>
 </td>
 </tr>
@@ -263,10 +263,10 @@ values that are dispersed relative to the target distribution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mtrace</strong> (<em>MultiTrace</em>) &#8211; A MultiTrace object containing parallel traces (minimum 2)
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mtrace</strong> (<em>MultiTrace</em>) – A MultiTrace object containing parallel traces (minimum 2)
 of one or more stochastic parameters.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>Rhat</strong> (<em>dict</em>) &#8211; Returns dictionary of the potential scale reduction
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>Rhat</strong> (<em>dict</em>) – Returns dictionary of the potential scale reduction
 factors, <span class="math">\(\hat{R}\)</span></td>
 </tr>
 </tbody>
@@ -295,10 +295,10 @@ Gelman and Rubin (1992)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mtrace</strong> (<em>MultiTrace</em>) &#8211; A MultiTrace object containing parallel traces (minimum 2)
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mtrace</strong> (<em>MultiTrace</em>) – A MultiTrace object containing parallel traces (minimum 2)
 of one or more stochastic parameters.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>n_eff</strong> (<em>float</em>) &#8211; Return the effective sample size, <span class="math">\(\hat{n}_{eff}\)</span></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>n_eff</strong> (<em>float</em>) – Return the effective sample size, <span class="math">\(\hat{n}_{eff}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -359,7 +359,7 @@ is the first odd positive integer for which the sum
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -369,7 +369,7 @@ is the first odd positive integer for which the sum
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

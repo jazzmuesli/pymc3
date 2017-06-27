@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Generalized Linear Models &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Generalized Linear Models &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Gaussian Processes" href="gp.html"/>
         <link rel="prev" title="Inference" href="inference.html"/> 
@@ -210,26 +210,26 @@
 <span id="generalized-linear-models"></span><h1>Generalized Linear Models<a class="headerlink" href="#module-pymc3.glm.linear" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pymc3.glm.linear.LinearComponent">
-<em class="property">class </em><code class="descclassname">pymc3.glm.linear.</code><code class="descname">LinearComponent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>intercept=True</em>, <em>labels=None</em>, <em>priors=None</em>, <em>vars=None</em>, <em>name=''</em>, <em>model=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.glm.linear.LinearComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.glm.linear.</code><code class="descname">LinearComponent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>intercept=True</em>, <em>labels=None</em>, <em>priors=None</em>, <em>vars=None</em>, <em>name=”</em>, <em>model=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.glm.linear.LinearComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates linear component, y_est is accessible via attribute</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str - name</em><em>, </em><em>associated with the linear component</em>) &#8211; </li>
-<li><strong>x</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) &#8211; </li>
-<li><strong>y</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) &#8211; </li>
-<li><strong>intercept</strong> (<em>bool - fit with intercept</em><em> or </em><em>not?</em>) &#8211; </li>
-<li><strong>labels</strong> (<em>list - replace variable names with these labels</em>) &#8211; </li>
-<li><strong>priors</strong> (<em>dict - priors for coefficients</em>) &#8211; <dl class="docutils">
+<li><strong>name</strong> (<em>str - name</em><em>, </em><em>associated with the linear component</em>) – </li>
+<li><strong>x</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – </li>
+<li><strong>y</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) – </li>
+<li><strong>intercept</strong> (<em>bool - fit with intercept</em><em> or </em><em>not?</em>) – </li>
+<li><strong>labels</strong> (<em>list - replace variable names with these labels</em>) – </li>
+<li><strong>priors</strong> (<em>dict - priors for coefficients</em>) – <dl class="docutils">
 <dt>use <cite>Intercept</cite> key for defining Intercept prior</dt>
 <dd>defaults to Flat.dist()</dd>
 <dt>use <cite>Regressor</cite> key for defining default prior for all regressors</dt>
 <dd>defaults to Normal.dist(mu=0, tau=1.0E-6)</dd>
 </dl>
 </li>
-<li><strong>vars</strong> (<em>dict - random variables instead of creating new ones</em>) &#8211; </li>
+<li><strong>vars</strong> (<em>dict - random variables instead of creating new ones</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -239,28 +239,28 @@
 
 <dl class="class">
 <dt id="pymc3.glm.linear.GLM">
-<em class="property">class </em><code class="descclassname">pymc3.glm.linear.</code><code class="descname">GLM</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>intercept=True</em>, <em>labels=None</em>, <em>priors=None</em>, <em>vars=None</em>, <em>family='normal'</em>, <em>name=''</em>, <em>model=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.glm.linear.GLM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.glm.linear.</code><code class="descname">GLM</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>intercept=True</em>, <em>labels=None</em>, <em>priors=None</em>, <em>vars=None</em>, <em>family=’normal’</em>, <em>name=”</em>, <em>model=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.glm.linear.GLM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates glm model, y_est is accessible via attribute</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str - name</em><em>, </em><em>associated with the linear component</em>) &#8211; </li>
-<li><strong>x</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) &#8211; </li>
-<li><strong>y</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) &#8211; </li>
-<li><strong>intercept</strong> (<em>bool - fit with intercept</em><em> or </em><em>not?</em>) &#8211; </li>
-<li><strong>labels</strong> (<em>list - replace variable names with these labels</em>) &#8211; </li>
-<li><strong>priors</strong> (<em>dict - priors for coefficients</em>) &#8211; <dl class="docutils">
+<li><strong>name</strong> (<em>str - name</em><em>, </em><em>associated with the linear component</em>) – </li>
+<li><strong>x</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – </li>
+<li><strong>y</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) – </li>
+<li><strong>intercept</strong> (<em>bool - fit with intercept</em><em> or </em><em>not?</em>) – </li>
+<li><strong>labels</strong> (<em>list - replace variable names with these labels</em>) – </li>
+<li><strong>priors</strong> (<em>dict - priors for coefficients</em>) – <dl class="docutils">
 <dt>use <cite>Intercept</cite> key for defining Intercept prior</dt>
 <dd>defaults to Flat.dist()</dd>
 <dt>use <cite>Regressor</cite> key for defining default prior for all regressors</dt>
 <dd>defaults to Normal.dist(mu=0, tau=1.0E-6)</dd>
 </dl>
 </li>
-<li><strong>init</strong> (<em>dict - test_vals for coefficients</em>) &#8211; </li>
-<li><strong>vars</strong> (<em>dict - random variables instead of creating new ones</em>) &#8211; </li>
-<li><strong>family</strong> (<em>pymc3..families object</em>) &#8211; </li>
+<li><strong>init</strong> (<em>dict - test_vals for coefficients</em>) – </li>
+<li><strong>vars</strong> (<em>dict - random variables instead of creating new ones</em>) – </li>
+<li><strong>family</strong> (<em>pymc3..families object</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -314,7 +314,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -324,7 +324,7 @@
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

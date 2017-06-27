@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Backends &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Backends &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Math" href="math.html"/>
         <link rel="prev" title="Diagnostics" href="diagnostics.html"/> 
@@ -241,7 +241,7 @@ and SQLite backends store the values while sampling.</p>
 <p>By default, a NumPy array is used as the backend. To specify a different
 backend, pass a backend instance to <cite>sample</cite>.</p>
 <p>For example, the following would save the sampling values to CSV files
-in the directory &#8216;test&#8217;.</p>
+in the directory ‘test’.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
@@ -341,9 +341,9 @@ defined that returns a MultiTrace object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Name of backend. This has no meaning for the NDArray backend.</li>
-<li><strong>model</strong> (<em>Model</em>) &#8211; If None, the model is taken from the <cite>with</cite> context.</li>
-<li><strong>vars</strong> (<em>list of variables</em>) &#8211; Sampling values will be stored for these variables. If None,
+<li><strong>name</strong> (<em>str</em>) – Name of backend. This has no meaning for the NDArray backend.</li>
+<li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
+<li><strong>vars</strong> (<em>list of variables</em>) – Sampling values will be stored for these variables. If None,
 <cite>model.unobserved_RVs</cite> is used.</li>
 </ul>
 </td>
@@ -359,9 +359,9 @@ defined that returns a MultiTrace object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>varname</strong> (<em>str</em>) &#8211; </li>
-<li><strong>burn</strong> (<em>int</em>) &#8211; </li>
-<li><strong>thin</strong> (<em>int</em>) &#8211; </li>
+<li><strong>varname</strong> (<em>str</em>) – </li>
+<li><strong>burn</strong> (<em>int</em>) – </li>
+<li><strong>thin</strong> (<em>int</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -387,7 +387,7 @@ with variable names as keys.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>dict</em>) &#8211; Values mapped to variable names</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>dict</em>) – Values mapped to variable names</td>
 </tr>
 </tbody>
 </table>
@@ -402,9 +402,9 @@ with variable names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>draws</strong> (<em>int</em>) &#8211; Expected number of draws</li>
-<li><strong>chain</strong> (<em>int</em>) &#8211; Chain number</li>
-<li><strong>sampler_vars</strong> (<em>list of dicts</em>) &#8211; Names and dtypes of the variables that are
+<li><strong>draws</strong> (<em>int</em>) – Expected number of draws</li>
+<li><strong>chain</strong> (<em>int</em>) – Chain number</li>
+<li><strong>sampler_vars</strong> (<em>list of dicts</em>) – Names and dtypes of the variables that are
 exported by the samplers.</li>
 </ul>
 </td>
@@ -424,11 +424,11 @@ exported by the samplers.</li>
 <h3>Database format<a class="headerlink" href="#database-format" title="Permalink to this headline">¶</a></h3>
 <p>For each variable, a table is created with the following format:</p>
 <blockquote>
-<div>recid (INT), draw (INT), chain (INT),  v0 (FLOAT), v1 (FLOAT), v2 (FLOAT) ...</div></blockquote>
+<div>recid (INT), draw (INT), chain (INT),  v0 (FLOAT), v1 (FLOAT), v2 (FLOAT) …</div></blockquote>
 <p>The variable column names are extended to reflect additional dimensions.
 For example, a variable with the shape (2, 2) would be stored as</p>
 <blockquote>
-<div>key (INT), draw (INT), chain (INT),  v0_0 (FLOAT), v0_1 (FLOAT), v1_0 (FLOAT) ...</div></blockquote>
+<div>key (INT), draw (INT), chain (INT),  v0_0 (FLOAT), v0_1 (FLOAT), v1_0 (FLOAT) …</div></blockquote>
 <p>The key is autoincremented each time a new row is added to the table.
 The chain column denotes the chain index and starts at 0.</p>
 <dl class="class">
@@ -440,9 +440,9 @@ The chain column denotes the chain index and starts at 0.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Name of database file</li>
-<li><strong>model</strong> (<em>Model</em>) &#8211; If None, the model is taken from the <cite>with</cite> context.</li>
-<li><strong>vars</strong> (<em>list of variables</em>) &#8211; Sampling values will be stored for these variables. If None,
+<li><strong>name</strong> (<em>str</em>) – Name of database file</li>
+<li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
+<li><strong>vars</strong> (<em>list of variables</em>) – Sampling values will be stored for these variables. If None,
 <cite>model.unobserved_RVs</cite> is used.</li>
 </ul>
 </td>
@@ -458,9 +458,9 @@ The chain column denotes the chain index and starts at 0.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>varname</strong> (<em>str</em>) &#8211; </li>
-<li><strong>burn</strong> (<em>int</em>) &#8211; </li>
-<li><strong>thin</strong> (<em>int</em>) &#8211; </li>
+<li><strong>varname</strong> (<em>str</em>) – </li>
+<li><strong>burn</strong> (<em>int</em>) – </li>
+<li><strong>thin</strong> (<em>int</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -486,7 +486,7 @@ with variables names as keys.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>dict</em>) &#8211; Values mapped to variable names</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>dict</em>) – Values mapped to variable names</td>
 </tr>
 </tbody>
 </table>
@@ -501,8 +501,8 @@ with variables names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>draws</strong> (<em>int</em>) &#8211; Expected number of draws</li>
-<li><strong>chain</strong> (<em>int</em>) &#8211; Chain number</li>
+<li><strong>draws</strong> (<em>int</em>) – Expected number of draws</li>
+<li><strong>chain</strong> (<em>int</em>) – Chain number</li>
 </ul>
 </td>
 </tr>
@@ -521,8 +521,8 @@ with variables names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Path to SQLite database file</li>
-<li><strong>model</strong> (<em>Model</em>) &#8211; If None, the model is taken from the <cite>with</cite> context.</li>
+<li><strong>name</strong> (<em>str</em>) – Path to SQLite database file</li>
+<li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
 </ul>
 </td>
 </tr>
@@ -558,9 +558,9 @@ shape of (3, 2).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Name of directory to store text files</li>
-<li><strong>model</strong> (<em>Model</em>) &#8211; If None, the model is taken from the <cite>with</cite> context.</li>
-<li><strong>vars</strong> (<em>list of variables</em>) &#8211; Sampling values will be stored for these variables. If None,
+<li><strong>name</strong> (<em>str</em>) – Name of directory to store text files</li>
+<li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
+<li><strong>vars</strong> (<em>list of variables</em>) – Sampling values will be stored for these variables. If None,
 <cite>model.unobserved_RVs</cite> is used.</li>
 </ul>
 </td>
@@ -576,9 +576,9 @@ shape of (3, 2).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>varname</strong> (<em>str</em>) &#8211; </li>
-<li><strong>burn</strong> (<em>int</em>) &#8211; </li>
-<li><strong>thin</strong> (<em>int</em>) &#8211; </li>
+<li><strong>varname</strong> (<em>str</em>) – </li>
+<li><strong>burn</strong> (<em>int</em>) – </li>
+<li><strong>thin</strong> (<em>int</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -604,7 +604,7 @@ with variables names as keys.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>dict</em>) &#8211; Values mapped to variable names</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> (<em>dict</em>) – Values mapped to variable names</td>
 </tr>
 </tbody>
 </table>
@@ -619,8 +619,8 @@ with variables names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>draws</strong> (<em>int</em>) &#8211; Expected number of draws</li>
-<li><strong>chain</strong> (<em>int</em>) &#8211; Chain number</li>
+<li><strong>draws</strong> (<em>int</em>) – Expected number of draws</li>
+<li><strong>chain</strong> (<em>int</em>) – Chain number</li>
 </ul>
 </td>
 </tr>
@@ -639,9 +639,9 @@ with variables names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Name of directory to store CSV files in</li>
-<li><strong>trace</strong> (<em>MultiTrace of NDArray traces</em>) &#8211; Result of MCMC run with default NDArray backend</li>
-<li><strong>chains</strong> (<em>list</em>) &#8211; Chains to dump. If None, all chains are dumped.</li>
+<li><strong>name</strong> (<em>str</em>) – Name of directory to store CSV files in</li>
+<li><strong>trace</strong> (<em>MultiTrace of NDArray traces</em>) – Result of MCMC run with default NDArray backend</li>
+<li><strong>chains</strong> (<em>list</em>) – Chains to dump. If None, all chains are dumped.</li>
 </ul>
 </td>
 </tr>
@@ -658,8 +658,8 @@ with variables names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<em>str</em>) &#8211; Name of directory with files (one per chain)</li>
-<li><strong>model</strong> (<em>Model</em>) &#8211; If None, the model is taken from the <cite>with</cite> context.</li>
+<li><strong>name</strong> (<em>str</em>) – Name of directory with files (one per chain)</li>
+<li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
 </ul>
 </td>
 </tr>
@@ -684,12 +684,12 @@ with variables names as keys.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>trace</strong> (<em>NDarray trace</em>) &#8211; </li>
-<li><strong>chains</strong> (<em>int</em><em> or </em><em>list of ints</em>) &#8211; Chains to include. If None, all chains are used. A single
+<li><strong>trace</strong> (<em>NDarray trace</em>) – </li>
+<li><strong>chains</strong> (<em>int</em><em> or </em><em>list of ints</em>) – Chains to include. If None, all chains are used. A single
 chain value can also be given.</li>
-<li><strong>varnames</strong> (<em>list of variable names</em>) &#8211; Variables to be included in the DataFrame, if None all variable are
+<li><strong>varnames</strong> (<em>list of variable names</em>) – Variables to be included in the DataFrame, if None all variable are
 included.</li>
-<li><strong>include_transformed</strong> (<em>boolean</em>) &#8211; If true transformed variables will be included in the resulting
+<li><strong>include_transformed</strong> (<em>boolean</em>) – If true transformed variables will be included in the resulting
 DataFrame.</li>
 </ul>
 </td>
@@ -745,7 +745,7 @@ DataFrame.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -755,7 +755,7 @@ DataFrame.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

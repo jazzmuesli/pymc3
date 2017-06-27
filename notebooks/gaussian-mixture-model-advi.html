@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gaussian Mixture Model with ADVI &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Gaussian Mixture Model with ADVI &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Dirichlet process mixtures for density estimation" href="dp_mix.html"/>
         <link rel="prev" title="Marginalized Gaussian Mixture Model" href="marginalized_gaussian_mixture_model.html"/> 
@@ -385,9 +385,8 @@ components.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-
+<span class="o">%</span><span class="k">env</span> THEANO_FLAGS=device=cpu,floatX=float32
 <span class="kn">import</span> <span class="nn">theano</span>
-<span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span> <span class="o">=</span> <span class="s1">&#39;float64&#39;</span>
 
 <span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
 <span class="kn">from</span> <span class="nn">pymc3</span> <span class="kn">import</span> <span class="n">Normal</span><span class="p">,</span> <span class="n">Metropolis</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">MvNormal</span><span class="p">,</span> <span class="n">Dirichlet</span><span class="p">,</span> \
@@ -416,12 +415,20 @@ components.</p>
 </div>
 </div>
 <div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+env: THEANO_FLAGS=device=cpu,floatX=float32
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>Out[1]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.collections.PathCollection at 0x111282080&gt;
+<span></span>&lt;matplotlib.collections.PathCollection at 0x1101d68d0&gt;
 </pre></div>
 </div>
 </div>
@@ -429,7 +436,7 @@ components.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_gaussian-mixture-model-advi_2_1.png" src="../_images/notebooks_gaussian-mixture-model-advi_2_1.png" />
+<img alt="../_images/notebooks_gaussian-mixture-model-advi_2_2.png" src="../_images/notebooks_gaussian-mixture-model-advi_2_2.png" />
 </div>
 </div>
 <p>Gaussian mixture models are usually constructed with categorical random
@@ -440,7 +447,7 @@ probability is calculated using logsumexp, which is a standard technique
 for making this kind of calculation stable.</p>
 <p>In the below code, DensityDist class is used as the likelihood term. The
 second argument, logp_gmix(mus, pi, np.eye(2)), is a python function
-which recieves observations (denoted by &#8216;value&#8217;) and returns the tensor
+which recieves observations (denoted by ‘value’) and returns the tensor
 representation of the log-likelihood.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -469,9 +476,12 @@ representation of the log-likelihood.</p>
     <span class="k">return</span> <span class="n">logp_</span>
 
 <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">tau</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span>
+                    <span class="n">mu</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+                    <span class="n">tau</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
     <span class="n">xs</span> <span class="o">=</span> <span class="n">DensityDist</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">logp_gmix</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">observed</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -495,11 +505,11 @@ representation of the log-likelihood.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Optimization terminated successfully.
-         Current function value: 347.140024
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: 347.140019
          Iterations: 2
-         Function evaluations: 3
-         Gradient evaluations: 3
+         Function evaluations: 63
+         Gradient evaluations: 52
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -507,7 +517,7 @@ Optimization terminated successfully.
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1000/1000 [00:00&lt;00:00, 1386.45it/s]
+100%|██████████| 1500/1500 [00:02&lt;00:00, 631.59it/s]
 </pre></div></div>
 </div>
 <p>Check posterior of component means and weights. We can see that the MCMC
@@ -564,7 +574,7 @@ clusters.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x118fffc88&gt;
+<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1153e2978&gt;
 </pre></div>
 </div>
 </div>
@@ -578,18 +588,22 @@ clusters.</p>
 <p>We can use the same model with ADVI as follows.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">tau</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">tau</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
     <span class="n">xs</span> <span class="o">=</span> <span class="n">DensityDist</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">logp_gmix</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">observed</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
-<span class="o">%</span><span class="k">time</span> means, sds, elbos = pm.variational.advi( \
-    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="o">%</span><span class="k">time</span> approx = pm.fit(n=4500, obj_optimizer=pm.adagrad(learning_rate=1e-1))
+<span class="n">gbij</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">gbij</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">sds</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span><span class="o">**.</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -598,8 +612,8 @@ clusters.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average ELBO = -324.52: 100%|██████████| 1000/1000 [00:00&lt;00:00, 2288.80it/s]
-Finished [100%]: Average ELBO = -324.36
+Average Loss = 323.94: 100%|██████████| 4500/4500 [00:01&lt;00:00, 3286.74it/s]
+Finished [100%]: Average Loss = 323.94
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -607,11 +621,11 @@ Finished [100%]: Average ELBO = -324.36
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 4.1 s, sys: 430 ms, total: 4.53 s
-Wall time: 10.4 s
+CPU times: user 3.75 s, sys: 44.1 ms, total: 3.79 s
+Wall time: 3.8 s
 </pre></div></div>
 </div>
-<p>The function returns three variables. &#8216;means&#8217; and &#8216;sds&#8217; are the mean and
+<p>The function returns three variables. ‘means’ and ‘sds’ are the mean and
 standart deviations of the variational posterior. Note that these values
 are in the transformed space, not in the original space. For random
 variables in the real line, e.g., means of the Gaussian components, no
@@ -619,7 +633,7 @@ transformation is applied. Then we can see the variational posterior in
 the original space.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -658,7 +672,7 @@ the original space.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[7]:
+<span></span>Out[9]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -673,27 +687,27 @@ the original space.</p>
 <img alt="../_images/notebooks_gaussian-mixture-model-advi_13_1.png" src="../_images/notebooks_gaussian-mixture-model-advi_13_1.png" />
 </div>
 </div>
-<p>TODO: We need to backward-transform &#8216;pi&#8217;, which is transformed by
-&#8216;stick_breaking&#8217;.</p>
-<p>&#8216;elbos&#8217; contains the trace of ELBO, showing stochastic convergence of
+<p>TODO: We need to backward-transform ‘pi’, which is transformed by
+‘stick_breaking’.</p>
+<p>‘elbos’ contains the trace of ELBO, showing stochastic convergence of
 the algorithm.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elbos</span><span class="p">)</span>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">hist</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
+<span></span>Out[10]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&lt;matplotlib.lines.Line2D at 0x11a19c7b8&gt;]
+<span></span>[&lt;matplotlib.lines.Line2D at 0x11773b128&gt;]
 </pre></div>
 </div>
 </div>
@@ -704,11 +718,11 @@ the algorithm.</p>
 <img alt="../_images/notebooks_gaussian-mixture-model-advi_16_1.png" src="../_images/notebooks_gaussian-mixture-model-advi_16_1.png" />
 </div>
 </div>
-<p>To demonstrate that ADVI works for large dataset with mini-batch, let&#8217;s
+<p>To demonstrate that ADVI works for large dataset with mini-batch, let’s
 create 100,000 samples from the same mixture distribution.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -730,7 +744,7 @@ create 100,000 samples from the same mixture distribution.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
+<span></span>Out[11]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -748,14 +762,14 @@ create 100,000 samples from the same mixture distribution.</p>
 <p>MCMC took 55 seconds, 20 times longer than the small dataset.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">tau</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">tau</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
     <span class="n">xs</span> <span class="o">=</span> <span class="n">DensityDist</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">logp_gmix</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">observed</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
     <span class="n">start</span> <span class="o">=</span> <span class="n">find_MAP</span><span class="p">()</span>
@@ -769,11 +783,11 @@ create 100,000 samples from the same mixture distribution.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Optimization terminated successfully.
-         Current function value: 365347.058264
-         Iterations: 2
-         Function evaluations: 3
-         Gradient evaluations: 3
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: 365347.054715
+         Iterations: 4
+         Function evaluations: 71
+         Gradient evaluations: 59
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -781,14 +795,14 @@ Optimization terminated successfully.
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1000/1000 [01:47&lt;00:00,  9.64it/s]
+100%|██████████| 1500/1500 [01:48&lt;00:00, 11.93it/s]
 </pre></div></div>
 </div>
 <p>Posterior samples are concentrated on the true means, so looks like
 single point for each component.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -804,7 +818,7 @@ single point for each component.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
+<span></span>Out[13]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -824,63 +838,42 @@ the ObservedRV. The tensor will be replaced with mini-batches. Because
 of the difference of the size of mini-batch and whole samples, the
 log-likelihood term should be appropriately scaled. To tell the
 log-likelihood term, we need to give ObservedRV objects
-(&#8216;minibatch_RVs&#8217; below) where mini-batch is put. Also we should keep
-the tensor (&#8216;minibatch_tensors&#8217;).</p>
+(‘minibatch_RVs’ below) where mini-batch is put. Also we should keep
+the tensor (‘minibatch_tensors’).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">data_t</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span>
-<span class="n">data_t</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span></span><span class="n">minibatch_size</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="c1"># In memory Minibatches for better speed</span>
+<span class="n">data_t</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">tau</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu_</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">tau</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-    <span class="n">xs</span> <span class="o">=</span> <span class="n">DensityDist</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">logp_gmix</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">observed</span><span class="o">=</span><span class="n">data_t</span><span class="p">)</span>
-
-<span class="n">minibatch_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">data_t</span><span class="p">]</span>
-<span class="n">minibatch_RVs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xs</span><span class="p">]</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Dirichlet</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">DensityDist</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">logp_gmix</span><span class="p">(</span><span class="n">mus</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">observed</span><span class="o">=</span><span class="n">data_t</span><span class="p">,</span> <span class="n">total_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<p>Make a generator for mini-batches of size 200. Here, we take random
-sampling strategy to make mini-batches.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">create_minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="n">ixs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">ixs</span><span class="p">]]</span>
-
-<span class="n">minibatches</span> <span class="o">=</span> <span class="n">create_minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">total_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Run ADVI. It&#8217;s much faster than MCMC, though the problem here is simple
-and it&#8217;s not a fair comparison.</p>
+<p>Run ADVI. It’s much faster than MCMC, though the problem here is simple
+and it’s not a fair comparison.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Used only to write the function call in single line for using %time</span>
 <span class="c1"># is there more smart way?</span>
 <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">pm</span><span class="o">.</span><span class="n">variational</span><span class="o">.</span><span class="n">advi_minibatch</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">minibatch_tensors</span><span class="o">=</span><span class="n">minibatch_tensors</span><span class="p">,</span>
-    <span class="n">minibatch_RVs</span><span class="o">=</span><span class="n">minibatch_RVs</span><span class="p">,</span> <span class="n">minibatches</span><span class="o">=</span><span class="n">minibatches</span><span class="p">,</span>
-    <span class="n">total_size</span><span class="o">=</span><span class="n">total_size</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+    <span class="n">approx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">obj_optimizer</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">adagrad</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">),</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">gbij</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">gbij</span>
+    <span class="n">means</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+    <span class="n">sds</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">means</span><span class="p">,</span> <span class="n">sds</span><span class="p">,</span> <span class="n">approx</span><span class="o">.</span><span class="n">hist</span>
 
 <span class="o">%</span><span class="k">time</span> means, sds, elbos = f()
 </pre></div>
@@ -891,8 +884,8 @@ and it&#8217;s not a fair comparison.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average ELBO = -323,469.35: 100%|██████████| 1000/1000 [00:00&lt;00:00, 1263.06it/s]
-Finished minibatch ADVI: ELBO = -313,792.75
+Average Loss = 3.2644e+05: 100%|██████████| 1500/1500 [00:00&lt;00:00, 2353.04it/s]
+Finished [100%]: Average Loss = 3.2641e+05
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -900,14 +893,14 @@ Finished minibatch ADVI: ELBO = -313,792.75
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 11.9 s, sys: 649 ms, total: 12.6 s
-Wall time: 22.5 s
+CPU times: user 3.54 s, sys: 52.8 ms, total: 3.59 s
+Wall time: 3.6 s
 </pre></div></div>
 </div>
 <p>The result is almost the same.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -927,7 +920,7 @@ Wall time: 22.5 s
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[15]:
+<span></span>Out[19]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -939,14 +932,14 @@ Wall time: 22.5 s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_gaussian-mixture-model-advi_30_1.png" src="../_images/notebooks_gaussian-mixture-model-advi_30_1.png" />
+<img alt="../_images/notebooks_gaussian-mixture-model-advi_28_1.png" src="../_images/notebooks_gaussian-mixture-model-advi_28_1.png" />
 </div>
 </div>
 <p>The variance of the trace of ELBO is larger than without mini-batch
 because of the subsampling from the whole samples.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -958,7 +951,7 @@ because of the subsampling from the whole samples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_gaussian-mixture-model-advi_32_0.png" src="../_images/notebooks_gaussian-mixture-model-advi_32_0.png" />
+<img alt="../_images/notebooks_gaussian-mixture-model-advi_30_0.png" src="../_images/notebooks_gaussian-mixture-model-advi_30_0.png" />
 </div>
 </div>
 </div>
@@ -1007,7 +1000,7 @@ because of the subsampling from the whole samples.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1017,7 +1010,7 @@ because of the subsampling from the whole samples.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

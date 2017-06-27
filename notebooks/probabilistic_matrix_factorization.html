@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Probabilistic Matrix Factorization for Making Personalized Recommendations &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Probabilistic Matrix Factorization for Making Personalized Recommendations &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/> 
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -357,23 +357,23 @@ not referenced, is the original work of <a class="reference external" href="http
 Sweeney</a>.</p>
 <div class="section" id="Motivation">
 <h2>Motivation<a class="headerlink" href="#Motivation" title="Permalink to this headline">¶</a></h2>
-<p>Say I download a handbook of a hundred jokes, and I&#8217;d like to know very
+<p>Say I download a handbook of a hundred jokes, and I’d like to know very
 quickly which ones will be my favorite. So maybe I read a few, I laugh,
 I read a few more, I stop laughing, and I indicate on a scale of -10 to
 10 how funny I thought each joke was. Maybe I do this for 5 jokes out of
-the 100. Now I go to the back of the book, and there&#8217;s a little program
+the 100. Now I go to the back of the book, and there’s a little program
 included for calculating my preferences for all the other jokes. I enter
 in my preference numbers and shazam! The program spits out a list of all
-100 jokes, sorted in the order I&#8217;ll like them. That certainly would be
-nice. Today we&#8217;ll write a program that does exactly this.</p>
-<p>We&#8217;ll start out by getting some intuition for how our model will work.
-Then we&#8217;ll formalize our intuition. Afterwards, we&#8217;ll examine the
+100 jokes, sorted in the order I’ll like them. That certainly would be
+nice. Today we’ll write a program that does exactly this.</p>
+<p>We’ll start out by getting some intuition for how our model will work.
+Then we’ll formalize our intuition. Afterwards, we’ll examine the
 dataset we are going to use. Once we have some notion of what our data
-looks like, we&#8217;ll define some baseline methods for predicting
-preferences for jokes. Following that, we&#8217;ll look at Probabilistic
+looks like, we’ll define some baseline methods for predicting
+preferences for jokes. Following that, we’ll look at Probabilistic
 Matrix Factorization (PMF), which is a more sophisticated Bayesian
-method for predicting preferences. Having detailed the PMF model, we&#8217;ll
-use PyMC3 for MAP estimation and MCMC inference. Finally, we&#8217;ll compare
+method for predicting preferences. Having detailed the PMF model, we’ll
+use PyMC3 for MAP estimation and MCMC inference. Finally, we’ll compare
 the results obtained with PMF to those obtained from our baseline
 methods and discuss the outcome.</p>
 </div>
@@ -381,21 +381,21 @@ methods and discuss the outcome.</p>
 <h2>Intuition<a class="headerlink" href="#Intuition" title="Permalink to this headline">¶</a></h2>
 <p>Normally if we want recommendations for something, we try to find people
 who are similar to us and ask their opinions. If Bob, Alice, and Monty
-are all similar to me, and they all like knock-knock jokes, I&#8217;ll
-probably like knock-knock jokes. Now this isn&#8217;t always true. It depends
-on what we consider to be &#8220;similar&#8221;. In order to get the best bang for
+are all similar to me, and they all like knock-knock jokes, I’ll
+probably like knock-knock jokes. Now this isn’t always true. It depends
+on what we consider to be “similar”. In order to get the best bang for
 our buck, we really want to look for people who have the most similar
-sense of humor. Humor being a complex beast, we&#8217;d probably like to break
+sense of humor. Humor being a complex beast, we’d probably like to break
 it down into something more understandable. We might try to characterize
 each joke in terms of various factors. Perhaps jokes can be dry,
 sarcastic, crude, sexual, political, etc. Now imagine we go through our
 handbook of jokes and assign each joke a rating in each of the
 categories. How dry is it? How sarcastic is it? How much does it use
 sexual innuendos? Perhaps we use numbers between 0 and 1 for each
-category. Intuitively, we might call this the joke&#8217;s humor profile.</p>
-<p>Now let&#8217;s suppose we go back to those 5 jokes we rated. At this point,
+category. Intuitively, we might call this the joke’s humor profile.</p>
+<p>Now let’s suppose we go back to those 5 jokes we rated. At this point,
 we can get a richer picture of our own preferences by looking at the
-humor profiles of each of the jokes we liked and didn&#8217;t like. Perhaps we
+humor profiles of each of the jokes we liked and didn’t like. Perhaps we
 take the averages across the 5 humor profiles and call this our ideal
 type of joke. In other words, we have computed some notion of our
 inherent <em>preferences</em> for various types of jokes. Suppose Bob, Alice,
@@ -403,35 +403,35 @@ and Monty all do the same. Now we can compare our preferences and
 determine how similar each of us really are. I might find that Bob is
 the most similar and the other two are still more similar than other
 people, but not as much as Bob. So I want recommendations from all three
-people, but when I make my final decision, I&#8217;m going to put more weight
-on Bob&#8217;s recommendation than those I get from Alice and Monty.</p>
+people, but when I make my final decision, I’m going to put more weight
+on Bob’s recommendation than those I get from Alice and Monty.</p>
 <p>While the above procedure sounds fairly effective as is, it also reveals
 an unexpected additional source of information. If we rated a particular
 joke highly, and we know its humor profile, we can compare with the
 profiles of other jokes. If we find one with very close numbers, it is
-probable we&#8217;ll also enjoy this joke. Both this approach and the one
+probable we’ll also enjoy this joke. Both this approach and the one
 above are commonly known as <em>neighborhood approaches</em>. Techniques that
 leverage both of these approaches simultaneously are often called
 <em>collaborative filtering</em>
 <a class="reference external" href="http://www2.research.att.com/~volinsky/papers/ieeecomputer.pdf">[1]</a>.
 The first approach we talked about uses user-user similarity, while the
-second uses item-item similarity. Ideally, we&#8217;d like to use both sources
+second uses item-item similarity. Ideally, we’d like to use both sources
 of information. The idea is we have a lot of items available to us, and
-we&#8217;d like to work together with others to filter the list of items down
-to those we&#8217;ll each like best. My list should have the items I&#8217;ll like
-best at the top and those I&#8217;ll like least at the bottom. Everyone else
+we’d like to work together with others to filter the list of items down
+to those we’ll each like best. My list should have the items I’ll like
+best at the top and those I’ll like least at the bottom. Everyone else
 wants the same. If I get together with a bunch of other people, we all
 read 5 jokes, and we have some efficient computational process to
 determine similarity, we can very quickly order the jokes to our liking.</p>
 </div>
 <div class="section" id="Formalization">
 <h2>Formalization<a class="headerlink" href="#Formalization" title="Permalink to this headline">¶</a></h2>
-<p>Let&#8217;s take some time to make the intuitive notions we&#8217;ve been discussing
+<p>Let’s take some time to make the intuitive notions we’ve been discussing
 more concrete. We have a set of <span class="math">\(M\)</span> jokes, or <em>items</em>
 (<span class="math">\(M = 100\)</span> in our example above). We also have <span class="math">\(N\)</span> people,
-whom we&#8217;ll call <em>users</em> of our recommender system. For each item, we&#8217;d
+whom we’ll call <em>users</em> of our recommender system. For each item, we’d
 like to find a <span class="math">\(D\)</span> dimensional factor composition (humor profile
-above) to describe the item. Ideally, we&#8217;d like to do this without
+above) to describe the item. Ideally, we’d like to do this without
 actually going through and manually labeling all of the jokes. Manual
 labeling would be both slow and error-prone, as different people will
 likely label jokes differently. So we model each joke as a <span class="math">\(D\)</span>
@@ -448,9 +448,9 @@ ratings based on the latent variables <span class="math">\(U\)</span> and <span 
 the predicted ratings by <span class="math">\(R_{ij}^*\)</span>. We also define an indicator
 matrix <span class="math">\(I\)</span>, with entry <span class="math">\(I_{ij} = 0\)</span> if <span class="math">\(R_{ij}\)</span> is
 missing and <span class="math">\(I_{ij} = 1\)</span> otherwise.</p>
-<p>So we have an <span class="math">\(N \times D\)</span> matrix of user preferences which we&#8217;ll
-call <span class="math">\(U\)</span> and an <span class="math">\(M \times D\)</span> factor composition matrix we&#8217;ll
-call <span class="math">\(V\)</span>. We also have a <span class="math">\(N \times M\)</span> rating matrix we&#8217;ll
+<p>So we have an <span class="math">\(N \times D\)</span> matrix of user preferences which we’ll
+call <span class="math">\(U\)</span> and an <span class="math">\(M \times D\)</span> factor composition matrix we’ll
+call <span class="math">\(V\)</span>. We also have a <span class="math">\(N \times M\)</span> rating matrix we’ll
 call <span class="math">\(R\)</span>. We can think of each row <span class="math">\(U_i\)</span> as indications of
 how much each user prefers each of the <span class="math">\(D\)</span> latent factors. Each
 row <span class="math">\(V_j\)</span> can be thought of as how much each item can be described
@@ -497,7 +497,7 @@ have rated all 100 jokes will be selected randomly. We will implement a
 model that is suitable for collaborative filtering on this data and
 evaluate it in terms of root mean squared error (RMSE) to validate the
 results.</p>
-<p>Let&#8217;s begin by exploring our data. We want to get a general feel for
+<p>Let’s begin by exploring our data. We want to get a general feel for
 what it looks like and a sense for what sort of patterns it might
 contain.</p>
 <div class="nbinput docutils container">
@@ -739,7 +739,7 @@ dtype: float64
 </div>
 <p>This must be a decent batch of jokes. From our exploration above, we
 know most ratings are in the range -1 to 10, and positive ratings are
-more likely than negative ratings. Let&#8217;s look at the means for each joke
+more likely than negative ratings. Let’s look at the means for each joke
 to see if we have any particularly good (or bad) humor here.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -771,7 +771,7 @@ to see if we have any particularly good (or bad) humor here.</p>
 </div>
 </div>
 <p>While the majority of the jokes generally get positive feedback from
-users, there are definitely a few that stand out as poor humor. Let&#8217;s
+users, there are definitely a few that stand out as poor humor. Let’s
 take a look at the worst and best joke, just for fun.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -832,7 +832,7 @@ between the jokes. Some of them are simply funnier than others, and some
 are downright lousy. Looking at the joke means allowed us to discover
 these general trends. Perhaps there are similar trends across users. It
 might be the case that some users are simply more easily humored than
-others. Let&#8217;s take a look.</p>
+others. Let’s take a look.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [6]:
@@ -871,20 +871,20 @@ models to use for predicting user preferences on unseen jokes.</p>
 </div>
 <div class="section" id="Methods">
 <h2>Methods<a class="headerlink" href="#Methods" title="Permalink to this headline">¶</a></h2>
-<p>Having explored the data, we&#8217;re now ready to dig in and start addressing
+<p>Having explored the data, we’re now ready to dig in and start addressing
 the problem. We want to predict how much each user is going to like all
 of the jokes he or she has not yet read.</p>
 <div class="section" id="Baselines">
 <h3>Baselines<a class="headerlink" href="#Baselines" title="Permalink to this headline">¶</a></h3>
 <p>Every good analysis needs some kind of baseline methods to compare
-against. It&#8217;s difficult to claim we&#8217;ve produced good results if we have
-no reference point for what defines &#8220;good&#8221;. We&#8217;ll define three very
+against. It’s difficult to claim we’ve produced good results if we have
+no reference point for what defines “good”. We’ll define three very
 simple baseline methods and find the RMSE using these methods. Our goal
 will be to obtain lower RMSE scores with whatever model we produce.</p>
 <div class="section" id="Uniform-Random-Baseline">
 <h4>Uniform Random Baseline<a class="headerlink" href="#Uniform-Random-Baseline" title="Permalink to this headline">¶</a></h4>
 <p>Our first baseline is about as dead stupid as you can get. Every place
-we see a missing value in <span class="math">\(R\)</span>, we&#8217;ll simply fill it with a number
+we see a missing value in <span class="math">\(R\)</span>, we’ll simply fill it with a number
 drawn uniformly at random in the range [-10, 10]. We expect this method
 to do the worst by far.</p>
 <div class="math">
@@ -893,7 +893,7 @@ to do the worst by far.</p>
 <div class="section" id="Global-Mean-Baseline">
 <h4>Global Mean Baseline<a class="headerlink" href="#Global-Mean-Baseline" title="Permalink to this headline">¶</a></h4>
 <p>This method is only slightly better than the last. Wherever we have a
-missing value, we&#8217;ll fill it in with the mean of all observed ratings.</p>
+missing value, we’ll fill it in with the mean of all observed ratings.</p>
 <div class="math">
 \[\text{global_mean} = \frac{1}{N \times M} \sum_{i=1}^N \sum_{j=1}^M I_{ij}(R_{ij})\]</div>
 <div class="math">
@@ -901,15 +901,15 @@ missing value, we&#8217;ll fill it in with the mean of all observed ratings.</p>
 </div>
 <div class="section" id="Mean-of-Means-Baseline">
 <h4>Mean of Means Baseline<a class="headerlink" href="#Mean-of-Means-Baseline" title="Permalink to this headline">¶</a></h4>
-<p>Now we&#8217;re going to start getting a bit smarter. We imagine some users
+<p>Now we’re going to start getting a bit smarter. We imagine some users
 might be easily amused, and inclined to rate all jokes more highly.
 Other users might be the opposite. Additionally, some jokes might simply
 be more witty than others, so all users might rate some jokes more
 highly than others in general. We can clearly see this in our graph of
-the joke means above. We&#8217;ll attempt to capture these general trends
-through per-user and per-joke rating means. We&#8217;ll also incorporate the
+the joke means above. We’ll attempt to capture these general trends
+through per-user and per-joke rating means. We’ll also incorporate the
 global mean to smooth things out a bit. So if we see a missing value in
-cell <span class="math">\(R_{ij}\)</span>, we&#8217;ll average the global mean with the mean of
+cell <span class="math">\(R_{ij}\)</span>, we’ll average the global mean with the mean of
 <span class="math">\(U_i\)</span> and the mean of <span class="math">\(V_j\)</span> and use that value to fill it
 in.</p>
 <div class="math">
@@ -945,7 +945,7 @@ in.</p>
 <span class="k">class</span> <span class="nc">Baseline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate baseline predictions.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple heuristic-based transductive learning to fill in missing</span>
 <span class="sd">        values in data matrix.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
@@ -958,8 +958,8 @@ in.</p>
         <span class="sd">&quot;&quot;&quot;Calculate root mean squared error for predictions on test data.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">rmse</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">split_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">split_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 
@@ -1075,7 +1075,7 @@ estimates obtained from our data.</p>
 <span class="k">class</span> <span class="nc">PMF</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Probabilistic Matrix Factorization model using pymc3.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;Build the Probabilistic Matrix Factorization model using pymc3.</span>
 
 <span class="sd">        :param np.ndarray train: The training data to use for learning the model.</span>
@@ -1118,12 +1118,12 @@ estimates obtained from our data.</p>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;done building the PMF model&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">pmf</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 </pre></div>
 </div>
 </div>
-<p>We&#8217;ll also need functions for calculating the MAP and performing
+<p>We’ll also need functions for calculating the MAP and performing
 sampling on our PMF model. When the observation noise variance
 <span class="math">\(\alpha\)</span> and the prior variances <span class="math">\(\alpha_U\)</span> and
 <span class="math">\(\alpha_V\)</span> are all kept fixed, maximizing the log posterior is
@@ -1136,12 +1136,12 @@ with quadratic regularization terms.</p>
 denotes the Frobenius norm [3]. Minimizing this objective function gives
 a local minimum, which is essentially a maximum a posteriori (MAP)
 estimate. While it is possible to use a fast Stochastic Gradient Descent
-procedure to find this MAP, we&#8217;ll be finding it using the utilities
-built into <code class="docutils literal"><span class="pre">pymc3</span></code>. In particular, we&#8217;ll use <code class="docutils literal"><span class="pre">find_MAP</span></code> with Powell
+procedure to find this MAP, we’ll be finding it using the utilities
+built into <code class="docutils literal"><span class="pre">pymc3</span></code>. In particular, we’ll use <code class="docutils literal"><span class="pre">find_MAP</span></code> with Powell
 optimization (<code class="docutils literal"><span class="pre">scipy.optimize.fmin_powell</span></code>). Having found this MAP
 estimate, we can use it as our starting point for MCMC sampling.</p>
 <p>Since it is a reasonably complex model, we expect the MAP estimation to
-take some time. So let&#8217;s save it after we&#8217;ve found it. Note that we
+take some time. So let’s save it after we’ve found it. Note that we
 define a function for finding the MAP below, assuming it will receive a
 namespace with some variables in it. Then we attach that function to the
 PMF class, where it will have such a namespace after initialization. The
@@ -1239,7 +1239,7 @@ between each piece to make it clearer.</p>
 <p>So now our PMF class has a <code class="docutils literal"><span class="pre">map</span></code> <code class="docutils literal"><span class="pre">property</span></code> which will either be
 found using Powell optimization or loaded from a previous optimization.
 Once we have the MAP, we can use it as a starting point for our MCMC
-sampler. We&#8217;ll need a sampling function in order to draw MCMC samples to
+sampler. We’ll need a sampling function in order to draw MCMC samples to
 approximate the posterior distribution of the PMF model.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -1279,15 +1279,15 @@ approximate the posterior distribution of the PMF model.</p>
 <p>We could define some kind of default trace property like we did for the
 MAP, but that would mean using possibly nonsensical values for
 <code class="docutils literal"><span class="pre">nsamples</span></code> and <code class="docutils literal"><span class="pre">njobs</span></code>. Better to leave it as a non-optional call to
-<code class="docutils literal"><span class="pre">draw_samples</span></code>. Finally, we&#8217;ll need a function to make predictions
+<code class="docutils literal"><span class="pre">draw_samples</span></code>. Finally, we’ll need a function to make predictions
 using our inferred values for <span class="math">\(U\)</span> and <span class="math">\(V\)</span>. For user
 <span class="math">\(i\)</span> and joke <span class="math">\(j\)</span>, a prediction is generated by drawing from
 <span class="math">\(\mathcal{N}(U_i V_j^T, \alpha)\)</span>. To generate predictions from the
 sampler, we generate an <span class="math">\(R\)</span> matrix for each <span class="math">\(U\)</span> and
 <span class="math">\(V\)</span> sampled, then we combine these by averaging over the <span class="math">\(K\)</span>
 samples.</p>
-<p>We&#8217;ll want to inspect the individual <span class="math">\(R\)</span> matrices before averaging
-them for diagnostic purposes. So we&#8217;ll write code for the averaging
+<p>We’ll want to inspect the individual <span class="math">\(R\)</span> matrices before averaging
+them for diagnostic purposes. So we’ll write code for the averaging
 piece during evaluation. The function below simply draws an <span class="math">\(R\)</span>
 matrix given a <span class="math">\(U\)</span> and <span class="math">\(V\)</span> and the fixed <span class="math">\(\alpha\)</span>
 stored in the PMF object.</p>
@@ -1331,8 +1331,8 @@ not be implemented here.</p>
 <h2>Evaluation<a class="headerlink" href="#Evaluation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="Metrics">
 <h3>Metrics<a class="headerlink" href="#Metrics" title="Permalink to this headline">¶</a></h3>
-<p>In order to understand how effective our models are, we&#8217;ll need to be
-able to evaluate them. We&#8217;ll be evaluating in terms of root mean squared
+<p>In order to understand how effective our models are, we’ll need to be
+able to evaluate them. We’ll be evaluating in terms of root mean squared
 error (RMSE), which looks like this:</p>
 <p>In this case, the RMSE can be thought of as the standard deviation of
 our predictions from the actual user preferences.</p>
@@ -1365,9 +1365,9 @@ rather than inductive learning. So we produce a test set by taking a
 random sample of the cells in the full <span class="math">\(N \times M\)</span> data matrix.
 The values selected as test samples are replaced with <code class="docutils literal"><span class="pre">nan</span></code> values in
 a copy of the original data matrix to produce the training set. Since
-we&#8217;ll be producing random splits, let&#8217;s also write out the train/test
-sets generated. This will allow us to replicate our results. We&#8217;d like
-to be able to idenfity which split is which, so we&#8217;ll take a hash of the
+we’ll be producing random splits, let’s also write out the train/test
+sets generated. This will allow us to replicate our results. We’d like
+to be able to idenfity which split is which, so we’ll take a hash of the
 indices selected for testing and use that to save the data.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -1428,8 +1428,8 @@ indices selected for testing and use that to save the data.</p>
 </pre></div>
 </div>
 </div>
-<p>In order to facilitate reproducibility, I&#8217;ve produced a train/test split
-using the code above which we&#8217;ll now use for all the evaluations below.</p>
+<p>In order to facilitate reproducibility, I’ve produced a train/test split
+using the code above which we’ll now use for all the evaluations below.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [14]:
@@ -1473,7 +1473,7 @@ Mean Of Means Baseline RMSE:    4.79832
 </div>
 <p>As expected: the uniform random baseline is the worst by far, the global
 mean baseline is next best, and the mean of means method is our best
-baseline. Now let&#8217;s see how PMF stacks up.</p>
+baseline. Now let’s see how PMF stacks up.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [16]:
@@ -1619,9 +1619,9 @@ baseline, which was the mean of means method. We also have a fairly
 small difference in the RMSE values between the train and the test sets.
 This indicates that the point estimates for <span class="math">\(\alpha_U\)</span> and
 <span class="math">\(\alpha_V\)</span> that we calculated from our data are doing a good job
-of controlling model complexity. Now let&#8217;s see if we can improve our
+of controlling model complexity. Now let’s see if we can improve our
 estimates by approximating our posterior distribution with MCMC
-sampling. We&#8217;ll draw 1000 samples and back them up using the
+sampling. We’ll draw 1000 samples and back them up using the
 <code class="docutils literal"><span class="pre">pymc3.backend.Text</span></code> backend.</p>
 </div>
 <div class="section" id="Predictions-using-MCMC">
@@ -1644,7 +1644,7 @@ sampling. We&#8217;ll draw 1000 samples and back them up using the
 <div class="section" id="Diagnostics-and-Posterior-Predictive-Check">
 <h3>Diagnostics and Posterior Predictive Check<a class="headerlink" href="#Diagnostics-and-Posterior-Predictive-Check" title="Permalink to this headline">¶</a></h3>
 <p>The next step is to check how many samples we should discard as burn-in.
-Normally, we&#8217;d do this using a traceplot to get some idea of where the
+Normally, we’d do this using a traceplot to get some idea of where the
 sampled variables start to converge. In this case, we have
 high-dimensional samples, so we need to find a way to approximate them.
 One way was proposed by <a class="reference external" href="https://www.cs.toronto.edu/~amnih/papers/bpmf.pdf">Salakhutdinov and Mnih,
@@ -1653,7 +1653,7 @@ calculate the Frobenius norms of <span class="math">\(U\)</span> and <span class
 and monitor those for convergence. This essentially gives us some idea
 when the average magnitude of the latent variables is stabilizing. The
 equations for the Frobenius norms of <span class="math">\(U\)</span> and <span class="math">\(V\)</span> are shown
-below. We will use <code class="docutils literal"><span class="pre">numpy</span></code>&#8216;s <code class="docutils literal"><span class="pre">linalg</span></code> package to calculate these.</p>
+below. We will use <code class="docutils literal"><span class="pre">numpy</span></code>’s <code class="docutils literal"><span class="pre">linalg</span></code> package to calculate these.</p>
 <div class="math">
 \[\|U\|_{Fro}^2 = \sqrt{\sum_{i=1}^N \sum_{d=1}^D |U_{id}|^2}, \hspace{40pt} \|V\|_{Fro}^2 = \sqrt{\sum_{j=1}^M \sum_{d=1}^D |V_{jd}|^2}\]</div>
 <div class="nbinput nblast docutils container">
@@ -1714,10 +1714,10 @@ below. We will use <code class="docutils literal"><span class="pre">numpy</span>
 <p>It appears we get convergence of <span class="math">\(U\)</span> and <span class="math">\(V\)</span> after about 200
 samples. When testing for convergence, we also want to see convergence
 of the particular statistics we are looking for, since different
-characteristics of the posterior may converge at different rates. Let&#8217;s
-also do a traceplot of the RSME. We&#8217;ll compute RMSE for both the train
+characteristics of the posterior may converge at different rates. Let’s
+also do a traceplot of the RSME. We’ll compute RMSE for both the train
 and the test set, even though the convergence is indicated by RMSE on
-the training set alone. In addition, let&#8217;s compute a running RMSE on the
+the training set alone. In addition, let’s compute a running RMSE on the
 train/test sets to see how aggregate performance improves or decreases
 as we continue to sample.</p>
 <div class="nbinput nblast docutils container">
@@ -1818,7 +1818,7 @@ precision <span class="math">\(\alpha\)</span> is likely different as well.</p>
 </div>
 <div class="section" id="Summary-of-Results">
 <h3>Summary of Results<a class="headerlink" href="#Summary-of-Results" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s summarize our results.</p>
+<p>Let’s summarize our results.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [26]:
@@ -1972,7 +1972,7 @@ Factorization Using Markov Chain Monte Carlo,” in Proceedings of the
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1982,7 +1982,7 @@ Factorization Using Markov Chain Monte Carlo,” in Proceedings of the
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Convolutional variational autoencoder with PyMC3 and Keras &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Convolutional variational autoencoder with PyMC3 and Keras &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Changes in API: Variational Inference: Bayesian Neural Networks" href="bayesian_neural_network_opvi-advi.html"/>
         <link rel="prev" title="Variational Inference: Bayesian Neural Networks" href="bayesian_neural_network_advi.html"/> 
@@ -100,10 +100,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#variational-inference">Variational Inference</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="GLM-hierarchical-ADVI.html">GLM: Hierarchical Linear Regression with ADVI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GLM-hierarchical-advi-minibatch.html">GLM: Mini-batch ADVI on hierarchical regression model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lda-advi-aevb.html">Automatic autoencoding variational Bayes for latent dirichlet allocation with PyMC3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html">Variational Inference: Bayesian Neural Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Convolutional variational autoencoder with PyMC3 and Keras</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Load-images">Load images</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Use-Keras">Use Keras</a></li>
@@ -382,7 +382,7 @@ div.nboutput div.output_area.stderr {
 <div class="section" id="Convolutional-variational-autoencoder-with-PyMC3-and-Keras">
 <h1>Convolutional variational autoencoder with PyMC3 and Keras<a class="headerlink" href="#Convolutional-variational-autoencoder-with-PyMC3-and-Keras" title="Permalink to this headline">¶</a></h1>
 <p>In this document, I will show how autoencoding variational Bayes (AEVB)
-works in PyMC3&#8217;s automatic differentiation variational inference (ADVI).
+works in PyMC3’s automatic differentiation variational inference (ADVI).
 The example here is borrowed from <a class="reference external" href="https://github.com/fchollet/keras/blob/master/examples/variational_autoencoder_deconv.py">Keras
 example</a>,
 where convolutional variational autoencoder is applied to the MNIST
@@ -408,7 +408,8 @@ available:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="ch">#!pip install --upgrade git+https://github.com/Theano/Theano.git#egg=Theano</span>
+<span></span><span class="ch">#!pip install --upgrade keras</span>
+<span class="c1">#!pip install theano==0.8.0</span>
 </pre></div>
 </div>
 </div>
@@ -418,7 +419,7 @@ available:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="ch">#!pip install --upgrade keras</span>
+<span></span><span class="ch">#!pip install --upgrade pymc3</span>
 </pre></div>
 </div>
 </div>
@@ -428,40 +429,26 @@ available:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="ch">#!pip install --upgrade pymc3</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="ch">#!conda install -y mkl-service</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="o">%</span><span class="k">autosave</span> 0
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KERAS_BACKEND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;theano&#39;</span>
-
-<span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">config</span>
-<span class="n">config</span><span class="o">.</span><span class="n">floatX</span> <span class="o">=</span> <span class="s1">&#39;float32&#39;</span>
-<span class="n">config</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;fast_run&#39;</span>
+<span class="o">%</span><span class="k">env</span> KERAS_BACKEND=theano
+<span class="o">%</span><span class="k">env</span> THEANO_FLAGS=device=cuda3,floatX=float32,optimizer=fast_run
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">InputLayer</span><span class="p">,</span> <span class="n">BatchNormalization</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">Deconv2D</span><span class="p">,</span> <span class="n">Activation</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Reshape</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
-<span class="kn">from</span> <span class="nn">pymc3.variational</span> <span class="kn">import</span> <span class="n">advi_minibatch</span>
 <span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">shared</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">clone</span><span class="p">,</span> <span class="n">pp</span>
 <span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">tt</span>
 <span class="kn">import</span> <span class="nn">keras</span>
@@ -479,9 +466,9 @@ available:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div id="3b257ec5-ddc1-4850-b876-a6c0de02d81f"></div>
+<div id="ad9e138a-2e7b-4a5f-9453-93b0cc42163f"></div>
 <script type="text/javascript">
-var element = document.getElementById('3b257ec5-ddc1-4850-b876-a6c0de02d81f');
+var element = document.getElementById('ad9e138a-2e7b-4a5f-9453-93b0cc42163f');
 IPython.notebook.set_autosave_interval(0)
 </script></div>
 </div>
@@ -491,6 +478,8 @@ IPython.notebook.set_autosave_interval(0)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Autosave disabled
+env: KERAS_BACKEND=theano
+env: THEANO_FLAGS=device=cuda3,floatX=float32,optimizer=fast_run
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -499,11 +488,13 @@ Autosave disabled
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Using Theano backend.
+Using cuDNN version 5105 on context None
+Mapped name None to device cuda3: Tesla K40m (0000:84:00.0)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -519,9 +510,9 @@ Using Theano backend.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-3.1.rc2
-0.9.0
-2.0.2
+3.1rc3
+0.9.0.dev-f4bb35d6264213d023706b7baa065a60c6416149
+2.0.4
 </pre></div></div>
 </div>
 <div class="section" id="Load-images">
@@ -530,9 +521,9 @@ Using Theano backend.
 API</a> or from <a class="reference external" href="https://keras.io/datasets/">Keras
 datasets</a>. The dataset contains images of
 digits.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -542,10 +533,18 @@ digits.</p>
 
 <span class="kn">from</span> <span class="nn">keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
 <span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">x_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span>
 <span class="n">data</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Downloading data from https://s3.amazonaws.com/img-datasets/mnist.npz
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="Use-Keras">
@@ -553,7 +552,7 @@ digits.</p>
 <p>We define a utility function to get parameters from Keras models. Since
 we have set the backend to Theano, parameter objects are obtained as
 shared variables of Theano.</p>
-<p>In the code, &#8216;updates&#8217; are expected to include update objects
+<p>In the code, ‘updates’ are expected to include update objects
 (dictionary of pairs of shared variables and update equation) of scaling
 parameters of batch normalization. While not using batch normalization
 in this example, if we want to use it, we need to pass these update
@@ -565,7 +564,7 @@ training or test. This information is important also for batch
 normalization.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -589,7 +588,7 @@ normalization.</p>
         <span class="c1"># Shared variables</span>
         <span class="k">for</span> <span class="n">attr_str</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
             <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">attr_str</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span> <span class="ow">is</span> <span class="n">tt</span><span class="o">.</span><span class="n">sharedvar</span><span class="o">.</span><span class="n">TensorSharedVariable</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">compile</span><span class="o">.</span><span class="n">SharedVariable</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">attr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">model</span><span class="o">.</span><span class="n">get_input_at</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
                     <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
 
@@ -610,7 +609,7 @@ representing observations (images of digits), the dimension of latent
 space, and the parameters of the model architecture.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -619,13 +618,13 @@ space, and the parameters of the model architecture.</p>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    xs : theano.tensor.sharedvar.TensorSharedVariable</span>
+<span class="sd">    xs : theano.TensorVariable</span>
 <span class="sd">        Input tensor.</span>
 <span class="sd">    latent_dim : int</span>
 <span class="sd">        Dimension of latent vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">input_layer</span> <span class="o">=</span> <span class="n">InputLayer</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">=</span><span class="n">xs</span><span class="p">,</span>
-                             <span class="n">batch_input_shape</span><span class="o">=</span><span class="n">xs</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                             <span class="n">batch_input_shape</span><span class="o">=</span><span class="n">xs</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input_layer</span><span class="p">)</span>
 
@@ -651,7 +650,7 @@ on the architecture of the encoder except for input shape (<code class="docutils
 for images), so we can use this class for various encoding networks.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -667,14 +666,14 @@ for images), so we can use this class for various encoding networks.</p>
 <span class="sd">    net : Function</span>
 <span class="sd">        Returns</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">dim_hidden</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">dim_hidden</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">dim_hidden</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_output_at</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">means</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">[:,</span> <span class="p">:</span><span class="n">dim_hidden</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lstds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">[:,</span> <span class="n">dim_hidden</span><span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rhos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">[:,</span> <span class="n">dim_hidden</span><span class="p">:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">updates</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">enc_func</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dim_hidden</span> <span class="o">=</span> <span class="n">dim_hidden</span>
@@ -683,8 +682,8 @@ for images), so we can use this class for various encoding networks.</p>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enc_func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">xs</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">tensor4</span><span class="p">()</span>
             <span class="n">means</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">means</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xs</span><span class="p">:</span> <span class="n">xs</span><span class="p">})</span>
-            <span class="n">lstds</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lstds</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xs</span><span class="p">:</span> <span class="n">xs</span><span class="p">})</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">enc_func</span> <span class="o">=</span> <span class="n">function</span><span class="p">([</span><span class="n">xs</span><span class="p">],</span> <span class="p">[</span><span class="n">means</span><span class="p">,</span> <span class="n">lstds</span><span class="p">])</span>
+            <span class="n">rhos</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rhos</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xs</span><span class="p">:</span> <span class="n">xs</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enc_func</span> <span class="o">=</span> <span class="n">function</span><span class="p">([</span><span class="n">xs</span><span class="p">],</span> <span class="p">[</span><span class="n">means</span><span class="p">,</span> <span class="n">rhos</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enc_func</span>
 
@@ -709,13 +708,13 @@ for images), so we can use this class for various encoding networks.</p>
         <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">theano_backend</span><span class="o">.</span><span class="n">_LEARNING_PHASE</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 
         <span class="n">enc_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_enc_func</span><span class="p">()</span>
-        <span class="n">means</span><span class="p">,</span> <span class="n">lstds</span> <span class="o">=</span> <span class="n">enc_func</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">,</span> <span class="n">rhos</span> <span class="o">=</span> <span class="n">enc_func</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
         <span class="n">means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">lstds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">lstds</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">rhos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">rhos</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">ns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_hidden</span><span class="p">)</span>
-        <span class="n">zs</span> <span class="o">=</span> <span class="n">means</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lstds</span><span class="p">)</span> <span class="o">*</span> <span class="n">ns</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">means</span> <span class="o">+</span> <span class="n">pm</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">dist_math</span><span class="o">.</span><span class="n">rho2sd</span><span class="p">(</span><span class="n">rhos</span><span class="p">)</span> <span class="o">*</span> <span class="n">ns</span>
 
-        <span class="k">return</span> <span class="n">ns</span>
+        <span class="k">return</span> <span class="n">zs</span>
 </pre></div>
 </div>
 </div>
@@ -723,7 +722,7 @@ for images), so we can use this class for various encoding networks.</p>
 decoders.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -763,7 +762,7 @@ decoders.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -775,7 +774,7 @@ decoders.</p>
 <span class="sd">    zs : Theano tensor</span>
 <span class="sd">        Hidden variables.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zs</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">zs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zs</span> <span class="o">=</span> <span class="n">zs</span>
@@ -816,7 +815,7 @@ and classes defined above. We set the size of mini-batches to 100 and
 the dimension of the latent space to 2 for visualization.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -832,13 +831,13 @@ the below, <code class="docutils literal"><span class="pre">enc.model</span></co
 we can check the model architecture using the method <code class="docutils literal"><span class="pre">summary()</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="c1"># Placeholder of images</span>
-<span class="n">xs_t</span> <span class="o">=</span> <span class="n">shared</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">minibatch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;xs_t&#39;</span><span class="p">)</span>
-
+<span class="n">xs_t</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">tensor4</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;xs_t&#39;</span><span class="p">)</span>
+<span class="n">xs_t</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">minibatch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 <span class="c1"># Encoder</span>
 <span class="n">enc</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="n">xs_t</span><span class="p">,</span> <span class="n">dim_hidden</span><span class="p">,</span> <span class="n">net</span><span class="o">=</span><span class="n">cnn_enc</span><span class="p">)</span>
 <span class="n">enc</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
@@ -853,25 +852,25 @@ we can check the model architecture using the method <code class="docutils liter
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #
 =================================================================
-input_1 (InputLayer)         (100, 1, 28, 28)          0
+input_10 (InputLayer)        (100, 1, 28, 28)          0
 _________________________________________________________________
-conv2d_1 (Conv2D)            (100, 1, 28, 28)          5
+conv2d_19 (Conv2D)           (100, 1, 28, 28)          5
 _________________________________________________________________
-conv2d_2 (Conv2D)            (100, 64, 14, 14)         320
+conv2d_20 (Conv2D)           (100, 64, 14, 14)         320
 _________________________________________________________________
-conv2d_3 (Conv2D)            (100, 64, 14, 14)         36928
+conv2d_21 (Conv2D)           (100, 64, 14, 14)         36928
 _________________________________________________________________
-conv2d_4 (Conv2D)            (100, 64, 14, 14)         36928
+conv2d_22 (Conv2D)           (100, 64, 14, 14)         36928
 _________________________________________________________________
-flatten_1 (Flatten)          (100, 12544)              0
+flatten_4 (Flatten)          (100, 12544)              0
 _________________________________________________________________
-dense_1 (Dense)              (100, 128)                1605760
+dense_19 (Dense)             (100, 128)                1605760
 _________________________________________________________________
-dense_2 (Dense)              (100, 4)                  516
+dense_20 (Dense)             (100, 4)                  516
 =================================================================
-Total params: 1,680,457.0
-Trainable params: 1,680,457.0
-Non-trainable params: 0.0
+Total params: 1,680,457
+Trainable params: 1,680,457
+Non-trainable params: 0
 _________________________________________________________________
 </pre></div></div>
 </div>
@@ -882,19 +881,19 @@ Normal prior on <span class="math">\(\mathbf{z}\)</span>, decode the variational
 observation <span class="math">\(\mathbf{x}\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
     <span class="c1"># Hidden variables</span>
-    <span class="n">zs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">minibatch_size</span><span class="p">,</span> <span class="n">dim_hidden</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;zs&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">minibatch_size</span><span class="p">,</span> <span class="n">dim_hidden</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">,</span> <span class="n">total_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 
     <span class="c1"># Decoder and its parameters</span>
     <span class="n">dec</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">net</span><span class="o">=</span><span class="n">cnn_dec</span><span class="p">)</span>
 
     <span class="c1"># Observation model</span>
-    <span class="n">xs_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;xs_&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">dec</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">sd</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">xs_t</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+    <span class="n">xs_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;xs_&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">dec</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">xs_t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">,</span> <span class="n">total_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -904,40 +903,30 @@ decoded variational parameters are passed to
 <code class="docutils literal"><span class="pre">local_RVs</span></code> in the ADVI function of PyMC3.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">local_RVs</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">zs</span><span class="p">:</span> <span class="p">((</span><span class="n">enc</span><span class="o">.</span><span class="n">means</span><span class="p">,</span> <span class="n">enc</span><span class="o">.</span><span class="n">lstds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">minibatch_size</span><span class="p">))})</span>
+<span></span><span class="n">local_RVs</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">zs</span><span class="p">:</span> <span class="p">(</span><span class="n">enc</span><span class="o">.</span><span class="n">means</span><span class="p">,</span> <span class="n">enc</span><span class="o">.</span><span class="n">rhos</span><span class="p">)})</span>
 </pre></div>
 </div>
 </div>
 <p>This argument is a <code class="docutils literal"><span class="pre">OrderedDict</span></code> whose keys are random variables to
 which the decoded variational parameters are set, <code class="docutils literal"><span class="pre">zs</span></code> in this model.
 Each value of the dictionary contains two theano expressions
-representing variational mean (<code class="docutils literal"><span class="pre">enc.means</span></code>) and log of standard
-deviations (<code class="docutils literal"><span class="pre">enc.lstds</span></code>). In addition, a scaling constant
-(<code class="docutils literal"><span class="pre">len(data)</span> <span class="pre">/</span> <span class="pre">float(minibatch_size)</span></code>) is required to compensate for
-the size of mini-batches of the corresponding log probability terms in
-the evidence lower bound (ELBO), the objective of the variational
-inference.</p>
+representing variational mean (<code class="docutils literal"><span class="pre">enc.means</span></code>) and rhos (<code class="docutils literal"><span class="pre">enc.rhos</span></code>). A
+scaling constant (<code class="docutils literal"><span class="pre">len(data)</span> <span class="pre">/</span> <span class="pre">float(minibatch_size)</span></code>) is set
+automaticaly (as we specified it in the model saying what’s the
+<code class="docutils literal"><span class="pre">total_size</span></code>) to compensate for the size of mini-batches of the
+corresponding log probability terms in the evidence lower bound (ELBO),
+the objective of the variational inference.</p>
 <p>The scaling constant for the observed random variables is set in the
 same way.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">observed_RVs</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="n">xs_</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">minibatch_size</span><span class="p">)})</span>
-</pre></div>
-</div>
-</div>
 <p>We can also check the architecture of the decoding network as for the
 encoding network.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -953,70 +942,48 @@ encoding network.</p>
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #
 =================================================================
-input_2 (InputLayer)         (100, 2)                  0
+input_11 (InputLayer)        (100, 2)                  0
 _________________________________________________________________
-dense_3 (Dense)              (100, 2)                  6
+dense_21 (Dense)             (100, 2)                  6
 _________________________________________________________________
-dense_4 (Dense)              (100, 12544)              37632
+dense_22 (Dense)             (100, 12544)              37632
 _________________________________________________________________
-reshape_1 (Reshape)          (100, 64, 14, 14)         0
+reshape_7 (Reshape)          (100, 64, 14, 14)         0
 _________________________________________________________________
-conv2d_transpose_1 (Conv2DTr (100, 64, 14, 14)         36928
+conv2d_transpose_19 (Conv2DT (100, 64, 14, 14)         36928
 _________________________________________________________________
-conv2d_transpose_2 (Conv2DTr (100, 64, 14, 14)         36928
+conv2d_transpose_20 (Conv2DT (100, 64, 14, 14)         36928
 _________________________________________________________________
-conv2d_transpose_3 (Conv2DTr (100, 64, 28, 28)         16448
+conv2d_transpose_21 (Conv2DT (100, 64, 28, 28)         16448
 _________________________________________________________________
-conv2d_5 (Conv2D)            (100, 1, 28, 28)          257
+conv2d_23 (Conv2D)           (100, 1, 28, 28)          257
 =================================================================
-Total params: 128,199.0
-Trainable params: 128,199.0
-Non-trainable params: 0.0
+Total params: 128,199
+Trainable params: 128,199
+Non-trainable params: 0
 _________________________________________________________________
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Inference">
 <h2>Inference<a class="headerlink" href="#Inference" title="Permalink to this headline">¶</a></h2>
-<p>To perform inference, we need to create generators of mini-batches and
-define the optimizer used for ADVI. The optimizer is a function that
-returns Theano parameter update object (dictionary).</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># Mini-batches</span>
-<span class="k">def</span> <span class="nf">create_minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="p">):</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">start_idx</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="c1"># Return random data samples of set size batchsize each iteration</span>
-        <span class="n">ixs</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">minibatch_size</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">data</span><span class="p">[</span><span class="n">ixs</span><span class="p">]</span>
-
-<span class="n">minibatches</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">create_minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="p">))</span>
-
-<span class="k">def</span> <span class="nf">rmsprop</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
-    <span class="n">adam_</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">adam_</span><span class="o">.</span><span class="n">get_updates</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="p">[],</span> <span class="n">loss</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Let us execute ADVI function of PyMC3.</p>
+<p>Let us execute ADVI in PyMC3.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">v_params</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">variational</span><span class="o">.</span><span class="n">advi_minibatch</span><span class="p">(</span>
-        <span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">minibatch_tensors</span><span class="o">=</span><span class="p">[</span><span class="n">xs_t</span><span class="p">],</span> <span class="n">minibatches</span><span class="o">=</span><span class="n">minibatches</span><span class="p">,</span>
-        <span class="n">local_RVs</span><span class="o">=</span><span class="n">local_RVs</span><span class="p">,</span> <span class="n">observed_RVs</span><span class="o">=</span><span class="n">observed_RVs</span><span class="p">,</span>
-        <span class="n">encoder_params</span><span class="o">=</span><span class="p">(</span><span class="n">enc</span><span class="o">.</span><span class="n">params</span> <span class="o">+</span> <span class="n">dec</span><span class="o">.</span><span class="n">params</span><span class="p">),</span>
-        <span class="n">optimizer</span><span class="o">=</span><span class="n">rmsprop</span>
+<span></span><span class="c1"># In memory Minibatches for better speed</span>
+<span class="n">xs_t_minibatch</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Minibatch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="n">approx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+        <span class="mi">15000</span><span class="p">,</span>
+        <span class="n">local_rv</span><span class="o">=</span><span class="n">local_RVs</span><span class="p">,</span>
+        <span class="n">more_obj_params</span><span class="o">=</span><span class="n">enc</span><span class="o">.</span><span class="n">params</span> <span class="o">+</span> <span class="n">dec</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">obj_optimizer</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">rmsprop</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">),</span>
+        <span class="n">more_replacements</span><span class="o">=</span><span class="p">{</span><span class="n">xs_t</span><span class="p">:</span><span class="n">xs_t_minibatch</span><span class="p">},</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -1026,23 +993,23 @@ returns Theano parameter update object (dictionary).</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average ELBO = -54,641,644.54: 100%|██████████| 1000/1000 [18:59&lt;00:00,  1.19s/it]
-Finished minibatch ADVI: ELBO = -53,421,131.77
+Average Loss = 2.2294e+07: 100%|██████████| 15000/15000 [23:47&lt;00:00, 10.52it/s]
+Finished [100%]: Average Loss = 2.2264e+07
 </pre></div></div>
 </div>
+<p>I’ve checked the plot, seemed like convergence is not achived</p>
 </div>
 <div class="section" id="Results">
 <h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">v_params</span></code>, the returned value of the ADVI function, has the trace of
-ELBO during inference (optimization). We can see the convergence of the
-inference.</p>
+<p>ADVI instance has the trace of negative ELBO during inference
+(optimization). We can see the convergence of the inference.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v_params</span><span class="o">.</span><span class="n">elbo_vals</span><span class="p">);</span>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">hist</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -1050,7 +1017,7 @@ inference.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_convolutional_vae_keras_advi_41_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_41_0.png" />
+<img alt="../_images/notebooks_convolutional_vae_keras_advi_38_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_38_0.png" />
 </div>
 </div>
 <p>Finally, we see the distribution of the images in the latent space. To
@@ -1059,7 +1026,7 @@ decoding network. The mean of <span class="math">\(p(\mathbf{x}|\mathbf{z})\)</s
 image corresponding to the samples on the grid.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1080,17 +1047,7 @@ image corresponding to the samples on the grid.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_convolutional_vae_keras_advi_43_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_43_0.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
-</pre></div>
+<img alt="../_images/notebooks_convolutional_vae_keras_advi_40_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_40_0.png" />
 </div>
 </div>
 </div>
@@ -1140,7 +1097,7 @@ image corresponding to the samples on the grid.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1150,7 +1107,7 @@ image corresponding to the samples on the grid.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

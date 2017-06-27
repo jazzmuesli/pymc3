@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gaussian Process (GP) smoothing &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Gaussian Process (GP) smoothing &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Gaussian Mixture Model" href="gaussian_mixture_model.html"/>
         <link rel="prev" title="Gaussian Process Regression and Classification with Elliptical Slice Sampling" href="GP-slice-sampling.html"/> 
@@ -102,13 +102,12 @@
 <li class="toctree-l3"><a class="reference internal" href="GP-covariances.html">Kernels / Covariance functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Gaussian Process (GP) smoothing</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Let's-try-a-linear-regression-first">Let&#8217;s try a linear regression first</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Let's-try-a-linear-regression-first">Let’s try a linear regression first</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Linear-regression-model-recap">Linear regression model recap</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Gaussian-Process-smoothing-model">Gaussian Process smoothing model</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Let's-describe-the-above-GP-smoothing-model-in-PyMC3">Let&#8217;s describe the above GP-smoothing model in PyMC3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Let's-describe-the-above-GP-smoothing-model-in-PyMC3">Let’s describe the above GP-smoothing model in PyMC3</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Exploring-different-levels-of-smoothing">Exploring different levels of smoothing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Smoothing-&quot;to-the-limits&quot;">Smoothing &#8220;to the limits&#8221;</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Interactive-smoothing">Interactive smoothing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Smoothing-&quot;to-the-limits&quot;">Smoothing “to the limits”</a></li>
 </ul>
 </li>
 </ul>
@@ -382,12 +381,12 @@ div.nboutput div.output_area.stderr {
 <p>This example deals with the case when we want to <strong>smooth</strong> the observed
 data points <span class="math">\((x_i, y_i)\)</span> of some 1-dimensional function
 <span class="math">\(y=f(x)\)</span>, by finding the new values <span class="math">\((x_i, y'_i)\)</span> such that
-the new data is more &#8220;smooth&#8221; (see more on the definition of smoothness
+the new data is more “smooth” (see more on the definition of smoothness
 through allocation of variance in the model description below) when
 moving along the <span class="math">\(x\)</span> axis.</p>
 <p>It is important to note that we are <strong>not</strong> dealing with the problem of
 interpolating the function <span class="math">\(y=f(x)\)</span> at the unknown values of
-<span class="math">\(x\)</span>. Such problem would be called &#8220;regression&#8221; not &#8220;smoothing&#8221;,
+<span class="math">\(x\)</span>. Such problem would be called “regression” not “smoothing”,
 and will be considered in other examples.</p>
 <p>If we assume the functional dependency between <span class="math">\(x\)</span> and <span class="math">\(y\)</span>
 is <strong>linear</strong> then, by making the independence and normality assumptions
@@ -398,8 +397,8 @@ cubic, etc), if we know the functional form of the dependency in
 advance.</p>
 <p>However, the <strong>functional form</strong> of <span class="math">\(y=f(x)\)</span> is <strong>not always known
 in advance</strong>, and it might be hard to choose which one to fit, given the
-data. For example, you wouldn&#8217;t necessarily know which function to use,
-given the following observed data. Assume you haven&#8217;t seen the formula
+data. For example, you wouldn’t necessarily know which function to use,
+given the following observed data. Assume you haven’t seen the formula
 that generated it:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -448,10 +447,10 @@ Populating the interactive namespace from numpy and matplotlib
 </div>
 </div>
 <div class="section" id="Let's-try-a-linear-regression-first">
-<h2>Let&#8217;s try a linear regression first<a class="headerlink" href="#Let's-try-a-linear-regression-first" title="Permalink to this headline">¶</a></h2>
+<h2>Let’s try a linear regression first<a class="headerlink" href="#Let's-try-a-linear-regression-first" title="Permalink to this headline">¶</a></h2>
 <p>As humans, we see that there is a non-linear dependency with some noise,
 and we would like to capture that dependency. If we perform a linear
-regression, we see that the &#8220;smoothed&#8221; data is less than satisfactory:</p>
+regression, we see that the “smoothed” data is less than satisfactory:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -491,7 +490,7 @@ it so that for each observed data point we have:</p>
 \[cov(\epsilon_i, \epsilon_j) = 0 \: \text{ for } i \neq j\]</div>
 <p>The parameters of this model are <span class="math">\(a\)</span>, <span class="math">\(b\)</span>, and
 <span class="math">\(\sigma\)</span>. It turns out that, under these assumptions, the maximum
-likelihood estimates of <span class="math">\(a\)</span> and <span class="math">\(b\)</span> don&#8217;t depend on
+likelihood estimates of <span class="math">\(a\)</span> and <span class="math">\(b\)</span> don’t depend on
 <span class="math">\(\sigma\)</span>. Then <span class="math">\(\sigma\)</span> can be estimated separately, after
 finding the most likely values for <span class="math">\(a\)</span> and <span class="math">\(b\)</span>.</p>
 </div>
@@ -499,7 +498,7 @@ finding the most likely values for <span class="math">\(a\)</span> and <span cla
 <h2>Gaussian Process smoothing model<a class="headerlink" href="#Gaussian-Process-smoothing-model" title="Permalink to this headline">¶</a></h2>
 <p>This model allows departure from the linear dependency by assuming that
 the dependency between <span class="math">\(x\)</span> and <span class="math">\(y\)</span> is a Brownian motion over
-the domain of <span class="math">\(x\)</span>. This doesn&#8217;t go as far as assuming a particular
+the domain of <span class="math">\(x\)</span>. This doesn’t go as far as assuming a particular
 functional dependency between the variables. Instead, by <strong>controlling
 the standard deviation of the unobserved Brownian motion</strong> we can
 achieve different levels of smoothness of the recovered functional
@@ -521,7 +520,7 @@ data points <span class="math">\(x_i\)</span> only. Therefore, again, the method
 smoothing and not regression.</p>
 </div>
 <div class="section" id="Let's-describe-the-above-GP-smoothing-model-in-PyMC3">
-<h2>Let&#8217;s describe the above GP-smoothing model in PyMC3<a class="headerlink" href="#Let's-describe-the-above-GP-smoothing-model-in-PyMC3" title="Permalink to this headline">¶</a></h2>
+<h2>Let’s describe the above GP-smoothing model in PyMC3<a class="headerlink" href="#Let's-describe-the-above-GP-smoothing-model-in-PyMC3" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [4]:
@@ -535,8 +534,8 @@ smoothing and not regression.</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s create a model with a shared parameter for specifying different
-levels of smoothing. We use very wide priors for the &#8220;mu&#8221; and &#8220;tau&#8221;
+<p>Let’s create a model with a shared parameter for specifying different
+levels of smoothing. We use very wide priors for the “mu” and “tau”
 parameters of the hidden Brownian motion, which you can adjust according
 to your application.</p>
 <div class="nbinput nblast docutils container">
@@ -563,7 +562,7 @@ to your application.</p>
 </pre></div>
 </div>
 </div>
-<p>Let&#8217;s also make a helper function for inferring the most likely values
+<p>Let’s also make a helper function for inferring the most likely values
 of <span class="math">\(z\)</span>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -589,7 +588,7 @@ for our goal a MAP estimate will suffice.</p>
 </div>
 <div class="section" id="Exploring-different-levels-of-smoothing">
 <h2>Exploring different levels of smoothing<a class="headerlink" href="#Exploring-different-levels-of-smoothing" title="Permalink to this headline">¶</a></h2>
-<p>Let&#8217;s try to allocate 50% variance to the noise, and see if the result
+<p>Let’s try to allocate 50% variance to the noise, and see if the result
 matches our expectations.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -615,7 +614,7 @@ matches our expectations.</p>
 </div>
 <p>It appears that the variance is split evenly between the noise and the
 hidden process, as expected.</p>
-<p>Let&#8217;s try gradually increasing the smoothness parameter to see if we can
+<p>Let’s try gradually increasing the smoothness parameter to see if we can
 obtain smoother data:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -641,12 +640,12 @@ obtain smoother data:</p>
 </div>
 </div>
 <div class="section" id="Smoothing-&quot;to-the-limits&quot;">
-<h2>Smoothing &#8220;to the limits&#8221;<a class="headerlink" href="#Smoothing-"to-the-limits"" title="Permalink to this headline">¶</a></h2>
+<h2>Smoothing “to the limits”<a class="headerlink" href="#Smoothing-"to-the-limits"" title="Permalink to this headline">¶</a></h2>
 <p>By increading the smoothing parameter, we can gradually make the
 inferred values of the hidden Brownian motion approach the average value
 of the data. This is because as we increase the smoothing parameter, we
 allow less and less of the variance to be allocated to the Brownian
-motion, so eventually it aproaches the process which almost doesn&#8217;t
+motion, so eventually it aproaches the process which almost doesn’t
 change over the domain of <span class="math">\(x\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -671,37 +670,6 @@ change over the domain of <span class="math">\(x\)</span>:</p>
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_GP-smoothing_18_0.png" src="../_images/notebooks_GP-smoothing_18_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Interactive-smoothing">
-<h2>Interactive smoothing<a class="headerlink" href="#Interactive-smoothing" title="Permalink to this headline">¶</a></h2>
-<p>Below you can interactively test different levels of smoothing. Notice,
-because we use a <strong>shared Theano variable</strong> to specify the smoothing
-above, the model doesn&#8217;t need to be recompiled every time you move the
-slider, and so the <strong>inference is fast</strong>!</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">IPython.html.widgets</span> <span class="kn">import</span> <span class="n">interact</span>
-<span class="nd">@interact</span><span class="p">(</span><span class="n">smoothing</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.99</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">plot_smoothed</span><span class="p">(</span><span class="n">smoothing</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
-    <span class="n">z_val</span> <span class="o">=</span> <span class="n">infer_z</span><span class="p">(</span><span class="n">smoothing</span><span class="p">)</span>
-
-    <span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
-    <span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z_val</span><span class="p">);</span>
-    <span class="n">title</span><span class="p">(</span><span class="s2">&quot;Smoothing={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">smoothing</span><span class="p">));</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-smoothing_20_0.png" src="../_images/notebooks_GP-smoothing_20_0.png" />
 </div>
 </div>
 <p>This example originally contributed by: Andrey Kuzmenko,
@@ -753,7 +721,7 @@ slider, and so the <strong>inference is fast</strong>!</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -763,7 +731,7 @@ slider, and so the <strong>inference is fast</strong>!</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gaussian Process Regression and Classification with Elliptical Slice Sampling &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Gaussian Process Regression and Classification with Elliptical Slice Sampling &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Gaussian Process (GP) smoothing" href="GP-smoothing.html"/>
         <link rel="prev" title="Kernels / Covariance functions" href="GP-covariances.html"/> 
@@ -382,7 +382,7 @@ covariance might otherwise induce a strong dependence between samples,
 and does not depend on any tuning parameters. It can be useful when
 working with Gaussian processes, in which a multivariate Gaussian prior
 is used to impose a covariance structure on some latent function.</p>
-<p>This notebook provides examples of how to use PyMC3&#8217;s elliptical slice
+<p>This notebook provides examples of how to use PyMC3’s elliptical slice
 sampler to perform Gaussian process regression and classification. Since
 the focus of these examples are to show how to of elliptical slice
 sampling to sample from the posterior rather than to show how to fit the
@@ -416,10 +416,10 @@ with diagonal covariance) with mean <span class="math">\(f\)</span> and variance
 <div class="section" id="Generate-some-example-data">
 <h3>Generate some example data<a class="headerlink" href="#Generate-some-example-data" title="Permalink to this headline">¶</a></h3>
 <p>We generate some data from Gaussian process at 30 random points in
-<span class="math">\([0, 3]\)</span> and interpolate the function&#8217;s value in this interval.</p>
+<span class="math">\([0, 3]\)</span> and interpolate the function’s value in this interval.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -441,10 +441,10 @@ with diagonal covariance) with mean <span class="math">\(f\)</span> and variance
 <span class="n">cov</span> <span class="o">=</span> <span class="n">f_scale</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">lengthscale</span><span class="p">)</span>
 <span class="n">K</span> <span class="o">=</span> <span class="n">cov</span><span class="p">(</span><span class="n">X0</span><span class="p">)</span>
 <span class="n">K_s</span> <span class="o">=</span> <span class="n">cov</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="n">K_noise</span> <span class="o">=</span> <span class="n">K</span> <span class="o">+</span> <span class="n">noise</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">K_noise</span> <span class="o">=</span> <span class="n">K</span> <span class="o">+</span> <span class="n">noise</span> <span class="o">*</span> <span class="n">tt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
 <span class="c1"># Add very slight perturbation to the covariance matrix diagonal to improve numerical stability</span>
-<span class="n">K_stable</span> <span class="o">=</span> <span class="n">K</span> <span class="o">+</span> <span class="mf">1e-12</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">K_stable</span> <span class="o">=</span> <span class="n">K</span> <span class="o">+</span> <span class="mf">1e-12</span> <span class="o">*</span> <span class="n">tt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
 <span class="c1"># Observed data</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">cov</span><span class="o">=</span><span class="n">K_noise</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
@@ -457,12 +457,12 @@ with diagonal covariance) with mean <span class="math">\(f\)</span> and variance
 <p>The posterior is analytically tractable so we can compute the posterior
 mean explicitly. Rather than computing the inverse of the covariance
 matrix <code class="docutils literal"><span class="pre">K</span></code>, we use the numerically stable calculation described
-Algorithm 2.1 in the book &#8220;Gaussian Processes for Machine Learning&#8221;
+Algorithm 2.1 in the book “Gaussian Processes for Machine Learning”
 (2006) by Rasmussen and Williams, which is <a class="reference external" href="http://www.gaussianprocess.org/gpml/">available online for
 free</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -494,7 +494,7 @@ free</a>.</p>
 <h3>Sample from posterior distribution<a class="headerlink" href="#Sample-from-posterior-distribution" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -524,7 +524,7 @@ posterior and behaves how one would expect–narrower near areas with lots
 of observations and wider in areas with more uncertainty.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -557,11 +557,11 @@ is the standard likelihood for logistic regression:</p>
 <div class="section" id="Generate-some-example-data">
 <h3>Generate some example data<a class="headerlink" href="#Generate-some-example-data" title="Permalink to this headline">¶</a></h3>
 <p>We generate random samples from a Gaussian process, assign any points
-greater than zero to a &#8220;positive&#8221; class, and assign all other points to
-a &#8220;negative&#8221; class.</p>
+greater than zero to a “positive” class, and assign all other points to
+a “negative” class.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -576,7 +576,7 @@ a &#8220;negative&#8221; class.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -601,7 +601,7 @@ a &#8220;negative&#8221; class.</p>
 <h3>Sample from posterior distribution<a class="headerlink" href="#Sample-from-posterior-distribution" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -630,7 +630,7 @@ a &#8220;negative&#8221; class.</p>
 outside the range of the observed data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -698,7 +698,7 @@ outside the range of the observed data.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -708,7 +708,7 @@ outside the range of the observed data.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

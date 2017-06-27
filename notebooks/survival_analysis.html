@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bayesian Survival Analysis &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Bayesian Survival Analysis &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="The Dawid-Skene model with priors" href="dawid-skene.html"/>
         <link rel="prev" title="A Hierarchical model for Rugby prediction" href="rugby_analytics.html"/> 
@@ -97,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#applied">Applied</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="BEST.html">Bayesian Estimation Supersedes the T-Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multilevel_modeling.html">A Primer on Bayesian Methods for Multilevel Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stochastic_volatility.html">Stochastic Volatility model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rugby_analytics.html">A Hierarchical model for Rugby prediction</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Bayesian Survival Analysis</a><ul>
@@ -383,7 +384,7 @@ This tutorial shows how to fit and analyze a Bayesian survival model in
 Python using <a class="reference external" href="https://pymc-devs.github.io/pymc3">PyMC3</a>.</p>
 <p>We illustrate these concepts by analyzing a <a class="reference external" href="https://vincentarelbundock.github.io/Rdatasets/doc/HSAUR/mastectomy.html">mastectomy data
 set</a>
-from <code class="docutils literal"><span class="pre">R</span></code>&#8216;s
+from <code class="docutils literal"><span class="pre">R</span></code>’s
 <a class="reference external" href="https://cran.r-project.org/web/packages/HSAUR/index.html">HSAUR</a>
 package.</p>
 <div class="nbinput nblast docutils container">
@@ -396,7 +397,7 @@ package.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
@@ -411,14 +412,6 @@ package.</p>
 <span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">tensor</span> <span class="k">as</span> <span class="n">T</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Couldn&#39;t import dot_parser, loading of dot files will not be possible.
-</pre></div></div>
 </div>
 <p>Fortunately,
 <a class="reference external" href="http://statsmodels.sourceforge.net/0.6.0/datasets/index.html">statsmodels.datasets</a>
@@ -454,6 +447,19 @@ makes it quite easy to load a number of data sets from <code class="docutils lit
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -565,7 +571,7 @@ Even though the quantity we are interested in estimating is the time
 between surgery and death, we do not observe the death of every subject.
 At the point in time that we perform our analysis, some of our subjects
 will thankfully still be alive. In the case of our mastectomy study,
-<code class="docutils literal"><span class="pre">df.event</span></code> is one if the subject&#8217;s death was observed (the observation
+<code class="docutils literal"><span class="pre">df.event</span></code> is one if the subject’s death was observed (the observation
 is not censored) and is zero if the death was not observed (the
 observation is censored).</p>
 <div class="nbinput docutils container">
@@ -628,15 +634,15 @@ observed durations and indicate which observations are censored below.</p>
 </div>
 </div>
 <p>When an observation is censored (<code class="docutils literal"><span class="pre">df.event</span></code> is zero), <code class="docutils literal"><span class="pre">df.time</span></code> is
-not the subject&#8217;s survival time. All we can conclude from such a
-censored obsevation is that the subject&#8217;s true survival time exceeds
+not the subject’s survival time. All we can conclude from such a
+censored obsevation is that the subject’s true survival time exceeds
 <code class="docutils literal"><span class="pre">df.time</span></code>.</p>
 <p>This is enough basic surival analysis theory for the purposes of this
-tutorial; for a more extensive introduction, consult Aalen et al. <a href="#id5"><span class="problematic" id="id6"><span id="id1"></span>[1]_</span></a></p>
+tutorial; for a more extensive introduction, consult Aalen et al. <a class="footnote-reference" href="#id2" id="id1">[1]</a></p>
 <table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[1]</td><td>Aalen, Odd, Ornulf Borgan, and Hakon Gjessing. Survival and event
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Aalen, Odd, Ornulf Borgan, and Hakon Gjessing. Survival and event
 history analysis: a process point of view. Springer Science &amp;
 Business Media, 2008.</td></tr>
 </tbody>
@@ -651,7 +657,7 @@ estimator</a>
 of the cumulative hazard function. However, since we want to understand
 the impact of metastization on survival time, a risk regression model is
 more appropriate. Perhaps the most commonly used risk regression model
-is <a class="reference external" href="https://en.wikipedia.org/wiki/Proportional_hazards_model">Cox&#8217;s proportional hazards
+is <a class="reference external" href="https://en.wikipedia.org/wiki/Proportional_hazards_model">Cox’s proportional hazards
 model</a>. In
 this model, if we have covariates <span class="math">\(\mathbf{x}\)</span> and regression
 coefficients <span class="math">\(\beta\)</span>, the hazard rate is modeled as</p>
@@ -743,7 +749,7 @@ related</a> to a
 Poisson regression model. (The models are not identical, but their
 likelihoods differ by a factor that depends only on the observed data
 and not the parameters <span class="math">\(\beta\)</span> and <span class="math">\(\lambda_j\)</span>. For details,
-see Germán Rodríguez&#8217;s WWS 509 <a class="reference external" href="http://data.princeton.edu/wws509/notes/c7s4.html">course
+see Germán Rodríguez’s WWS 509 <a class="reference external" href="http://data.princeton.edu/wws509/notes/c7s4.html">course
 notes</a>.)</p>
 <p>We define indicator variables based on whether or the <span class="math">\(i\)</span>-th
 suject died in the <span class="math">\(j\)</span>-th interval,</p>
@@ -794,7 +800,7 @@ following <code class="docutils literal"><span class="pre">pymc3</span></code> m
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [13]:
 </pre></div>
@@ -813,14 +819,6 @@ following <code class="docutils literal"><span class="pre">pymc3</span></code> m
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Applied log-transform to lambda0 and added transformed lambda0_log to model.
-</pre></div></div>
-</div>
 <p>We now sample from the model.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -829,6 +827,7 @@ Applied log-transform to lambda0 and added transformed lambda0_log to model.
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">n_tune</span> <span class="o">=</span> <span class="mi">1000</span>
 </pre></div>
 </div>
 </div>
@@ -839,35 +838,30 @@ Applied log-transform to lambda0 and added transformed lambda0_log to model.
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">trace_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span><span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="n">n_tune</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Assigned NUTS to lambda0_log
-Assigned NUTS to beta
- [-----------------100%-----------------] 1001 of 1000 complete in 246.7 sec
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 449.81:  19%|█▉        | 38808/200000 [00:06&lt;00:37, 4245.50it/s]
+Convergence archived at 39100
+Interrupted at 39,100 [19%]: Average Loss = 756.28
+100%|█████████▉| 1998/2000 [01:58&lt;00:00, 15.05it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 52 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+  % (self._chain_id, n_diverging))
+100%|██████████| 2000/2000 [01:58&lt;00:00, 16.84it/s]
 </pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">trace</span> <span class="o">=</span> <span class="n">trace_</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span>
-</pre></div>
-</div>
 </div>
 <p>We see that the hazard rate for subjects whose cancer has metastized is
 about double the rate of those whose cancer has not metastized.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [34]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -877,17 +871,17 @@ about double the rate of those whose cancer has not metastized.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[34]:
+<span></span>Out[16]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>2.1839971003209597
+<span></span>2.2637250704388596
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -899,12 +893,12 @@ about double the rate of those whose cancer has not metastized.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_30_0.png" src="../_images/notebooks_survival_analysis_30_0.png" />
+<img alt="../_images/notebooks_survival_analysis_29_0.png" src="../_images/notebooks_survival_analysis_29_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -916,14 +910,14 @@ about double the rate of those whose cancer has not metastized.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_31_0.png" src="../_images/notebooks_survival_analysis_31_0.png" />
+<img alt="../_images/notebooks_survival_analysis_30_0.png" src="../_images/notebooks_survival_analysis_30_0.png" />
 </div>
 </div>
 <p>We now examine the effect of metastization on both the cumulative hazard
 and on the survival function.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -934,7 +928,7 @@ and on the survival function.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -948,7 +942,7 @@ and on the survival function.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -965,7 +959,7 @@ and on the survival function.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -979,7 +973,7 @@ and on the survival function.</p>
 <span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">max</span><span class="p">());</span>
 <span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Months since mastectomy&#39;</span><span class="p">);</span>
 
-<span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">r&#39;Cumulative hazard $\Lambda(t)$&#39;</span><span class="p">);</span>
+<span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Cumulative hazard $\Lambda(t)$&#39;</span><span class="p">);</span>
 
 <span class="n">hazard_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 
@@ -1001,7 +995,7 @@ and on the survival function.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_36_0.png" src="../_images/notebooks_survival_analysis_36_0.png" />
+<img alt="../_images/notebooks_survival_analysis_35_0.png" src="../_images/notebooks_survival_analysis_35_0.png" />
 </div>
 </div>
 <p>We see that the cumulative hazard for metastized subjects increases more
@@ -1026,9 +1020,9 @@ regression coefficients <span class="math">\(\beta_1, \beta_2, \ldots, \beta_{N 
 form a normal random walk with <span class="math">\(\beta_1 \sim N(0, 1)\)</span>,
 <span class="math">\(\beta_j\ |\ \beta_{j - 1} \sim N(\beta_{j - 1}, 1)\)</span>.</p>
 <p>We implement this model in <code class="docutils literal"><span class="pre">pymc3</span></code> as follows.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1044,49 +1038,36 @@ form a normal random walk with <span class="math">\(\beta_1 \sim N(0, 1)\)</span
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Applied log-transform to lambda0 and added transformed lambda0_log to model.
-</pre></div></div>
-</div>
 <p>We proceed to sample from this model.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">time_varying_model</span><span class="p">:</span>
-    <span class="n">time_varying_trace_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+    <span class="n">time_varying_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="n">n_tune</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Assigned NUTS to lambda0_log
-Assigned NUTS to beta
- [-----------------100%-----------------] 1001 of 1000 complete in 949.5 sec
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 6.6709e+08:  83%|████████▎ | 166194/200000 [00:38&lt;00:07, 4640.71it/s]
+Convergence archived at 166300
+Interrupted at 166,300 [83%]: Average Loss = 5.9183e+09
+100%|█████████▉| 1999/2000 [03:46&lt;00:00,  8.92it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 63 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+  % (self._chain_id, n_diverging))
+100%|██████████| 2000/2000 [03:46&lt;00:00,  8.83it/s]
 </pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">time_varying_trace</span> <span class="o">=</span> <span class="n">time_varying_trace_</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span>
-</pre></div>
-</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1098,7 +1079,7 @@ Assigned NUTS to beta
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_43_0.png" src="../_images/notebooks_survival_analysis_43_0.png" />
+<img alt="../_images/notebooks_survival_analysis_41_0.png" src="../_images/notebooks_survival_analysis_41_0.png" />
 </div>
 </div>
 <p>We see from the plot of <span class="math">\(\beta_j\)</span> over time below that initially
@@ -1107,7 +1088,7 @@ metastization, but that this risk declines as <span class="math">\(\beta_j &lt; 
 eventually.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [28]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1130,7 +1111,7 @@ eventually.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">max</span><span class="p">());</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Months since mastectomy&#39;</span><span class="p">);</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">r&#39;$\beta_j$&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\beta_j$&#39;</span><span class="p">);</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
@@ -1140,7 +1121,7 @@ eventually.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_45_0.png" src="../_images/notebooks_survival_analysis_45_0.png" />
+<img alt="../_images/notebooks_survival_analysis_43_0.png" src="../_images/notebooks_survival_analysis_43_0.png" />
 </div>
 </div>
 <p>The coefficients <span class="math">\(\beta_j\)</span> begin declining rapidly around one
@@ -1152,7 +1133,7 @@ functions due to time-varying effects is also quite apparent in the
 following plots.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [29]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1163,7 +1144,7 @@ following plots.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1183,7 +1164,7 @@ following plots.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Months since mastectomy&#39;</span><span class="p">);</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">r&#39;Cumulative hazard $\Lambda(t)$&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Cumulative hazard $\Lambda(t)$&#39;</span><span class="p">);</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
@@ -1193,12 +1174,12 @@ following plots.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_48_0.png" src="../_images/notebooks_survival_analysis_48_0.png" />
+<img alt="../_images/notebooks_survival_analysis_46_0.png" src="../_images/notebooks_survival_analysis_46_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [31]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1213,7 +1194,7 @@ following plots.</p>
 <span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Months since mastectomy&#39;</span><span class="p">);</span>
 
 <span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-<span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">r&#39;Cumulative hazard $\Lambda(t)$&#39;</span><span class="p">);</span>
+<span class="n">hazard_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Cumulative hazard $\Lambda(t)$&#39;</span><span class="p">);</span>
 
 <span class="n">hazard_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 
@@ -1235,26 +1216,19 @@ following plots.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_survival_analysis_49_0.png" src="../_images/notebooks_survival_analysis_49_0.png" />
+<img alt="../_images/notebooks_survival_analysis_47_0.png" src="../_images/notebooks_survival_analysis_47_0.png" />
 </div>
 </div>
 <p>We have really only scratched the surface of both survival analysis and
 the Bayesian approach to survival analysis. More information on Bayesian
-survival analysis is available in Ibrahim et al. <a href="#id7"><span class="problematic" id="id8"><span id="id3"></span>[1]_</span></a> (For example, we
-may want to account for individual frailty in either or original or
+survival analysis is available in Ibrahim et al. (2005). (For example,
+we may want to account for individual frailty in either or original or
 time-varying models.)</p>
 <p>This tutorial is available as an <a class="reference external" href="http://ipython.org/">IPython</a>
 notebook
 <a class="reference external" href="https://gist.github.com/AustinRochford/4c6b07e51a2247d678d6">here</a>.
 It is adapted from a blog post that first appeared
 <a class="reference external" href="http://austinrochford.com/posts/2015-10-05-bayes-survival.html">here</a>.</p>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[1]</td><td>Ibrahim, Joseph G., Ming‐Hui Chen, and Debajyoti Sinha. Bayesian
-survival analysis. John Wiley &amp; Sons, Ltd, 2005.</td></tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
@@ -1303,7 +1277,7 @@ survival analysis. John Wiley &amp; Sons, Ltd, 2005.</td></tr>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1313,7 +1287,7 @@ survival analysis. John Wiley &amp; Sons, Ltd, 2005.</td></tr>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

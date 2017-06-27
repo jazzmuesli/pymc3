@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GLM: Robust Regression with Outlier Detection &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>GLM: Robust Regression with Outlier Detection &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="GLM: Model Selection" href="GLM-model-selection.html"/>
         <link rel="prev" title="GLM: Robust Linear Regression" href="GLM-robust.html"/> 
@@ -386,15 +386,15 @@ div.nboutput div.output_area.stderr {
 Detection using Hogg 2010 Signal vs Noise method.</strong></p>
 <ul class="simple">
 <li>This is a complementary approach to the Student-T robust regression
-as illustrated in Thomas Wiecki&#8217;s notebook in the <a class="reference external" href="http://pymc-devs.github.io/pymc3/GLM-robust/">PyMC3
+as illustrated in Thomas Wiecki’s notebook in the <a class="reference external" href="http://pymc-devs.github.io/pymc3/GLM-robust/">PyMC3
 documentation</a>, that
 approach is also compared here.</li>
 <li>This model returns a robust estimate of linear coefficients and an
 indication of which datapoints (if any) are outliers.</li>
-<li>The likelihood evaluation is essentially a copy of eqn 17 in &#8220;Data
-analysis recipes: Fitting a model to data&#8221; - <a class="reference external" href="http://arxiv.org/abs/1008.4686">Hogg
+<li>The likelihood evaluation is essentially a copy of eqn 17 in “Data
+analysis recipes: Fitting a model to data” - <a class="reference external" href="http://arxiv.org/abs/1008.4686">Hogg
 2010</a>.</li>
-<li>The model is adapted specifically from Jake Vanderplas&#8217;
+<li>The model is adapted specifically from Jake Vanderplas’
 <a class="reference external" href="http://www.astroml.org/book_figures/chapter8/fig_outlier_rejection.html">implementation</a>
 (3rd model tested).</li>
 <li>The dataset is tiny and hardcoded into this Notebook. It contains
@@ -408,7 +408,7 @@ y.</li>
 <li>Developed using <a class="reference external" href="https://www.continuum.io/downloads">ContinuumIO
 Anaconda</a> distribution on a
 Macbook Pro 3GHz i7, 16GB RAM, OSX 10.10.5.</li>
-<li>During development I&#8217;ve found that 3 data points are always indicated
+<li>During development I’ve found that 3 data points are always indicated
 as outliers, but the remaining ordering of datapoints by decreasing
 outlier-hood is slightly unstable between runs: the posterior surface
 appears to have a small number of solutions with similar probability.</li>
@@ -483,9 +483,9 @@ $&gt; pip install --process-dependency-links git+https://github.com/pymc-devs/py
 </div>
 <div class="section" id="Load-and-Prepare-Data">
 <h3>Load and Prepare Data<a class="headerlink" href="#Load-and-Prepare-Data" title="Permalink to this headline">¶</a></h3>
-<p>We&#8217;ll use the Hogg 2010 data available at
+<p>We’ll use the Hogg 2010 data available at
 <a class="reference external" href="https://github.com/astroML/astroML/blob/master/astroML/datasets/hogg2010test.py">https://github.com/astroML/astroML/blob/master/astroML/datasets/hogg2010test.py</a></p>
-<p>It&#8217;s a very small dataset so for convenience, it&#8217;s hardcoded below</p>
+<p>It’s a very small dataset so for convenience, it’s hardcoded below</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -573,7 +573,7 @@ line</li>
 </div>
 <div class="section" id="Define-model">
 <h3>Define model<a class="headerlink" href="#Define-model" title="Permalink to this headline">¶</a></h3>
-<p><strong>NOTE:</strong> + We&#8217;re using a simple linear OLS model with Normally
+<p><strong>NOTE:</strong> + We’re using a simple linear OLS model with Normally
 distributed priors so that it behaves like a ridge regression</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -622,19 +622,19 @@ distributed priors so that it behaves like a ridge regression</p>
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 150.2:   7%|▋         | 13728/200000 [00:01&lt;00:21, 8696.31it/s]
-Convergence archived at 14000
-Interrupted at 14,000 [7%]: Average Loss = 178.18
-100%|██████████| 2000/2000 [00:01&lt;00:00, 1172.69it/s]
+Average Loss = 168.87:   4%|▍         | 7828/200000 [00:00&lt;00:09, 19595.48it/s]
+Convergence archived at 9500
+Interrupted at 9,500 [4%]: Average Loss = 237.62
+100%|██████████| 3000/3000 [00:00&lt;00:00, 3118.55it/s]
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="View-Traces">
 <h3>View Traces<a class="headerlink" href="#View-Traces" title="Permalink to this headline">¶</a></h3>
-<p><strong>NOTE</strong>: I&#8217;ll &#8216;burn&#8217; the traces to only retain the final 1000 samples</p>
+<p><strong>NOTE</strong>: I’ll ‘burn’ the traces to only retain the final 1000 samples</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -650,7 +650,7 @@ Interrupted at 14,000 [7%]: Average Loss = 178.18
 <img alt="../_images/notebooks_GLM-robust-with-outlier-detection_15_0.png" src="../_images/notebooks_GLM-robust-with-outlier-detection_15_0.png" />
 </div>
 </div>
-<p><strong>NOTE:</strong> We&#8217;ll illustrate this OLS fit and compare to the datapoints in
+<p><strong>NOTE:</strong> We’ll illustrate this OLS fit and compare to the datapoints in
 the final plot</p>
 <hr class="docutils" />
 </div>
@@ -658,8 +658,8 @@ the final plot</p>
 <hr class="docutils" />
 <div class="section" id="Create-Robust-Model:-Student-T-Method">
 <h2>Create Robust Model: Student-T Method<a class="headerlink" href="#Create-Robust-Model:-Student-T-Method" title="Permalink to this headline">¶</a></h2>
-<p>I&#8217;ve added this brief section in order to directly compare the Student-T
-based method exampled in Thomas Wiecki&#8217;s notebook in the <a class="reference external" href="http://pymc-devs.github.io/pymc3/GLM-robust/">PyMC3
+<p>I’ve added this brief section in order to directly compare the Student-T
+based method exampled in Thomas Wiecki’s notebook in the <a class="reference external" href="http://pymc-devs.github.io/pymc3/GLM-robust/">PyMC3
 documentation</a></p>
 <p>Instead of using a Normal distribution for the likelihood, we use a
 Student-T, which has fatter tails. In theory this allows outliers to
@@ -667,14 +667,14 @@ have a smaller mean square error in the likelihood, and thus have less
 influence on the regression estimation. This method does not produce
 inlier / outlier flags but is simpler and faster to run than the Signal
 Vs Noise model below, so a comparison seems worthwhile.</p>
-<p><strong>Note:</strong> we&#8217;ll constrain the Student-T &#8216;degrees of freedom&#8217; parameter
+<p><strong>Note:</strong> we’ll constrain the Student-T ‘degrees of freedom’ parameter
 <code class="docutils literal"><span class="pre">nu</span></code> to be an integer, but otherwise leave it as just another
 stochastic to be inferred: no need for prior knowledge.</p>
 <div class="section" id="Define-Model">
 <h3>Define Model<a class="headerlink" href="#Define-Model" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -706,7 +706,7 @@ stochastic to be inferred: no need for prior knowledge.</p>
 <h3>Sample<a class="headerlink" href="#Sample" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -723,9 +723,10 @@ stochastic to be inferred: no need for prior knowledge.</p>
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 40.378: 100%|██████████| 200000/200000 [00:21&lt;00:00, 9492.83it/s]
-Finished [100%]: Average Loss = 40.375
-100%|██████████| 2000/2000 [00:01&lt;00:00, 1036.71it/s]
+Average Loss = 41.822:   8%|▊         | 15829/200000 [00:01&lt;00:14, 13016.12it/s]
+Convergence archived at 16100
+Interrupted at 16,100 [8%]: Average Loss = 83.741
+100%|██████████| 3000/3000 [00:02&lt;00:00, 1441.38it/s]
 </pre></div></div>
 </div>
 <div class="section" id="View-Traces">
@@ -737,7 +738,7 @@ Finished [100%]: Average Loss = 40.375
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">traces_studentt</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span>
-                 <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">traces_studentt</span><span class="o">.</span><span class="n">varnames</span><span class="p">)</span><span class="o">*</span><span class="mf">1.5</span><span class="p">)</span>
+                 <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">traces_studentt</span><span class="o">.</span><span class="n">varnames</span><span class="p">)</span><span class="o">*</span><span class="mf">1.5</span><span class="p">),</span>
                  <span class="n">lines</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pm</span><span class="o">.</span><span class="n">df_summary</span><span class="p">(</span><span class="n">traces_studentt</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:])</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()})</span>
 </pre></div>
 </div>
@@ -760,7 +761,7 @@ than a thin-tailed (Normal-like) Student-T likelihood.</li>
 <li>The inference sampling also ran very quickly, almost as quickly as
 the conventional OLS</li>
 </ul>
-<p><strong>NOTE:</strong> We&#8217;ll illustrate this Student-T fit and compare to the
+<p><strong>NOTE:</strong> We’ll illustrate this Student-T fit and compare to the
 datapoints in the final plot</p>
 <hr class="docutils" />
 </div>
@@ -769,13 +770,13 @@ datapoints in the final plot</p>
 <hr class="docutils" />
 <div class="section" id="Create-Robust-Model-with-Outliers:-Hogg-Method">
 <h2>Create Robust Model with Outliers: Hogg Method<a class="headerlink" href="#Create-Robust-Model-with-Outliers:-Hogg-Method" title="Permalink to this headline">¶</a></h2>
-<p>Please read the paper (Hogg 2010) and Jake Vanderplas&#8217; code for more
+<p>Please read the paper (Hogg 2010) and Jake Vanderplas’ code for more
 complete information about the modelling technique.</p>
-<p>The general idea is to create a &#8216;mixture&#8217; model whereby datapoints can
+<p>The general idea is to create a ‘mixture’ model whereby datapoints can
 be described by either the linear model (inliers) or a modified linear
 model with different mean and larger variance (outliers).</p>
 <p>The likelihood is evaluated over a mixture of two likelihoods, one for
-&#8216;inliers&#8217;, one for &#8216;outliers&#8217;. A Bernouilli distribution is used to
+‘inliers’, one for ‘outliers’. A Bernouilli distribution is used to
 randomly assign datapoints in N to either the inlier or outlier groups,
 and we sample the model as usual to infer robust model parameters and
 inlier / outlier flags:</p>
@@ -819,7 +820,7 @@ inlier / outlier flags:</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [57]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -860,7 +861,7 @@ inlier / outlier flags:</p>
 <h3>Sample<a class="headerlink" href="#Sample" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [58]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -879,7 +880,7 @@ inlier / outlier flags:</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 20000/20000 [00:54&lt;00:00, 367.64it/s]
+100%|██████████| 30000/30000 [00:59&lt;00:00, 505.40it/s]
 </pre></div></div>
 </div>
 </div>
@@ -887,7 +888,7 @@ inlier / outlier flags:</p>
 <h3>View Traces<a class="headerlink" href="#View-Traces" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [59]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -897,20 +898,18 @@ inlier / outlier flags:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[59]:
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.1,  0.1,  0.1, ...,  0.1,  0.1,  0.1], dtype=float32)
+<span></span>array([ 0.0024796 ,  0.03499796,  0.03499796, ...,  0.01924202,
+        0.01924202,  0.17804247])
 </pre></div>
 </div>
 </div>
-<p><strong>TODO</strong> Fix sampling, not sure why this stopped working, I tried to fix
-it with supplying better test values but sampling of the intercepts just
-fails. (Thomas)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [60]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -923,40 +922,17 @@ fails. (Thomas)</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GLM-robust-with-outlier-detection_38_0.png" src="../_images/notebooks_GLM-robust-with-outlier-detection_38_0.png" />
+<img alt="../_images/notebooks_GLM-robust-with-outlier-detection_37_0.png" src="../_images/notebooks_GLM-robust-with-outlier-detection_37_0.png" />
 </div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [61]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-
-<span class="n">f</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-2
-1
-</pre></div></div>
 </div>
 <p><strong>NOTE:</strong></p>
 <ul class="simple">
-<li>During development I&#8217;ve found that 3 datapoints id=[1,2,3] are always
+<li>During development I’ve found that 3 datapoints id=[1,2,3] are always
 indicated as outliers, but the remaining ordering of datapoints by
 decreasing outlier-hood is unstable between runs: the posterior
 surface appears to have a small number of solutions with very similar
 probability.</li>
-<li>The NUTS sampler seems to work okay, and indeed it&#8217;s a nice
+<li>The NUTS sampler seems to work okay, and indeed it’s a nice
 opportunity to demonstrate a custom likelihood which is possible to
 express as a theano function (thus allowing a gradient-based sampler
 like NUTS). However, with a more complicated dataset, I would spend
@@ -973,11 +949,11 @@ samples under Metropolis-Hastings.</li>
 <h3>View ranges for inliers / outlier predictions<a class="headerlink" href="#View-ranges-for-inliers-/-outlier-predictions" title="Permalink to this headline">¶</a></h3>
 <p>At each step of the traces, each datapoint may be either an inlier or
 outlier. We hope that the datapoints spend an unequal time being one
-state or the other, so let&#8217;s take a look at the simple count of states
+state or the other, so let’s take a look at the simple count of states
 for each of the 20 datapoints.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -999,6 +975,13 @@ for each of the 20 datapoints.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_GLM-robust-with-outlier-detection_43_0.png" src="../_images/notebooks_GLM-robust-with-outlier-detection_43_0.png" />
+</div>
+</div>
 <p><strong>Observe</strong>:</p>
 <ul class="simple">
 <li>The plot above shows the number of samples in the traces in which
@@ -1015,8 +998,8 @@ thereabouts.</li>
 <li>See note above regarding instability between runs.</li>
 </ul>
 <p>The 95% cutoff we choose is subjective and arbitrary, but I prefer it
-for now, so let&#8217;s declare these 3 to be outliers and see how it looks
-compared to Jake Vanderplas&#8217; outliers, which were declared in a slightly
+for now, so let’s declare these 3 to be outliers and see how it looks
+compared to Jake Vanderplas’ outliers, which were declared in a slightly
 different way as points with means above 0.68.</p>
 </div>
 <div class="section" id="Declare-outliers">
@@ -1025,9 +1008,9 @@ different way as points with means above 0.68.</p>
 1 at the 5-percentile cutoff, i.e. in the percentiles from 5 up to 100,
 their values are 1. + Try for yourself altering cutoff to larger values,
 which leads to an objective ranking of outlier-hood.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1037,12 +1020,24 @@ which leads to an objective ranking of outlier-hood.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>0.0    17
+1.0     3
+Name: outlier, dtype: int64
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Posterior-Prediction-Plots-for-OLS-vs-StudentT-vs-SignalNoise">
 <h3>Posterior Prediction Plots for OLS vs StudentT vs SignalNoise<a class="headerlink" href="#Posterior-Prediction-Plots-for-OLS-vs-StudentT-vs-SignalNoise" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1051,13 +1046,13 @@ which leads to an objective ranking of outlier-hood.</p>
 
 <span class="n">lm</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">samp</span><span class="p">:</span> <span class="n">samp</span><span class="p">[</span><span class="s1">&#39;b0_intercept&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">samp</span><span class="p">[</span><span class="s1">&#39;b1_slope&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span>
 
-<span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">plot_posterior_predictive</span><span class="p">(</span><span class="n">traces_ols</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">traces_ols</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span>
         <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#22CC00&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">plot_posterior_predictive</span><span class="p">(</span><span class="n">traces_studentt</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">traces_studentt</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span>
         <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#FFA500&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
 
-<span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">plot_posterior_predictive</span><span class="p">(</span><span class="n">traces_signoise</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior_predictive_glm</span><span class="p">(</span><span class="n">traces_signoise</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">lm</span><span class="o">=</span><span class="n">lm</span><span class="p">,</span>
         <span class="nb">eval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#357EC7&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma_y&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma_x&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">add_legend</span><span class="p">()</span>
@@ -1070,26 +1065,33 @@ which leads to an objective ranking of outlier-hood.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_GLM-robust-with-outlier-detection_48_0.png" src="../_images/notebooks_GLM-robust-with-outlier-detection_48_0.png" />
+</div>
+</div>
 <p><strong>Observe</strong>:</p>
 <ul class="simple">
 <li>The posterior preditive fit for:<ul>
 <li>the <strong>OLS model</strong> is shown in <strong>Green</strong> and as expected, it
-doesn&#8217;t appear to fit the majority of our datapoints very well,
+doesn’t appear to fit the majority of our datapoints very well,
 skewed by outliers</li>
 <li>the <strong>Robust Student-T model</strong> is shown in <strong>Orange</strong> and does
-appear to fit the &#8216;main axis&#8217; of datapoints quite well, ignoring
+appear to fit the ‘main axis’ of datapoints quite well, ignoring
 outliers</li>
 <li>the <strong>Robust Signal vs Noise model</strong> is shown in <strong>Blue</strong> and also
-appears to fit the &#8216;main axis&#8217; of datapoints rather well, ignoring
+appears to fit the ‘main axis’ of datapoints rather well, ignoring
 outliers.</li>
 </ul>
 </li>
 <li>We see that the <strong>Robust Signal vs Noise model</strong> also yields specific
 estimates of <em>which</em> datapoints are outliers:<ul>
-<li>17 &#8216;inlier&#8217; datapoints, in <strong>Blue</strong> and</li>
-<li>3 &#8216;outlier&#8217; datapoints shown in <strong>Red</strong>.</li>
+<li>17 ‘inlier’ datapoints, in <strong>Blue</strong> and</li>
+<li>3 ‘outlier’ datapoints shown in <strong>Red</strong>.</li>
 <li>From a simple visual inspection, the classification seems fair,
-and agrees with Jake Vanderplas&#8217; findings.</li>
+and agrees with Jake Vanderplas’ findings.</li>
 </ul>
 </li>
 <li>Overall, it seems that:<ul>
@@ -1157,7 +1159,7 @@ estimate.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1167,7 +1169,7 @@ estimate.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

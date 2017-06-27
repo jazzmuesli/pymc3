@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stochastic Volatility model &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>Stochastic Volatility model &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,10 +35,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="A Hierarchical model for Rugby prediction" href="rugby_analytics.html"/>
-        <link rel="prev" title="Bayesian Estimation Supersedes the T-Test" href="BEST.html"/> 
+        <link rel="prev" title="A Primer on Bayesian Methods for Multilevel Modeling" href="multilevel_modeling.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#applied">Applied</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="BEST.html">Bayesian Estimation Supersedes the T-Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multilevel_modeling.html">A Primer on Bayesian Methods for Multilevel Modeling</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Stochastic Volatility model</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Build-Model">Build Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Fit-Model">Fit Model</a></li>
@@ -457,7 +458,7 @@ log volatility process.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&lt;matplotlib.lines.Line2D at 0x7fae8c869a20&gt;]
+<span></span>[&lt;matplotlib.lines.Line2D at 0x11a62f198&gt;]
 </pre></div>
 </div>
 </div>
@@ -494,12 +495,12 @@ and has infinite density. To get good convergence with NUTS we use ADVI
 (autodiff variational inference) for initialization.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)[</span><span class="mi">1000</span><span class="p">:]</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -510,18 +511,15 @@ and has infinite density. To get good convergence with NUTS we use ADVI
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 7.9136: 100%|██████████| 200000/200000 [01:14&lt;00:00, 2691.66it/s]
-Finished [100%]: Average Loss = 7.896
-100%|██████████| 2000/2000 [04:47&lt;00:00,  8.48it/s]/home/jovyan/pymc3/pymc3/step_methods/hmc/nuts.py:255: UserWarning: Chain 0 reached the maximum tree depth. Increase max_treedepth, increase target_accept or reparameterize.
-  &#39;reparameterize.&#39; % chain)
-/home/jovyan/pymc3/pymc3/step_methods/hmc/nuts.py:268: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.688505126364, but should be close to 0.8. Try to increase the number of tuning steps.
-  % (chain, mean_accept, target_accept))
-
+Average Loss = -1,130.4:  34%|███▍      | 67873/200000 [00:15&lt;00:31, 4184.66it/s]
+Convergence archived at 68100
+Interrupted at 68,100 [34%]: Average Loss = 505.57
+100%|██████████| 2000/2000 [01:44&lt;00:00, 20.78it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -539,13 +537,13 @@ Finished [100%]: Average Loss = 7.896
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">figsize</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="n">s</span><span class="p">][::</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mo">03</span><span class="p">);</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mo">03</span><span class="p">);</span>
 <span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
 <span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;log volatility&#39;</span><span class="p">)</span>
 </pre></div>
@@ -553,11 +551,11 @@ Finished [100%]: Average Loss = 7.896
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
+<span></span>Out[10]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x7fae6019f8d0&gt;
+<span></span>&lt;matplotlib.text.Text at 0x13368e0b8&gt;
 </pre></div>
 </div>
 </div>
@@ -572,12 +570,12 @@ Finished [100%]: Average Loss = 7.896
 deviation we can see how the model tracks the volatility over time.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">returns</span><span class="p">))</span>
-<span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="n">s</span><span class="p">][::</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mo">03</span><span class="p">);</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mo">03</span><span class="p">);</span>
 <span class="n">sd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 <span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
 <span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;absolute returns&#39;</span><span class="p">)</span>
@@ -586,11 +584,11 @@ deviation we can see how the model tracks the volatility over time.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
+<span></span>Out[11]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x7fae64197c50&gt;
+<span></span>&lt;matplotlib.text.Text at 0x13d0a7208&gt;
 </pre></div>
 </div>
 </div>
@@ -625,7 +623,7 @@ Carlo</a>.</li>
         <a href="rugby_analytics.html" class="btn btn-neutral float-right" title="A Hierarchical model for Rugby prediction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="BEST.html" class="btn btn-neutral" title="Bayesian Estimation Supersedes the T-Test" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="multilevel_modeling.html" class="btn btn-neutral" title="A Primer on Bayesian Methods for Multilevel Modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -656,7 +654,7 @@ Carlo</a>.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -666,7 +664,7 @@ Carlo</a>.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

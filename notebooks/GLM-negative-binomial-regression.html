@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GLM: Negative Binomial Regression &mdash; PyMC3 3.1rc3 documentation</title>
+  <title>GLM: Negative Binomial Regression &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1rc3 documentation" href="../index.html"/>
+    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
         <link rel="next" title="Gaussian Process Regression" href="GP-introduction.html"/>
         <link rel="prev" title="Hierarchical Partial Pooling" href="hierarchical_partial_pooling.html"/> 
@@ -480,7 +480,7 @@ antihistamines, or doing both, increase its frequency.</p>
 </div>
 <div class="section" id="Poisson-Data">
 <h2>Poisson Data<a class="headerlink" href="#Poisson-Data" title="Permalink to this headline">¶</a></h2>
-<p>First, let&#8217;s look at some Poisson distributed data from the Poisson
+<p>First, let’s look at some Poisson distributed data from the Poisson
 regression example.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -539,6 +539,19 @@ regression example.</p>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -647,6 +660,19 @@ distribution.</p>
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -731,32 +757,28 @@ since the mean and variance of a Poisson distribution are equal.</p>
 <span></span><span class="n">fml</span> <span class="o">=</span> <span class="s1">&#39;nsneeze ~ alcohol + nomeds + alcohol:nomeds&#39;</span>
 
 <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">glm</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="n">fml</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">NegativeBinomial</span><span class="p">())</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">GLM</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="n">fml</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">glm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">NegativeBinomial</span><span class="p">())</span>
 
-    <span class="c1"># This initialization seems to improve mixing</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">find_MAP</span><span class="p">(</span><span class="n">fmin</span><span class="o">=</span><span class="n">optimize</span><span class="o">.</span><span class="n">fmin_powell</span><span class="p">)</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">approx_hessian</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">scaling</span><span class="o">=</span><span class="n">C</span><span class="p">))</span>
+    <span class="c1"># Old initialization</span>
+    <span class="c1"># start = pm.find_MAP(fmin=optimize.fmin_powell)</span>
+    <span class="c1"># C = pm.approx_hessian(start)</span>
+    <span class="c1"># trace = pm.sample(4000, step=pm.NUTS(scaling=C))</span>
+
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimization terminated successfully.
-         Current function value: 9825.951700
-         Iterations: 16
-         Function evaluations: 1086
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 4000/4000 [01:25&lt;00:00, 46.98it/s]
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 10,338:   7%|▋         | 13828/200000 [00:22&lt;06:19, 490.54it/s]
+Convergence archived at 13900
+Interrupted at 13,900 [6%]: Average Loss = 14,046
+100%|██████████| 2500/2500 [11:04&lt;00:00,  2.93it/s]
 </pre></div></div>
 </div>
 </div>
@@ -798,6 +820,19 @@ Optimization terminated successfully.
 </div>
 <div class="output_area docutils container">
 <div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -810,39 +845,39 @@ Optimization terminated successfully.
   <tbody>
     <tr>
       <th>Intercept</th>
-      <td>9.758012e-01</td>
-      <td>0.914691</td>
-      <td>1.044931e+00</td>
+      <td>9.758611e-01</td>
+      <td>0.913428</td>
+      <td>1.032908e+00</td>
     </tr>
     <tr>
       <th>alcohol[T.True]</th>
-      <td>3.034426e+00</td>
-      <td>2.822523</td>
-      <td>3.282252e+00</td>
+      <td>3.034905e+00</td>
+      <td>2.820879</td>
+      <td>3.267148e+00</td>
     </tr>
     <tr>
       <th>nomeds[T.True]</th>
-      <td>6.172809e+00</td>
-      <td>5.720291</td>
-      <td>6.620674e+00</td>
+      <td>6.170180e+00</td>
+      <td>5.774109</td>
+      <td>6.613178e+00</td>
     </tr>
     <tr>
       <th>alcohol[T.True]:nomeds[T.True]</th>
-      <td>1.983920e+00</td>
-      <td>1.815308</td>
-      <td>2.157949e+00</td>
-    </tr>
-    <tr>
-      <th>mu</th>
-      <td>1.890197e+259</td>
-      <td>1.043632</td>
-      <td>1.230167e+64</td>
+      <td>1.984273e+00</td>
+      <td>1.833042</td>
+      <td>2.161982e+00</td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td>2.605915e+04</td>
-      <td>9917.944814</td>
-      <td>7.460049e+04</td>
+      <td>2.548632e+04</td>
+      <td>9936.840573</td>
+      <td>7.110099e+04</td>
+    </tr>
+    <tr>
+      <th>mu</th>
+      <td>2.925866e+21</td>
+      <td>1.004314</td>
+      <td>1.691800e+54</td>
     </tr>
   </tbody>
 </table>
@@ -874,7 +909,7 @@ quite close to its actual value of 10.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([  4.30629445,  10.56216515,  26.05707153])
+<span></span>array([  4.25400876,  11.2521235 ,  27.12410786])
 </pre></div>
 </div>
 </div>
@@ -914,17 +949,7 @@ quite close to its actual value of 10.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>10.168124287771807
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span>
+<span></span>10.145896982642357
 </pre></div>
 </div>
 </div>
@@ -977,7 +1002,7 @@ quite close to its actual value of 10.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1rc3',
+            VERSION:'3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -987,7 +1012,7 @@ quite close to its actual value of 10.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
