@@ -92,7 +92,9 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#applied">Applied</a><ul class="current">
@@ -437,8 +439,6 @@ and control arms, respectively.</p>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">color_codes</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">20090425</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -548,7 +548,7 @@ parameterization of prior distributions.</p>
 </pre></div>
 </div>
 </div>
-<p>We follow Kruschke by making the prior for <span class="math">\(\mu\)</span> exponentially
+<p>We follow Kruschke by making the prior for <span class="math">\(\nu\)</span> exponentially
 distributed with a mean of 30; this allocates high prior probability
 over the regions of the parameter that describe the range from normal to
 heavy-tailed data under the Student-T distribution.</p>
@@ -625,7 +625,7 @@ function of all four estimated parameters.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -634,12 +634,12 @@ function of all four estimated parameters.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Assigned NUTS to group1_mean
-Assigned NUTS to group2_mean
-Assigned NUTS to group1_std_interval_
-Assigned NUTS to group2_std_interval_
-Assigned NUTS to ν_minus_one_log_
-100%|██████████| 2000/2000 [00:22&lt;00:00, 89.46it/s]
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 231.07:   8%|▊         | 15144/200000 [00:03&lt;00:44, 4112.61it/s]
+Convergence archived at 15400
+Interrupted at 15,400 [7%]: Average Loss = 243.61
+100%|██████████| 2500/2500 [00:10&lt;00:00, 236.95it/s]
 </pre></div></div>
 </div>
 <p>We can plot the stochastic parameters of the model. PyMC’s
@@ -654,8 +654,7 @@ samples from each of the 2 chains, pooled together.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">100</span><span class="p">:],</span>
-                  <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;group1_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;group2_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;group1_std&#39;</span><span class="p">,</span> <span class="s1">&#39;group2_std&#39;</span><span class="p">,</span> <span class="s1">&#39;ν_minus_one&#39;</span><span class="p">],</span>
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;group1_mean&#39;</span><span class="p">,</span><span class="s1">&#39;group2_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;group1_std&#39;</span><span class="p">,</span> <span class="s1">&#39;group2_std&#39;</span><span class="p">,</span> <span class="s1">&#39;ν_minus_one&#39;</span><span class="p">],</span>
                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#87ceeb&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -686,8 +685,7 @@ adversely affected by the drug at the same time others benefit.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">1000</span><span class="p">:],</span>
-                  <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;difference of stds&#39;</span><span class="p">,</span> <span class="s1">&#39;effect size&#39;</span><span class="p">],</span>
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference of means&#39;</span><span class="p">,</span><span class="s1">&#39;difference of stds&#39;</span><span class="p">,</span> <span class="s1">&#39;effect size&#39;</span><span class="p">],</span>
                   <span class="n">ref_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                   <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#87ceeb&#39;</span><span class="p">);</span>
 </pre></div>
@@ -710,17 +708,8 @@ here, suggest that the model has converged.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">vars</span><span class="p">[:</span><span class="mi">2</span><span class="p">]])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.gridspec.GridSpec at 0x11d91a320&gt;
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;group1_mean&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;group2_mean&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -728,7 +717,7 @@ here, suggest that the model has converged.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_BEST_23_1.png" src="../_images/notebooks_BEST_23_1.png" />
+<img alt="../_images/notebooks_BEST_23_0.png" src="../_images/notebooks_BEST_23_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -737,17 +726,9 @@ here, suggest that the model has converged.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">vars</span><span class="p">[</span><span class="mi">2</span><span class="p">:]])</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[12]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.gridspec.GridSpec at 0x11b9bd5f8&gt;
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;group1_std&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;group2_std&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;ν_minus_one&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -755,7 +736,7 @@ here, suggest that the model has converged.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_BEST_24_1.png" src="../_images/notebooks_BEST_24_1.png" />
+<img alt="../_images/notebooks_BEST_24_0.png" src="../_images/notebooks_BEST_24_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -764,59 +745,69 @@ here, suggest that the model has converged.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">1000</span><span class="p">:],</span>
-                 <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;difference of stds&#39;</span><span class="p">,</span> <span class="s1">&#39;effect size&#39;</span><span class="p">])</span>
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">df_summary</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span><span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;difference of means&#39;</span><span class="p">,</span> <span class="s1">&#39;difference of stds&#39;</span><span class="p">,</span> <span class="s1">&#39;effect size&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
 
-difference of means:
+    .dataframe thead th {
+        text-align: left;
+    }
 
-  Mean             SD               MC Error         95% HPD interval
-  -------------------------------------------------------------------
-
-  1.003            0.441            0.011            [0.200, 1.917]
-
-  Posterior quantiles:
-  2.5            25             50             75             97.5
-  |--------------|==============|==============|--------------|
-
-  0.083          0.718          1.007          1.301          1.873
-
-
-difference of stds:
-
-  Mean             SD               MC Error         95% HPD interval
-  -------------------------------------------------------------------
-
-  0.910            0.458            0.015            [0.022, 1.780]
-
-  Posterior quantiles:
-  2.5            25             50             75             97.5
-  |--------------|==============|==============|--------------|
-
-  0.105          0.591          0.875          1.183          1.908
-
-
-effect size:
-
-  Mean             SD               MC Error         95% HPD interval
-  -------------------------------------------------------------------
-
-  0.602            0.279            0.008            [0.107, 1.194]
-
-  Posterior quantiles:
-  2.5            25             50             75             97.5
-  |--------------|==============|==============|--------------|
-
-  0.044          0.412          0.594          0.799          1.155
-
-</pre></div></div>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>mc_error</th>
+      <th>hpd_2.5</th>
+      <th>hpd_97.5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>difference of means</th>
+      <td>1.016574</td>
+      <td>0.435722</td>
+      <td>0.005570</td>
+      <td>0.152392</td>
+      <td>1.870192</td>
+    </tr>
+    <tr>
+      <th>difference of stds</th>
+      <td>0.922935</td>
+      <td>0.441076</td>
+      <td>0.007856</td>
+      <td>0.079557</td>
+      <td>1.782849</td>
+    </tr>
+    <tr>
+      <th>effect size</th>
+      <td>0.604915</td>
+      <td>0.272488</td>
+      <td>0.004162</td>
+      <td>0.083181</td>
+      <td>1.151870</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 </div>
 <div class="section" id="References">

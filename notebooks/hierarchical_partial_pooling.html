@@ -92,7 +92,9 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
@@ -440,6 +442,7 @@ example.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">tt</span>
 </pre></div>
 </div>
 </div>
@@ -474,6 +477,12 @@ parametrized in terms of its mean <span class="math">\(\mu \in [0,1]\)</span> an
 <p>The final step is to specify a sampling distribution for the data (hit
 or miss) for every player, using a Binomial distribution. This is where
 the data are brought to bear on the model.</p>
+<p>We could use <code class="docutils literal"><span class="pre">pm.Pareto('kappa',</span> <span class="pre">m=1.5)</span></code>, to define our prior on
+<code class="docutils literal"><span class="pre">kappa</span></code>, but the Pareto distribution has very long tails. Exploring
+these properly is difficult for the sampler, so we use an equivalent but
+faster parametrization using the exponential distribution. We use the
+fact that the log of a Pareto distributed random variable follows an
+exponential distribution.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -482,12 +491,13 @@ the data are brought to bear on the model.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hits</span><span class="p">)</span>
 
-<span class="n">BoundedKappa</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bound</span><span class="p">(</span> <span class="n">pm</span><span class="o">.</span><span class="n">Pareto</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mf">1.0</span> <span class="p">)</span>
-
 <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">baseball_model</span><span class="p">:</span>
 
     <span class="n">phi</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-    <span class="n">kappa</span> <span class="o">=</span> <span class="n">BoundedKappa</span><span class="p">(</span><span class="s1">&#39;kappa&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.000001</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+
+    <span class="n">kappa_log</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Exponential</span><span class="p">(</span><span class="s1">&#39;kappa_log&#39;</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;kappa&#39;</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">kappa_log</span><span class="p">))</span>
+
     <span class="n">thetas</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="s1">&#39;thetas&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">phi</span><span class="o">*</span><span class="n">kappa</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">kappa</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Binomial</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">at_bats</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">thetas</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">hits</span><span class="p">)</span>
 </pre></div>
@@ -517,7 +527,8 @@ additional variable in the model</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">baseball_model</span><span class="p">:</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">nchains</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                      <span class="n">nuts_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;target_accept&#39;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -526,15 +537,12 @@ additional variable in the model</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Assigned NUTS to phi_interval_
-Assigned NUTS to kappa_lowerbound_
-Assigned NUTS to thetas_logodds_
-Assigned NUTS to theta_new_logodds_
- 99%|█████████▉| 1985/2000 [00:07&lt;00:00, 287.32it/s]/home/jovyan/pymc3/pymc3/step_methods/hmc/nuts.py:237: UserWarning: Step size tuning was enabled throughout the whole trace. You might want to specify the number of tuning steps.
-  warnings.warn(&#39;Step size tuning was enabled throughout the whole &#39;
-/opt/conda/lib/python3.5/site-packages/numpy/core/fromnumeric.py:2889: RuntimeWarning: Mean of empty slice.
-  out=out, **kwargs)
-100%|██████████| 2000/2000 [00:07&lt;00:00, 264.07it/s]
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 89.154:   3%|▎         | 6891/200000 [00:02&lt;01:02, 3067.32it/s]
+Convergence archived at 7100
+Interrupted at 7,100 [3%]: Average Loss = 229.36
+100%|██████████| 3000/3000 [00:39&lt;00:00, 76.21it/s]
 </pre></div></div>
 </div>
 <p>Now we can plot the posteriors distribution of the parameters. First,
@@ -545,7 +553,7 @@ the population hyperparameters:</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa&#39;</span><span class="p">]);</span>
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -553,7 +561,7 @@ the population hyperparameters:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_hierarchical_partial_pooling_12_0.png" src="../_images/notebooks_hierarchical_partial_pooling_12_0.png" />
+<img alt="../_images/notebooks_hierarchical_partial_pooling_13_0.png" src="../_images/notebooks_hierarchical_partial_pooling_13_0.png" />
 </div>
 </div>
 <p>Hence, the population mean batting average is in the 0.22-0.31 range,
@@ -566,7 +574,7 @@ with an expected value of around 0.26.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">player_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">FirstName</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">LastName</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">pm</span><span class="o">.</span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;thetas&#39;</span><span class="p">],</span> <span class="n">ylabels</span><span class="o">=</span><span class="n">player_names</span><span class="p">)</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">forestplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;thetas&#39;</span><span class="p">],</span> <span class="n">ylabels</span><span class="o">=</span><span class="n">player_names</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -576,7 +584,7 @@ with an expected value of around 0.26.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.gridspec.GridSpec at 0x7f80bf7d9748&gt;
+<span></span>&lt;matplotlib.gridspec.GridSpec at 0x7fef282a09b0&gt;
 </pre></div>
 </div>
 </div>
@@ -584,7 +592,7 @@ with an expected value of around 0.26.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_hierarchical_partial_pooling_14_1.png" src="../_images/notebooks_hierarchical_partial_pooling_14_1.png" />
+<img alt="../_images/notebooks_hierarchical_partial_pooling_15_1.png" src="../_images/notebooks_hierarchical_partial_pooling_15_1.png" />
 </div>
 </div>
 <p>Finally, let’s get the estimate for our 0-for-4 player:</p>
@@ -594,7 +602,7 @@ with an expected value of around 0.26.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="o">-</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;theta_new&#39;</span><span class="p">]);</span>
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;theta_new&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -602,7 +610,7 @@ with an expected value of around 0.26.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_hierarchical_partial_pooling_16_0.png" src="../_images/notebooks_hierarchical_partial_pooling_16_0.png" />
+<img alt="../_images/notebooks_hierarchical_partial_pooling_17_0.png" src="../_images/notebooks_hierarchical_partial_pooling_17_0.png" />
 </div>
 </div>
 <p>Notice that, despite the fact our additional player did not get any

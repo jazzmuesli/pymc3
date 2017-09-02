@@ -8,7 +8,6 @@ Howto
 =====
 
 .. toctree::
-   notebooks/api_quickstart.ipynb
    notebooks/sampler-stats.ipynb
    notebooks/Diagnosing_biased_Inference_with_Divergences.ipynb
    notebooks/posterior_predictive.ipynb
@@ -49,8 +48,12 @@ Gaussian Processes
 ==================
 
 .. toctree::
-   notebooks/GP-introduction.ipynb
-   notebooks/GP-covariances.ipynb
+   notebooks/GP-Marginal.ipynb
+   notebooks/GP-Covariances.ipynb
+   notebooks/GP-Latent.ipynb
+   notebooks/GP-SparseApprox.ipynb
+   notebooks/GP-TProcess.ipynb
+   notebooks/GP-MaunaLoa.ipynb
    notebooks/GP-slice-sampling.ipynb
    notebooks/GP-smoothing.ipynb
 
@@ -74,3 +77,5 @@ Variational Inference
    notebooks/bayesian_neural_network_advi.ipynb
    notebooks/convolutional_vae_keras_advi.ipynb
    notebooks/bayesian_neural_network_opvi-advi.ipynb
+   notebooks/empirical-approx-overvirew.ipynb
+   notebooks/normalizing_flows_overview.ipynb

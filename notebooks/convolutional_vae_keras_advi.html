@@ -37,7 +37,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="Changes in API: Variational Inference: Bayesian Neural Networks" href="bayesian_neural_network_opvi-advi.html"/>
+        <link rel="next" title="Normalizing Flows Overview" href="normalizing_flows_overview.html"/>
         <link rel="prev" title="Variational Inference: Bayesian Neural Networks" href="bayesian_neural_network_advi.html"/> 
 
   
@@ -92,7 +92,9 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
@@ -103,7 +105,6 @@
 <li class="toctree-l3"><a class="reference internal" href="GLM-hierarchical-advi-minibatch.html">GLM: Mini-batch ADVI on hierarchical regression model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="lda-advi-aevb.html">Automatic autoencoding variational Bayes for latent dirichlet allocation with PyMC3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html">Variational Inference: Bayesian Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Convolutional variational autoencoder with PyMC3 and Keras</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Load-images">Load images</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Use-Keras">Use Keras</a></li>
@@ -113,8 +114,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#Results">Results</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_opvi-advi.html">Changes in API: Variational Inference: Bayesian Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_opvi-advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalizing_flows_overview.html">Normalizing Flows Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -386,56 +386,23 @@ works in PyMC3’s automatic differentiation variational inference (ADVI).
 The example here is borrowed from <a class="reference external" href="https://github.com/fchollet/keras/blob/master/examples/variational_autoencoder_deconv.py">Keras
 example</a>,
 where convolutional variational autoencoder is applied to the MNIST
-dataset. The network architecture of the encoder and decoder are
-completely same. However, PyMC3 allows us to define the probabilistic
-model, which combines the encoder and decoder, in the way by which other
-general probabilistic models (e.g., generalized linear models), rather
-than directly implementing of Monte Carlo sampling and the loss function
-as done in the Keras example. Thus I think the framework of AEVB in
-PyMC3 can be extended to more complex models such as <a class="reference external" href="https://taku-y.github.io/notebook/20160928/lda-advi-ae.html">latent dirichlet
+dataset. The network architecture of the encoder and decoder are the
+same. However, PyMC3 allows us to define a probabilistic model, which
+combines the encoder and decoder, in the same way as other probabilistic
+models (e.g., generalized linear models), rather than directly
+implementing of Monte Carlo sampling and the loss function, as is done
+in the Keras example. Thus the framework of AEVB in PyMC3 can be
+extended to more complex models such as <a class="reference external" href="https://taku-y.github.io/notebook/20160928/lda-advi-ae.html">latent dirichlet
 allocation</a>.</p>
 <ul class="simple">
 <li>Notebook Written by Taku Yoshioka (c) 2016</li>
 </ul>
-<p>For using Keras with PyMC3, we need to choose
-<a class="reference external" href="http://deeplearning.net/software/theano/">Theano</a> as the backend of
+<p>To use Keras with PyMC3, we need to choose
+<a class="reference external" href="http://deeplearning.net/software/theano/">Theano</a> as the backend for
 Keras.</p>
-<p>Install required packages, including pymc3, if it is not already
-available:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="ch">#!pip install --upgrade keras</span>
-<span class="c1">#!pip install theano==0.8.0</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="ch">#!pip install --upgrade pymc3</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="ch">#!conda install -y mkl-service</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [1]:
+<span></span>In [ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -462,36 +429,6 @@ available:</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div id="ad9e138a-2e7b-4a5f-9453-93b0cc42163f"></div>
-<script type="text/javascript">
-var element = document.getElementById('ad9e138a-2e7b-4a5f-9453-93b0cc42163f');
-IPython.notebook.set_autosave_interval(0)
-</script></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Autosave disabled
-env: KERAS_BACKEND=theano
-env: THEANO_FLAGS=device=cuda3,floatX=float32,optimizer=fast_run
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-Using Theano backend.
-Using cuDNN version 5105 on context None
-Mapped name None to device cuda3: Tesla K40m (0000:84:00.0)
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [2]:
@@ -510,8 +447,8 @@ Mapped name None to device cuda3: Tesla K40m (0000:84:00.0)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-3.1rc3
-0.9.0.dev-f4bb35d6264213d023706b7baa065a60c6416149
+3.1
+0.9.0
 2.0.4
 </pre></div></div>
 </div>
@@ -527,11 +464,7 @@ digits.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="c1"># from sklearn.datasets import fetch_mldata</span>
-<span class="c1"># mnist = fetch_mldata(&#39;MNIST original&#39;)</span>
-<span class="c1"># print(mnist.keys())</span>
-
-<span class="kn">from</span> <span class="nn">keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
+<span></span><span class="kn">from</span> <span class="nn">keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
 <span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">floatX</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span>
 <span class="n">data</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -564,7 +497,7 @@ training or test. This information is important also for batch
 normalization.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -603,13 +536,13 @@ normalization.</p>
 </div>
 <div class="section" id="Encoder-and-decoder">
 <h2>Encoder and decoder<a class="headerlink" href="#Encoder-and-decoder" title="Permalink to this headline">¶</a></h2>
-<p>First, we define the convolutional neural network for encoder using
+<p>First, we define the convolutional neural network for encoder using the
 Keras API. This function returns a CNN model given the shared variable
 representing observations (images of digits), the dimension of latent
 space, and the parameters of the model architecture.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -650,7 +583,7 @@ on the architecture of the encoder except for input shape (<code class="docutils
 for images), so we can use this class for various encoding networks.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -722,7 +655,7 @@ for images), so we can use this class for various encoding networks.</p>
 decoders.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -762,7 +695,7 @@ decoders.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -810,12 +743,12 @@ decoders.</p>
 </div>
 <div class="section" id="Generative-model">
 <h2>Generative model<a class="headerlink" href="#Generative-model" title="Permalink to this headline">¶</a></h2>
-<p>We can construct the generative model with PyMC3 API and the functions
-and classes defined above. We set the size of mini-batches to 100 and
-the dimension of the latent space to 2 for visualization.</p>
+<p>We can construct the generative model with the PyMC3 API and the
+functions and classes defined above. We set the size of mini-batches to
+100 and the dimension of the latent space to 2 for visualization.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -825,13 +758,13 @@ the dimension of the latent space to 2 for visualization.</p>
 </pre></div>
 </div>
 </div>
-<p>A placeholder of images is required to which mini-batches of images will
-be placed in the ADVI inference. It is also the input to the encoder. In
-the below, <code class="docutils literal"><span class="pre">enc.model</span></code> is a Keras model of the encoder network, thus
-we can check the model architecture using the method <code class="docutils literal"><span class="pre">summary()</span></code>.</p>
+<p>We require a placeholder for images, into which mini-batches of images
+will be placed during ADVI inference. It is also the input for the
+encoder. Below, <code class="docutils literal"><span class="pre">enc.model</span></code> is a Keras model of the encoder network
+and we can check the model architecture using the method <code class="docutils literal"><span class="pre">summary()</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [43]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -852,21 +785,21 @@ we can check the model architecture using the method <code class="docutils liter
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #
 =================================================================
-input_10 (InputLayer)        (100, 1, 28, 28)          0
+input_1 (InputLayer)         (100, 1, 28, 28)          0
 _________________________________________________________________
-conv2d_19 (Conv2D)           (100, 1, 28, 28)          5
+conv2d_1 (Conv2D)            (100, 1, 28, 28)          5
 _________________________________________________________________
-conv2d_20 (Conv2D)           (100, 64, 14, 14)         320
+conv2d_2 (Conv2D)            (100, 64, 14, 14)         320
 _________________________________________________________________
-conv2d_21 (Conv2D)           (100, 64, 14, 14)         36928
+conv2d_3 (Conv2D)            (100, 64, 14, 14)         36928
 _________________________________________________________________
-conv2d_22 (Conv2D)           (100, 64, 14, 14)         36928
+conv2d_4 (Conv2D)            (100, 64, 14, 14)         36928
 _________________________________________________________________
-flatten_4 (Flatten)          (100, 12544)              0
+flatten_1 (Flatten)          (100, 12544)              0
 _________________________________________________________________
-dense_19 (Dense)             (100, 128)                1605760
+dense_1 (Dense)              (100, 128)                1605760
 _________________________________________________________________
-dense_20 (Dense)             (100, 4)                  516
+dense_2 (Dense)              (100, 4)                  516
 =================================================================
 Total params: 1,680,457
 Trainable params: 1,680,457
@@ -881,7 +814,7 @@ Normal prior on <span class="math">\(\mathbf{z}\)</span>, decode the variational
 observation <span class="math">\(\mathbf{x}\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [44]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -897,13 +830,13 @@ observation <span class="math">\(\mathbf{x}\)</span>.</p>
 </pre></div>
 </div>
 </div>
-<p>In the above definition of the generative model, we do not know how the
-decoded variational parameters are passed to
-<span class="math">\(q(\mathbf{z}|\mathbf{x})\)</span>. To do this, we will set the argument
-<code class="docutils literal"><span class="pre">local_RVs</span></code> in the ADVI function of PyMC3.</p>
+<p>In the generative model above, we do not know how the decoded
+variational parameters are passed to <span class="math">\(q(\mathbf{z}|\mathbf{x})\)</span>.
+To do this, we will set the argument <code class="docutils literal"><span class="pre">local_RVs</span></code> in the ADVI function
+of PyMC3.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [45]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -911,22 +844,22 @@ decoded variational parameters are passed to
 </pre></div>
 </div>
 </div>
-<p>This argument is a <code class="docutils literal"><span class="pre">OrderedDict</span></code> whose keys are random variables to
-which the decoded variational parameters are set, <code class="docutils literal"><span class="pre">zs</span></code> in this model.
-Each value of the dictionary contains two theano expressions
+<p>This argument is an <code class="docutils literal"><span class="pre">OrderedDict</span></code> whose keys are random variables to
+which the decoded variational parameters are set (<code class="docutils literal"><span class="pre">zs</span></code> in this model).
+Each value of the dictionary contains two Theano expressions
 representing variational mean (<code class="docutils literal"><span class="pre">enc.means</span></code>) and rhos (<code class="docutils literal"><span class="pre">enc.rhos</span></code>). A
 scaling constant (<code class="docutils literal"><span class="pre">len(data)</span> <span class="pre">/</span> <span class="pre">float(minibatch_size)</span></code>) is set
-automaticaly (as we specified it in the model saying what’s the
+automatically (as we specified it in the model saying what’s the
 <code class="docutils literal"><span class="pre">total_size</span></code>) to compensate for the size of mini-batches of the
 corresponding log probability terms in the evidence lower bound (ELBO),
 the objective of the variational inference.</p>
 <p>The scaling constant for the observed random variables is set in the
 same way.</p>
-<p>We can also check the architecture of the decoding network as for the
-encoding network.</p>
+<p>We can also check the architecture of the decoding network, as we did
+for the encoding network.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [46]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -942,21 +875,21 @@ encoding network.</p>
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #
 =================================================================
-input_11 (InputLayer)        (100, 2)                  0
+input_2 (InputLayer)         (100, 2)                  0
 _________________________________________________________________
-dense_21 (Dense)             (100, 2)                  6
+dense_3 (Dense)              (100, 2)                  6
 _________________________________________________________________
-dense_22 (Dense)             (100, 12544)              37632
+dense_4 (Dense)              (100, 12544)              37632
 _________________________________________________________________
-reshape_7 (Reshape)          (100, 64, 14, 14)         0
+reshape_1 (Reshape)          (100, 64, 14, 14)         0
 _________________________________________________________________
-conv2d_transpose_19 (Conv2DT (100, 64, 14, 14)         36928
+conv2d_transpose_1 (Conv2DTr (100, 64, 14, 14)         36928
 _________________________________________________________________
-conv2d_transpose_20 (Conv2DT (100, 64, 14, 14)         36928
+conv2d_transpose_2 (Conv2DTr (100, 64, 14, 14)         36928
 _________________________________________________________________
-conv2d_transpose_21 (Conv2DT (100, 64, 28, 28)         16448
+conv2d_transpose_3 (Conv2DTr (100, 64, 28, 28)         16448
 _________________________________________________________________
-conv2d_23 (Conv2D)           (100, 1, 28, 28)          257
+conv2d_5 (Conv2D)            (100, 1, 28, 28)          257
 =================================================================
 Total params: 128,199
 Trainable params: 128,199
@@ -967,10 +900,10 @@ _________________________________________________________________
 </div>
 <div class="section" id="Inference">
 <h2>Inference<a class="headerlink" href="#Inference" title="Permalink to this headline">¶</a></h2>
-<p>Let us execute ADVI in PyMC3.</p>
+<p>Let’s use ADVI to fit the model.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [47]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -993,19 +926,18 @@ _________________________________________________________________
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 2.2294e+07: 100%|██████████| 15000/15000 [23:47&lt;00:00, 10.52it/s]
-Finished [100%]: Average Loss = 2.2264e+07
+Average Loss = 1.9145e+07: 100%|██████████| 15000/15000 [3:02:18&lt;00:00,  1.28it/s]
+Finished [100%]: Average Loss = 1.9133e+07
 </pre></div></div>
 </div>
-<p>I’ve checked the plot, seemed like convergence is not achived</p>
 </div>
 <div class="section" id="Results">
 <h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline">¶</a></h2>
-<p>ADVI instance has the trace of negative ELBO during inference
-(optimization). We can see the convergence of the inference.</p>
+<p>We can plot the trace of the negative ELBO obtained during optimization,
+to verify convergence.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [49]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1017,16 +949,16 @@ Finished [100%]: Average Loss = 2.2264e+07
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_convolutional_vae_keras_advi_38_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_38_0.png" />
+<img alt="../_images/notebooks_convolutional_vae_keras_advi_34_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_34_0.png" />
 </div>
 </div>
-<p>Finally, we see the distribution of the images in the latent space. To
-do this, we make 2-dimensional points in a grid and feed them into the
-decoding network. The mean of <span class="math">\(p(\mathbf{x}|\mathbf{z})\)</span> is the
-image corresponding to the samples on the grid.</p>
+<p>Finally, we can plot the distribution of the images in the latent space.
+To do this, we make a 2-dimensional grid of points and feed them into
+the decoding network. The mean of <span class="math">\(p(\mathbf{x}|\mathbf{z})\)</span> is
+the image corresponding to the samples on the grid.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [50]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1047,7 +979,7 @@ image corresponding to the samples on the grid.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_convolutional_vae_keras_advi_40_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_40_0.png" />
+<img alt="../_images/notebooks_convolutional_vae_keras_advi_36_0.png" src="../_images/notebooks_convolutional_vae_keras_advi_36_0.png" />
 </div>
 </div>
 </div>
@@ -1063,7 +995,7 @@ image corresponding to the samples on the grid.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="bayesian_neural_network_opvi-advi.html" class="btn btn-neutral float-right" title="Changes in API: Variational Inference: Bayesian Neural Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="normalizing_flows_overview.html" class="btn btn-neutral float-right" title="Normalizing Flows Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="bayesian_neural_network_advi.html" class="btn btn-neutral" title="Variational Inference: Bayesian Neural Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

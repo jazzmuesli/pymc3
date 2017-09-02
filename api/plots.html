@@ -92,10 +92,13 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html">Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="glm.html">Generalized Linear Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gp.html">Gaussian Processes</a></li>
@@ -277,7 +280,8 @@ samples are shown (no effect on frequency plots).</p>
 <li><strong>round_to</strong> (<em>int</em>) – Controls formatting for floating point numbers</li>
 <li><strong>point_estimate</strong> (<em>str</em>) – Must be in (‘mode’, ‘mean’, ‘median’)</li>
 <li><strong>rope</strong> (<em>list</em><em> or </em><em>numpy array</em>) – Lower and upper values of the Region Of Practical Equivalence</li>
-<li><strong>ref_val</strong> (<em>bool</em>) – display the percentage below and above ref_val</li>
+<li><strong>ref_val</strong> (<em>float</em><em> or </em><em>list-like</em>) – display the percentage below and above the values in ref_val.
+If a list is provided, its length should match the number of variables.</li>
 <li><strong>kde_plot</strong> (<em>bool</em>) – if True plot a KDE instead of a histogram. For discrete variables this
 argument is ignored.</li>
 <li><strong>plot_transformed</strong> (<em>bool</em>) – Flag for plotting automatically transformed variables in addition to

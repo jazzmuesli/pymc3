@@ -92,7 +92,9 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../distributions.html">Distributions</a><ul class="current">
@@ -102,6 +104,7 @@
 <li class="toctree-l3"><a class="reference internal" href="mixture.html">Mixture</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../inference.html">Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../glm.html">Generalized Linear Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gp.html">Gaussian Processes</a></li>
@@ -322,7 +325,7 @@ parametrization:</p>
 
 <dl class="class">
 <dt id="pymc3.distributions.multivariate.MvStudentT">
-<em class="property">class </em><code class="descclassname">pymc3.distributions.multivariate.</code><code class="descname">MvStudentT</code><span class="sig-paren">(</span><em>nu</em>, <em>Sigma</em>, <em>mu=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.multivariate.MvStudentT" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.distributions.multivariate.</code><code class="descname">MvStudentT</code><span class="sig-paren">(</span><em>nu</em>, <em>Sigma=None</em>, <em>mu=None</em>, <em>cov=None</em>, <em>tau=None</em>, <em>chol=None</em>, <em>lower=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.multivariate.MvStudentT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multivariate Student-T log-likelihood.</p>
 <div class="math">
 \[f(\mathbf{x}| \nu,\mu,\Sigma) =
@@ -362,8 +365,12 @@ parametrization:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>nu</strong> (<em>int</em>) – Degrees of freedom.</li>
-<li><strong>Sigma</strong> (<em>matrix</em>) – Covariance matrix.</li>
+<li><strong>Sigma</strong> (<em>matrix</em>) – Covariance matrix. Use <cite>cov</cite> in new code.</li>
 <li><strong>mu</strong> (<em>array</em>) – Vector of means.</li>
+<li><strong>cov</strong> (<em>matrix</em>) – The covariance matrix.</li>
+<li><strong>tau</strong> (<em>matrix</em>) – The precision matrix.</li>
+<li><strong>chol</strong> (<em>matrix</em>) – The cholesky factor of the covariance matrix.</li>
+<li><strong>lower</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether the cholesky fatcor is given as a lower triangular matrix.</li>
 </ul>
 </td>
 </tr>
@@ -578,7 +585,7 @@ matrices. For eta -&gt; oo the LKJ prior approaches the identity matrix.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em>) – Dimension of the covariance matrix (n &gt; 0).</li>
+<li><strong>n</strong> (<em>int</em>) – Dimension of the covariance matrix (n &gt; 1).</li>
 <li><strong>eta</strong> (<em>float</em>) – The shape parameter (eta &gt; 0) of the LKJ distribution. eta = 1
 implies a uniform distribution of the correlation matrices;
 larger values put more weight on matrices with few correlations.</li>
@@ -623,7 +630,7 @@ distribution specified by the user.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em>) – Dimension of the covariance matrix (n &gt; 0).</li>
+<li><strong>n</strong> (<em>int</em>) – Dimension of the covariance matrix (n &gt; 1).</li>
 <li><strong>eta</strong> (<em>float</em>) – The shape parameter (eta &gt; 0) of the LKJ distribution. eta = 1
 implies a uniform distribution of the correlation matrices;
 larger values put more weight on matrices with few correlations.</li>

@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="Gaussian Process Regression and Classification with Elliptical Slice Sampling" href="GP-slice-sampling.html"/>
-        <link rel="prev" title="Gaussian Process Regression" href="GP-introduction.html"/> 
+        <link rel="next" title="gp.Latent" href="GP-Latent.html"/>
+        <link rel="prev" title="gp.Marginal" href="GP-Marginal.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -92,13 +92,15 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="GP-introduction.html">Gaussian Process Regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Kernels / Covariance functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Exponentiated-Quadratic">Exponentiated Quadratic</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Two-(and-higher)-Dimensional-Inputs">Two (and higher) Dimensional Inputs</a></li>
@@ -118,8 +120,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#Gibbs">Gibbs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-Latent.html">gp.Latent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html#Examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Prediction">Prediction</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
@@ -179,7 +187,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/GP-covariances.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/GP-Covariances.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -391,13 +399,13 @@ div.nboutput div.output_area.stderr {
 <p>The following are a series of examples covering each available
 covariance function, and demonstrating allowed operations. The API will
 be familiar to users of <a class="reference external" href="https://github.com/SheffieldML/GPy">GPy</a> or
-<a class="reference external" href="https://github.com/GPflow/GPflow">GPflow</a>, though ours is
-simplified. All covariance function parameters can be assigned prior
-distributions or hardcoded. MCMC methods or optimization methods can be
-used for inference.</p>
+<a class="reference external" href="https://github.com/GPflow/GPflow">GPflow</a>, though ours is a bit
+simpler and supports operations directly on scalars and matrices. All
+covariance function parameters can either be assigned prior
+distributions or given hard-coded values.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -415,7 +423,7 @@ used for inference.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -450,7 +458,7 @@ used for inference.</p>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">K</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">samples</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">inferno</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">samples</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">inferno</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mf">0.15</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Samples from GP Prior&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
 </pre></div>
@@ -462,7 +470,7 @@ used for inference.</p>
 bias term <span class="math">\(b\)</span> can be scalars or PyMC3 random variables.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -481,14 +489,14 @@ bias term <span class="math">\(b\)</span> can be scalars or PyMC3 random variabl
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_4_0.png" src="../_images/notebooks_GP-covariances_4_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_4_0.png" src="../_images/notebooks_GP-Covariances_4_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_4_1.png" src="../_images/notebooks_GP-covariances_4_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_4_1.png" src="../_images/notebooks_GP-Covariances_4_1.png" />
 </div>
 </div>
 </div>
@@ -498,12 +506,12 @@ bias term <span class="math">\(b\)</span> can be scalars or PyMC3 random variabl
 <div class="section" id="Both-dimensions-active">
 <h2>Both dimensions active<a class="headerlink" href="#Both-dimensions-active" title="Permalink to this headline">¶</a></h2>
 <p>It is easy to define kernels with higher dimensional inputs. Notice that
-the <code class="docutils literal"><span class="pre">lengthscales</span></code> parameter is an array of length 2. Lists of PyMC3
-random variables can be used for automatic relevance determination
+the <code class="docutils literal"><span class="pre">ls</span></code> (lengthscale) parameter is an array of length 2. Lists of
+PyMC3 random variables can be used for automatic relevance determination
 (ARD).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -512,7 +520,7 @@ random variables can be used for automatic relevance determination
 
 <span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
     <span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-    <span class="n">cov</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">lengthscales</span><span class="o">=</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">l</span><span class="p">)</span>
 <span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov</span><span class="p">(</span><span class="n">X2</span><span class="p">))()</span>
 <span class="n">m</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
 </pre></div>
@@ -522,7 +530,7 @@ random variables can be used for automatic relevance determination
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_6_0.png" src="../_images/notebooks_GP-covariances_6_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_6_0.png" src="../_images/notebooks_GP-Covariances_6_0.png" />
 </div>
 </div>
 </div>
@@ -530,14 +538,13 @@ random variables can be used for automatic relevance determination
 <h2>One dimension active<a class="headerlink" href="#One-dimension-active" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
     <span class="n">l</span> <span class="o">=</span> <span class="mf">0.2</span>
-    <span class="n">cov</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">lengthscales</span><span class="o">=</span><span class="n">l</span><span class="p">,</span>
-                            <span class="n">active_dims</span><span class="o">=</span><span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">active_dims</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov</span><span class="p">(</span><span class="n">X2</span><span class="p">))()</span>
 <span class="n">m</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
 </pre></div>
@@ -547,7 +554,7 @@ random variables can be used for automatic relevance determination
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_8_0.png" src="../_images/notebooks_GP-covariances_8_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_8_0.png" src="../_images/notebooks_GP-Covariances_8_0.png" />
 </div>
 </div>
 </div>
@@ -555,15 +562,15 @@ random variables can be used for automatic relevance determination
 <h2>Product of two covariances, active over each dimension<a class="headerlink" href="#Product-of-two-covariances,-active-over-each-dimension" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
     <span class="n">l1</span> <span class="o">=</span> <span class="mf">0.2</span>
     <span class="n">l2</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">cov1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">active_dims</span><span class="o">=</span><span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-    <span class="n">cov2</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">active_dims</span><span class="o">=</span><span class="p">[</span><span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">])</span>
+    <span class="n">cov1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">active_dims</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cov2</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">active_dims</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">cov</span> <span class="o">=</span> <span class="n">cov1</span> <span class="o">*</span> <span class="n">cov2</span>
 <span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov</span><span class="p">(</span><span class="n">X2</span><span class="p">))()</span>
 <span class="n">m</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
@@ -574,29 +581,23 @@ random variables can be used for automatic relevance determination
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_10_0.png" src="../_images/notebooks_GP-covariances_10_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_10_0.png" src="../_images/notebooks_GP-Covariances_10_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="White-Noise">
 <h2>White Noise<a class="headerlink" href="#White-Noise" title="Permalink to this headline">¶</a></h2>
-<p>In our design, there is no need for a white noise kernel. This case can
-be handled with Theano. The following is a covariance function that is
-5% white noise.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="mf">0.2</span>
-    <span class="n">sigma2</span> <span class="o">=</span> <span class="mf">0.05</span>
-    <span class="n">tau</span> <span class="o">=</span> <span class="mf">0.95</span>
-    <span class="n">cov_latent</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
-    <span class="n">cov_noise</span> <span class="o">=</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="n">tt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="n">cov_noise</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">WhiteNoise</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
 
-<span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov_latent</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">cov_noise</span><span class="p">)()</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov_noise</span><span class="p">(</span><span class="n">X</span><span class="p">))()</span>
 <span class="n">plot_cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -605,14 +606,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_12_0.png" src="../_images/notebooks_GP-covariances_12_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_12_0.png" src="../_images/notebooks_GP-Covariances_12_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_12_1.png" src="../_images/notebooks_GP-covariances_12_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_12_1.png" src="../_images/notebooks_GP-Covariances_12_1.png" />
 </div>
 </div>
 </div>
@@ -620,7 +621,7 @@ be handled with Theano. The following is a covariance function that is
 <h2>Rational Quadratic<a class="headerlink" href="#Rational-Quadratic" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -640,14 +641,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_14_0.png" src="../_images/notebooks_GP-covariances_14_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_14_0.png" src="../_images/notebooks_GP-Covariances_14_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_14_1.png" src="../_images/notebooks_GP-covariances_14_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_14_1.png" src="../_images/notebooks_GP-Covariances_14_1.png" />
 </div>
 </div>
 </div>
@@ -655,7 +656,7 @@ be handled with Theano. The following is a covariance function that is
 <h2>Exponential<a class="headerlink" href="#Exponential" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -674,14 +675,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_16_0.png" src="../_images/notebooks_GP-covariances_16_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_16_0.png" src="../_images/notebooks_GP-Covariances_16_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_16_1.png" src="../_images/notebooks_GP-covariances_16_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_16_1.png" src="../_images/notebooks_GP-Covariances_16_1.png" />
 </div>
 </div>
 </div>
@@ -689,7 +690,7 @@ be handled with Theano. The following is a covariance function that is
 <h2>Matern 5/2<a class="headerlink" href="#Matern-5/2" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -708,14 +709,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_18_0.png" src="../_images/notebooks_GP-covariances_18_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_18_0.png" src="../_images/notebooks_GP-Covariances_18_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_18_1.png" src="../_images/notebooks_GP-covariances_18_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_18_1.png" src="../_images/notebooks_GP-Covariances_18_1.png" />
 </div>
 </div>
 </div>
@@ -723,7 +724,7 @@ be handled with Theano. The following is a covariance function that is
 <h2>Matern 3/2<a class="headerlink" href="#Matern-3/2" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -742,14 +743,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_20_0.png" src="../_images/notebooks_GP-covariances_20_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_20_0.png" src="../_images/notebooks_GP-Covariances_20_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_20_1.png" src="../_images/notebooks_GP-covariances_20_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_20_1.png" src="../_images/notebooks_GP-Covariances_20_1.png" />
 </div>
 </div>
 </div>
@@ -757,14 +758,14 @@ be handled with Theano. The following is a covariance function that is
 <h2>Cosine<a class="headerlink" href="#Cosine" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="mf">0.2</span>
-    <span class="n">tau</span> <span class="o">=</span> <span class="mf">2.0</span>
-    <span class="n">cov</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Cosine</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Cosine</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 
 <span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">))()</span>
 
@@ -776,14 +777,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_22_0.png" src="../_images/notebooks_GP-covariances_22_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_22_0.png" src="../_images/notebooks_GP-Covariances_22_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_22_1.png" src="../_images/notebooks_GP-covariances_22_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_22_1.png" src="../_images/notebooks_GP-Covariances_22_1.png" />
 </div>
 </div>
 </div>
@@ -791,7 +792,7 @@ be handled with Theano. The following is a covariance function that is
 <h2>Linear<a class="headerlink" href="#Linear" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -810,14 +811,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_24_0.png" src="../_images/notebooks_GP-covariances_24_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_24_0.png" src="../_images/notebooks_GP-Covariances_24_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_24_1.png" src="../_images/notebooks_GP-covariances_24_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_24_1.png" src="../_images/notebooks_GP-Covariances_24_1.png" />
 </div>
 </div>
 </div>
@@ -825,7 +826,7 @@ be handled with Theano. The following is a covariance function that is
 <h2>Polynomial<a class="headerlink" href="#Polynomial" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -846,14 +847,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_26_0.png" src="../_images/notebooks_GP-covariances_26_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_26_0.png" src="../_images/notebooks_GP-Covariances_26_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_26_1.png" src="../_images/notebooks_GP-covariances_26_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_26_1.png" src="../_images/notebooks_GP-Covariances_26_1.png" />
 </div>
 </div>
 </div>
@@ -863,7 +864,7 @@ be handled with Theano. The following is a covariance function that is
 <code class="docutils literal"><span class="pre">K_cos</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -885,14 +886,14 @@ be handled with Theano. The following is a covariance function that is
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_28_0.png" src="../_images/notebooks_GP-covariances_28_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_28_0.png" src="../_images/notebooks_GP-Covariances_28_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_28_1.png" src="../_images/notebooks_GP-covariances_28_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_28_1.png" src="../_images/notebooks_GP-Covariances_28_1.png" />
 </div>
 </div>
 </div>
@@ -905,7 +906,7 @@ remaining arguments can be anything else, including (thanks to Theano’s
 symbolic differentiation) random variables.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -932,21 +933,21 @@ symbolic differentiation) random variables.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_30_0.png" src="../_images/notebooks_GP-covariances_30_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_30_0.png" src="../_images/notebooks_GP-Covariances_30_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_30_1.png" src="../_images/notebooks_GP-covariances_30_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_30_1.png" src="../_images/notebooks_GP-Covariances_30_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_30_2.png" src="../_images/notebooks_GP-covariances_30_2.png" />
+<img alt="../_images/notebooks_GP-Covariances_30_2.png" src="../_images/notebooks_GP-Covariances_30_2.png" />
 </div>
 </div>
 <div class="section" id="Periodic">
@@ -966,7 +967,7 @@ Here we use the <code class="docutils literal"><span class="pre">WarpedInput</sp
 functions drawn from this GP prior will repeat 4 times over 2 seconds.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -993,22 +994,23 @@ functions drawn from this GP prior will repeat 4 times over 2 seconds.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_32_0.png" src="../_images/notebooks_GP-covariances_32_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_32_0.png" src="../_images/notebooks_GP-Covariances_32_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_32_1.png" src="../_images/notebooks_GP-covariances_32_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_32_1.png" src="../_images/notebooks_GP-Covariances_32_1.png" />
 </div>
 </div>
 </div>
 <div class="section" id="Locally-Periodic-(Gabor)">
 <h3>Locally Periodic (Gabor)<a class="headerlink" href="#Locally-Periodic-(Gabor)" title="Permalink to this headline">¶</a></h3>
 <p>Similarly, we can construct a locally periodic, or Gabor, covariance
-function by multiplying our periodic kernel with a different stationary
-covariance function.</p>
+function by multiplying a periodic kernel with a different stationary
+covariance function. For convenience, notice that <code class="docutils literal"><span class="pre">Periodic</span></code> is
+included in PyMC3.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [30]:
@@ -1018,11 +1020,8 @@ covariance function.</p>
 <span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
     <span class="n">T</span> <span class="o">=</span> <span class="mf">0.5</span>
     <span class="n">l</span> <span class="o">=</span> <span class="mf">1.5</span>
-    <span class="n">l_local</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">cov_exp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">ExpQuad</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
-    <span class="n">cov_per</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">WarpedInput</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cov_func</span><span class="o">=</span><span class="n">cov_exp</span><span class="p">,</span>
-                                       <span class="n">warp_func</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span>
-                                       <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="p">))</span>
+    <span class="n">l_local</span> <span class="o">=</span> <span class="mf">1.5</span>
+    <span class="n">cov_per</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Periodic</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">l</span><span class="p">)</span>
     <span class="n">cov</span> <span class="o">=</span> <span class="n">cov_per</span> <span class="o">*</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern52</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">l_local</span><span class="p">)</span>
 <span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">))()</span>
 <span class="n">plot_cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
@@ -1033,14 +1032,14 @@ covariance function.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_34_0.png" src="../_images/notebooks_GP-covariances_34_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_34_0.png" src="../_images/notebooks_GP-Covariances_34_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_34_1.png" src="../_images/notebooks_GP-covariances_34_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_34_1.png" src="../_images/notebooks_GP-Covariances_34_1.png" />
 </div>
 </div>
 </div>
@@ -1085,21 +1084,21 @@ either fixed or random variables.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_36_0.png" src="../_images/notebooks_GP-covariances_36_0.png" />
+<img alt="../_images/notebooks_GP-Covariances_36_0.png" src="../_images/notebooks_GP-Covariances_36_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_36_1.png" src="../_images/notebooks_GP-covariances_36_1.png" />
+<img alt="../_images/notebooks_GP-Covariances_36_1.png" src="../_images/notebooks_GP-Covariances_36_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_GP-covariances_36_2.png" src="../_images/notebooks_GP-covariances_36_2.png" />
+<img alt="../_images/notebooks_GP-Covariances_36_2.png" src="../_images/notebooks_GP-Covariances_36_2.png" />
 </div>
 </div>
 </div>
@@ -1115,10 +1114,10 @@ either fixed or random variables.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="GP-slice-sampling.html" class="btn btn-neutral float-right" title="Gaussian Process Regression and Classification with Elliptical Slice Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="GP-Latent.html" class="btn btn-neutral float-right" title="gp.Latent" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="GP-introduction.html" class="btn btn-neutral" title="Gaussian Process Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="GP-Marginal.html" class="btn btn-neutral" title="gp.Marginal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

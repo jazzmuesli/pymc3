@@ -92,7 +92,9 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#howto">Howto</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
@@ -114,10 +116,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html">Variational Inference: Bayesian Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="convolutional_vae_keras_advi.html">Convolutional variational autoencoder with PyMC3 and Keras</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_opvi-advi.html">Changes in API: Variational Inference: Bayesian Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bayesian_neural_network_opvi-advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalizing_flows_overview.html">Normalizing Flows Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -491,9 +491,9 @@ We set the number of words in the vocabulary to 1000.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Loading dataset...
-done in 1.742s.
+done in 1.576s.
 Extracting tf features for LDA...
-done in 2.463s.
+done in 2.303s.
 </pre></div></div>
 </div>
 <p>Each document is represented by 1000-dimensional term-frequency vector.
@@ -743,8 +743,6 @@ function for ADVI.</p>
 </div>
 <div class="section" id="AEVB-with-ADVI">
 <h2>AEVB with ADVI<a class="headerlink" href="#AEVB-with-ADVI" title="Permalink to this headline">¶</a></h2>
-<p>Here we will use class based interface for variational methods as we
-will decide if we need some more training or not.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [10]:
@@ -752,14 +750,12 @@ will decide if we need some more training or not.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">approx1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">6000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;advi&#39;</span><span class="p">,</span>
+    <span class="n">approx1</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;advi&#39;</span><span class="p">,</span>
                  <span class="n">local_rv</span><span class="o">=</span><span class="n">local_RVs</span><span class="p">,</span>
                  <span class="n">more_obj_params</span><span class="o">=</span><span class="n">encoder_params</span><span class="p">,</span>
                  <span class="c1"># https://arxiv.org/pdf/1705.08292.pdf</span>
                  <span class="c1"># sgd(with/without momentum) seems to be good choice for high dimensional problems</span>
-                 <span class="n">obj_optimizer</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">sgd</span><span class="p">,</span>
-                 <span class="c1"># but your gradients will explode here</span>
-                 <span class="n">total_grad_norm_constraint</span><span class="o">=</span><span class="mf">1000.</span><span class="p">)</span>
+                 <span class="n">obj_optimizer</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.05</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -768,8 +764,8 @@ will decide if we need some more training or not.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 2.9809e+06: 100%|██████████| 6000/6000 [01:11&lt;00:00, 84.38it/s]
-Finished [100%]: Average Loss = 2.9795e+06
+Average Loss = 3.0174e+06: 100%|██████████| 10000/10000 [02:49&lt;00:00, 58.89it/s]
+Finished [100%]: Average Loss = 3.0206e+06
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -849,16 +845,16 @@ reuse them for sampling from the approximate posterior distribution.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Topic #0: don people just think know like god time good does
-Topic #1: use edu file like windows data thanks drive does available
-Topic #2: armenian people space armenians jews new turkish 000 university government
-Topic #3: key chip encryption government clipper keys public law use bit
-Topic #4: 00 10 15 20 25 11 17 16 55 12
-Topic #5: like new ground edu don does 10 good air just
-Topic #6: new like edu just good does 10 know interested don
-Topic #7: new ground like edu just space 10 good does know
-Topic #8: new just good like car ground edu does don com
-Topic #9: ax max 75u cx a86 34u 145 b8f 2di g9v
+Topic #0: file edu use program like drive windows does thanks know
+Topic #1: 00 10 25 db 11 15 55 20 40 12
+Topic #2: space like just new car time good don use know
+Topic #3: ax max g9v 34u b8f ah pl cx 75u 145
+Topic #4: team season game hockey year play league games just players
+Topic #5: people don think like just know right make way does
+Topic #6: key encryption chip government clipper use keys security people don
+Topic #7: president mr think people going stephanopoulos know gun said ms
+Topic #8: people armenian said armenians turkish war new government turkey time
+Topic #9: god jesus believe people does bible think don just say
 </pre></div></div>
 </div>
 <p>We compare these topics to those obtained by a standard LDA
@@ -888,8 +884,8 @@ words in the topics are qualitatively similar.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 14.6 s, sys: 67.7 ms, total: 14.7 s
-Wall time: 14.8 s
+CPU times: user 14.7 s, sys: 87.2 ms, total: 14.8 s
+Wall time: 15.1 s
 Topic #0: people gun armenian war armenians turkish states said state 000
 Topic #1: government people law mr president use don think right public
 Topic #2: space science nasa program data research center output earth launch
@@ -1001,7 +997,6 @@ probabilities.</p>
 </pre></div>
 </div>
 </div>
-<p>The mean of the log predictive probability is about -6.00.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [17]:
@@ -1018,13 +1013,13 @@ probabilities.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 51.4 s, sys: 13.1 s, total: 1min 4s
-Wall time: 36.6 s
-Predictive log prob (pm3) = -6.0658545547850276
+CPU times: user 26.1 s, sys: 8.07 s, total: 34.2 s
+Wall time: 32.8 s
+Predictive log prob (pm3) = -6.158563560819359
 </pre></div></div>
 </div>
 <p>We compare the result with the scikit-learn LDA implemented The log
-predictive probability is comparable (-6.04) with AEVB-ADVI, and it
+predictive probability is comparable (-6.15) with AEVB-ADVI, and it
 shows good set of words in the estimated topics.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -1046,9 +1041,9 @@ shows good set of words in the estimated topics.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 43.1 s, sys: 2.75 s, total: 45.8 s
-Wall time: 39.4 s
-Predictive log prob (sklearn) = -6.014771065227896
+CPU times: user 33 s, sys: 94 ms, total: 33.1 s
+Wall time: 33.3 s
+Predictive log prob (sklearn) = -6.0147710652278965
 </pre></div></div>
 </div>
 </div>

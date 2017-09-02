@@ -38,7 +38,7 @@
     <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="API Reference" href="../api.html"/>
         <link rel="next" title="Generalized Linear Models" href="glm.html"/>
-        <link rel="prev" title="Mixture" href="distributions/mixture.html"/> 
+        <link rel="prev" title="Bounded Variables" href="bounds.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -92,10 +92,13 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Inference</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymc3.sampling">Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#step-methods">Step-methods</a><ul>
@@ -242,24 +245,35 @@ samples are discarded by default. See discard_tuned_samples.</li>
 <li><strong>step</strong> (<em>function</em><em> or </em><em>iterable of functions</em>) – A step function or collection of functions. If there are variables
 without a step methods, step methods for those variables will
 be assigned automatically.</li>
-<li><strong>init</strong> (<em>str {'ADVI'</em><em>, </em><em>'ADVI_MAP'</em><em>, </em><em>'MAP'</em><em>, </em><em>'NUTS'</em><em>, </em><em>'auto'</em><em>, </em><em>None}</em>) – <p>Initialization method to use. Only works for auto-assigned step methods.</p>
+<li><strong>init</strong> (<em>str</em>) – <p>Initialization method to use for auto-assigned NUTS samplers.</p>
 <ul>
-<li>ADVI: Run ADVI to estimate starting points and diagonal covariance
-matrix. If njobs &gt; 1 it will sample starting points from the estimated
-posterior, otherwise it will use the estimated posterior mean.</li>
-<li>ADVI_MAP: Initialize ADVI with MAP and use MAP as starting point.</li>
-<li>MAP: Use the MAP as starting point.</li>
-<li>NUTS: Run NUTS to estimate starting points and covariance matrix. If
-njobs &gt; 1 it will sample starting points from the estimated posterior,
-otherwise it will use the estimated posterior mean.</li>
-<li>auto : Auto-initialize, if possible. Currently only works when NUTS
-is auto-assigned as step method (default).</li>
-<li>None: Do not initialize.</li>
+<li>auto : Choose a default initialization method automatically.
+Currently, this is <cite>‘jitter+adapt_diag’</cite>, but this can change in
+the future. If you depend on the exact behaviour, choose an
+initialization method explicitly.</li>
+<li>adapt_diag : Start with a identity mass matrix and then adapt
+a diagonal based on the variance of the tuning samples. All
+chains use the test value (usually the prior mean) as starting
+point.</li>
+<li>jitter+adapt_diag : Same as <cite>adapt_diag</cite>, but add uniform jitter
+in [-1, 1] to the starting point in each chain.</li>
+<li>advi+adapt_diag : Run ADVI and then adapt the resulting diagonal
+mass matrix based on the sample variance of the tuning samples.</li>
+<li>advi+adapt_diag_grad : Run ADVI and then adapt the resulting
+diagonal mass matrix based on the variance of the gradients
+during tuning. This is <strong>experimental</strong> and might be removed
+in a future release.</li>
+<li>advi : Run ADVI to estimate posterior mean and diagonal mass
+matrix.</li>
+<li>advi_map: Initialize ADVI with MAP and use MAP as starting point.</li>
+<li>map : Use the MAP as starting point. This is discouraged.</li>
+<li>nuts : Run NUTS and estimate posterior mean and mass matrix from
+the trace.</li>
 </ul>
 </li>
 <li><strong>n_init</strong> (<em>int</em>) – Number of iterations of initializer
 If ‘ADVI’, number of iterations, if ‘nuts’, number of draws.</li>
-<li><strong>start</strong> (<em>dict</em>) – Starting point in parameter space (or partial point)
+<li><strong>start</strong> (<em>dict</em><em>, or </em><em>array of dict</em>) – Starting point in parameter space (or partial point)
 Defaults to trace.point(-1)) if there is a trace provided and
 model.test_point if not (defaults to empty dict).</li>
 <li><strong>trace</strong> (<em>backend</em><em>, </em><em>list</em><em>, or </em><em>MultiTrace</em>) – This should be a backend instance, a list of variables to track,
@@ -441,25 +455,45 @@ posterior predictive samples from the weighted models.</p>
 
 <dl class="function">
 <dt id="pymc3.sampling.init_nuts">
-<code class="descclassname">pymc3.sampling.</code><code class="descname">init_nuts</code><span class="sig-paren">(</span><em>init=’ADVI’</em>, <em>njobs=1</em>, <em>n_init=500000</em>, <em>model=None</em>, <em>random_seed=-1</em>, <em>progressbar=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.init_nuts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize and sample from posterior of a continuous model.</p>
-<p>This is a convenience function. NUTS convergence and sampling speed is extremely
-dependent on the choice of mass/scaling matrix. In our experience, using ADVI
-to estimate a diagonal covariance matrix and using this as the scaling matrix
-produces robust results over a wide class of continuous models.</p>
+<code class="descclassname">pymc3.sampling.</code><code class="descname">init_nuts</code><span class="sig-paren">(</span><em>init=’auto’</em>, <em>njobs=1</em>, <em>n_init=500000</em>, <em>model=None</em>, <em>random_seed=-1</em>, <em>progressbar=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.init_nuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the mass matrix initialization for NUTS.</p>
+<p>NUTS convergence and sampling speed is extremely dependent on the
+choice of mass/scaling matrix. This function implements different
+methods for choosing or adapting the mass matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>init</strong> (<em>str {'ADVI'</em><em>, </em><em>'ADVI_MAP'</em><em>, </em><em>'MAP'</em><em>, </em><em>'NUTS'}</em>) – Initialization method to use.
-* ADVI : Run ADVI to estimate posterior mean and diagonal covariance matrix.
-* ADVI_MAP: Initialize ADVI with MAP and use MAP as starting point.
-* MAP : Use the MAP as starting point.
-* NUTS : Run NUTS and estimate posterior mean and covariance matrix.</li>
+<li><strong>init</strong> (<em>str</em>) – <p>Initialization method to use.</p>
+<ul>
+<li>auto : Choose a default initialization method automatically.
+Currently, this is <cite>‘jitter+adapt_diag’</cite>, but this can change in
+the future. If you depend on the exact behaviour, choose an
+initialization method explicitly.</li>
+<li>adapt_diag : Start with a identity mass matrix and then adapt
+a diagonal based on the variance of the tuning samples. All
+chains use the test value (usually the prior mean) as starting
+point.</li>
+<li>jitter+adapt_diag : Same as <cite>adapt_diag</cite>, but add uniform jitter
+in [-1, 1] to the starting point in each chain.</li>
+<li>advi+adapt_diag : Run ADVI and then adapt the resulting diagonal
+mass matrix based on the sample variance of the tuning samples.</li>
+<li>advi+adapt_diag_grad : Run ADVI and then adapt the resulting
+diagonal mass matrix based on the variance of the gradients
+during tuning. This is <strong>experimental</strong> and might be removed
+in a future release.</li>
+<li>advi : Run ADVI to estimate posterior mean and diagonal mass
+matrix.</li>
+<li>advi_map: Initialize ADVI with MAP and use MAP as starting point.</li>
+<li>map : Use the MAP as starting point. This is discouraged.</li>
+<li>nuts : Run NUTS and estimate posterior mean and mass matrix from
+the trace.</li>
+</ul>
+</li>
 <li><strong>njobs</strong> (<em>int</em>) – Number of parallel jobs to start.</li>
 <li><strong>n_init</strong> (<em>int</em>) – Number of iterations of initializer
-If ‘ADVI’, number of iterations, if ‘metropolis’, number of draws.</li>
+If ‘ADVI’, number of iterations, if ‘nuts’, number of draws.</li>
 <li><strong>model</strong> (Model (optional if in <cite>with</cite> context)) – </li>
 <li><strong>progressbar</strong> (<em>bool</em>) – Whether or not to display a progressbar for advi sampling.</li>
 <li><strong>**kwargs</strong> (<em>keyword arguments</em>) – Extra keyword arguments are forwarded to pymc3.NUTS.</li>
@@ -484,12 +518,12 @@ If ‘ADVI’, number of iterations, if ‘metropolis’, number of draws.</li>
 <span id="nuts"></span><h3>NUTS<a class="headerlink" href="#module-pymc3.step_methods.hmc.nuts" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymc3.step_methods.hmc.nuts.NUTS">
-<em class="property">class </em><code class="descclassname">pymc3.step_methods.hmc.nuts.</code><code class="descname">NUTS</code><span class="sig-paren">(</span><em>vars=None</em>, <em>Emax=1000</em>, <em>target_accept=0.8</em>, <em>gamma=0.05</em>, <em>k=0.75</em>, <em>t0=10</em>, <em>adapt_step_size=True</em>, <em>max_treedepth=10</em>, <em>on_error=’summary’</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.nuts.NUTS" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.step_methods.hmc.nuts.</code><code class="descname">NUTS</code><span class="sig-paren">(</span><em>vars=None</em>, <em>Emax=1000</em>, <em>target_accept=0.8</em>, <em>gamma=0.05</em>, <em>k=0.75</em>, <em>t0=10</em>, <em>adapt_step_size=True</em>, <em>max_treedepth=10</em>, <em>on_error=’summary’</em>, <em>early_max_treedepth=8</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.nuts.NUTS" title="Permalink to this definition">¶</a></dt>
 <dd><p>A sampler for continuous variables based on Hamiltonian mechanics.</p>
 <p>NUTS automatically tunes the step size and the number of steps per
 sample. A detailed description can be found at [1], “Algorithm 6:
 Efficient No-U-Turn Sampler with Dual Averaging”.</p>
-<p>Nuts provides a number of statistics that can be accessed with
+<p>NUTS provides a number of statistics that can be accessed with
 <cite>trace.get_sampler_stats</cite>:</p>
 <ul class="simple">
 <li><cite>mean_tree_accept</cite>: The mean acceptance probability for the tree
@@ -534,6 +568,7 @@ during tuning.</li>
 Adaptively Setting Path Lengths in Hamiltonian Monte Carlo.</td></tr>
 </tbody>
 </table>
+<p>Set up the No-U-Turn sampler.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -555,6 +590,7 @@ is used. If adaptation is enabled, it is used as initial guess.</li>
 disabled, <cite>k</cite>, <cite>t0</cite>, <cite>gamma</cite> and <cite>target_accept</cite> are ignored.</li>
 <li><strong>max_treedepth</strong> (<em>int</em><em>, </em><em>default=10</em>) – The maximum tree depth. Trajectories are stoped when this
 depth is reached.</li>
+<li><strong>early_max_treedepth</strong> (<em>int</em><em>, </em><em>default=8</em>) – The maximum tree depth during the first 200 tuning samples.</li>
 <li><strong>integrator</strong> (<em>str</em><em>, </em><em>default &quot;leapfrog&quot;</em>) – The integrator to use for the trajectories. One of “leapfrog”,
 “two-stage” or “three-stage”. The second two can increase
 sampling speed for some high dimensional problems.</li>
@@ -583,6 +619,18 @@ of the scaling matrix.</li>
 <p>The step size adaptation stops when <cite>self.tune</cite> is set to False.
 This is usually achieved by setting the <cite>tune</cite> parameter if
 <cite>pm.sample</cite> to the desired number of tuning steps.</p>
+<dl class="method">
+<dt id="pymc3.step_methods.hmc.nuts.NUTS.astep">
+<code class="descname">astep</code><span class="sig-paren">(</span><em>q0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.nuts.NUTS.astep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a single NUTS iteration.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymc3.step_methods.hmc.nuts.NUTS.competence">
+<em class="property">static </em><code class="descname">competence</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.nuts.NUTS.competence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check how appropriate this class is for sampling a random variable.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -701,7 +749,10 @@ Categorical variables.</p>
 <dl class="class">
 <dt id="pymc3.step_methods.hmc.hmc.HamiltonianMC">
 <em class="property">class </em><code class="descclassname">pymc3.step_methods.hmc.hmc.</code><code class="descname">HamiltonianMC</code><span class="sig-paren">(</span><em>vars=None</em>, <em>path_length=2.0</em>, <em>step_rand=&lt;function unif&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.hmc.HamiltonianMC" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>A sampler for continuous variables based on Hamiltonian mechanics.</p>
+<p>See NUTS sampler for automatically tuned stopping time and step size scaling.</p>
+<p>Set up the Hamiltonian Monte Carlo sampler.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -726,6 +777,18 @@ of the scaling matrix.</li>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="pymc3.step_methods.hmc.hmc.HamiltonianMC.astep">
+<code class="descname">astep</code><span class="sig-paren">(</span><em>q0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.hmc.HamiltonianMC.astep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a single HMC iteration.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymc3.step_methods.hmc.hmc.HamiltonianMC.competence">
+<em class="property">static </em><code class="descname">competence</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.hmc.HamiltonianMC.competence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check how appropriate this class is for sampling a random variable.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -777,22 +840,6 @@ Operator Variational Inference
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="pymc3.variational.opvi.ObjectiveFunction.random">
-<code class="descname">random</code><span class="sig-paren">(</span><em>size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.ObjectiveFunction.random" title="Permalink to this definition">¶</a></dt>
-<dd><p>Posterior distribution from initial latent space</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>size</strong> (<cite>int</cite>) – number of samples from distribution</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>posterior space (theano)</em></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="pymc3.variational.opvi.ObjectiveFunction.score_function">
 <code class="descname">score_function</code><span class="sig-paren">(</span><em>sc_n_mc=None</em>, <em>more_replacements=None</em>, <em>fn_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.ObjectiveFunction.score_function" title="Permalink to this definition">¶</a></dt>
@@ -953,21 +1000,22 @@ custom implementation of the following methods:</p>
 <div><ul class="simple">
 <li><dl class="first docutils">
 <dt><code class="code docutils literal"><span class="pre">.create_shared_params(**kwargs)</span></code></dt>
-<dd>Returns {dict|list|theano.shared}</dd>
+<dd>Returns dict</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><code class="code docutils literal"><span class="pre">.random_global(size=None,</span> <span class="pre">no_rand=False)</span></code></dt>
-<dd>Generate samples from posterior. If <cite>no_rand==False</cite>:
-sample from MAP of initial distribution.
+<dt><code class="code docutils literal"><span class="pre">symbolic_random_global_matrix</span></code> node property</dt>
+<dd>It takes internally <cite>symbolic_initial_global_matrix</cite>
+and performs appropriate transforms. To memoize result
+one should use <code class="code docutils literal"><span class="pre">&#64;node_property</span></code> wrapper instead <code class="code docutils literal"><span class="pre">&#64;property</span></code>.
 Returns TensorVariable</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><code class="code docutils literal"><span class="pre">.log_q_W_global(z)</span></code></dt>
-<dd>It is needed only if used with operator
-that requires <span class="math">\(logq\)</span> of an approximation
-Returns Scalar</dd>
+<dt><code class="code docutils literal"><span class="pre">.symbolic_log_q_W_global</span></code> node property</dt>
+<dd>Should use vectorized form if possible and return vector of size <cite>(s,)</cite>
+It is needed only if used with operator that requires <span class="math">\(logq\)</span>
+of an approximation. Returns vector</dd>
 </dl>
 </li>
 </ul>
@@ -975,8 +1023,6 @@ Returns Scalar</dd>
 <p>You can also override the following methods:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="code docutils literal"><span class="pre">._setup(**kwargs)</span></code>
-Do some specific stuff having <cite>kwargs</cite> before calling <a class="reference internal" href="#pymc3.variational.opvi.Approximation.create_shared_params" title="pymc3.variational.opvi.Approximation.create_shared_params"><code class="xref py py-func docutils literal"><span class="pre">Approximation.create_shared_params()</span></code></a></li>
 <li><code class="code docutils literal"><span class="pre">.check_model(model,</span> <span class="pre">**kwargs)</span></code>
 Do some specific check for model having <cite>kwargs</cite></li>
 </ul>
@@ -987,11 +1033,13 @@ for <a class="reference internal" href="#pymc3.variational.opvi.Approximation" t
 optionally overridden.</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="code docutils literal"><span class="pre">initial_dist_name</span></code>
+<li><code class="code docutils literal"><span class="pre">initial_dist_local_name</span> <span class="pre">=</span> <span class="pre">'normal'</span></code>
+<code class="code docutils literal"><span class="pre">initial_dist_global_name</span> <span class="pre">=</span> <span class="pre">'normal'</span></code>
 string that represents name of the initial distribution.
 In most cases if will be <cite>uniform</cite> or <cite>normal</cite></li>
-<li><code class="code docutils literal"><span class="pre">initial_dist_map</span></code>
-float where initial distribution has maximum density</li>
+<li><code class="code docutils literal"><span class="pre">initial_dist_local_map</span> <span class="pre">=</span> <span class="pre">0.</span>
+<span class="pre">:code:`initial_dist_global_map</span> <span class="pre">=</span> <span class="pre">0.</span></code>
+point where initial distribution has maximum density</li>
 </ul>
 </div></blockquote>
 <p class="rubric">References</p>
@@ -1055,106 +1103,21 @@ if True - zero initial point will produce constant latent variables</li>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="pymc3.variational.opvi.Approximation.create_shared_params">
-<code class="descname">create_shared_params</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.create_shared_params" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>{dict|list|theano.shared}</em></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymc3.variational.opvi.Approximation.initial">
-<code class="descname">initial</code><span class="sig-paren">(</span><em>size</em>, <em>no_rand=False</em>, <em>l=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.initial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initial distribution for constructing posterior</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>size</strong> (<cite>int</cite>) – number of samples</li>
-<li><strong>no_rand</strong> (<cite>bool</cite>) – return zeros if True</li>
-<li><strong>l</strong> (<cite>int</cite>) – length of sample, defaults to latent space dim</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>tt.TensorVariable</cite> – sampled latent space</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymc3.variational.opvi.Approximation.log_q_W_global">
-<code class="descname">log_q_W_global</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.log_q_W_global" title="Permalink to this definition">¶</a></dt>
-<dd><p>log_q_W samples over q for global vars</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymc3.variational.opvi.Approximation.log_q_W_local">
-<code class="descname">log_q_W_local</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.log_q_W_local" title="Permalink to this definition">¶</a></dt>
-<dd><p>log_q_W samples over q for local vars
-Gradient wrt mu, rho in density parametrization
-can be scaled to lower variance of ELBO</p>
-</dd></dl>
-
-<dl class="method">
+<dl class="attribute">
 <dt id="pymc3.variational.opvi.Approximation.logq">
-<code class="descname">logq</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.logq" title="Permalink to this definition">¶</a></dt>
+<code class="descname">logq</code><a class="headerlink" href="#pymc3.variational.opvi.Approximation.logq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total logq for approximation</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pymc3.variational.opvi.Approximation.random">
-<code class="descname">random</code><span class="sig-paren">(</span><em>size=None</em>, <em>no_rand=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.random" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implements posterior distribution from initial latent space</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>size</strong> (<cite>scalar</cite>) – number of samples from distribution</li>
-<li><strong>no_rand</strong> (<cite>bool</cite>) – whether use deterministic distribution</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>posterior space (theano)</em></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
-<dt id="pymc3.variational.opvi.Approximation.random_fn">
-<code class="descname">random_fn</code><a class="headerlink" href="#pymc3.variational.opvi.Approximation.random_fn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implements posterior distribution from initial latent space</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>size</strong> (<cite>int</cite>) – number of samples from distribution</li>
-<li><strong>no_rand</strong> (<cite>bool</cite>) – whether use deterministic distribution</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>posterior space (numpy)</em></p>
-</td>
-</tr>
-</tbody>
-</table>
+<dt id="pymc3.variational.opvi.Approximation.normalizing_constant">
+<code class="descname">normalizing_constant</code><a class="headerlink" href="#pymc3.variational.opvi.Approximation.normalizing_constant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant to divide when we want to scale down loss from minibatches</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymc3.variational.opvi.Approximation.random_global">
-<code class="descname">random_global</code><span class="sig-paren">(</span><em>size=None</em>, <em>no_rand=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.random_global" title="Permalink to this definition">¶</a></dt>
+<code class="descname">random_global</code><span class="sig-paren">(</span><em>size=None</em>, <em>deterministic=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.random_global" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements posterior distribution from initial latent space</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1162,7 +1125,7 @@ can be scaled to lower variance of ELBO</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>size</strong> (<cite>scalar</cite>) – number of samples from distribution</li>
-<li><strong>no_rand</strong> (<cite>bool</cite>) – whether use deterministic distribution</li>
+<li><strong>deterministic</strong> (<cite>bool</cite>) – whether use deterministic distribution</li>
 </ul>
 </td>
 </tr>
@@ -1175,7 +1138,7 @@ can be scaled to lower variance of ELBO</p>
 
 <dl class="method">
 <dt id="pymc3.variational.opvi.Approximation.random_local">
-<code class="descname">random_local</code><span class="sig-paren">(</span><em>size=None</em>, <em>no_rand=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.random_local" title="Permalink to this definition">¶</a></dt>
+<code class="descname">random_local</code><span class="sig-paren">(</span><em>size=None</em>, <em>deterministic=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.random_local" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements posterior distribution from initial latent space</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1183,7 +1146,7 @@ can be scaled to lower variance of ELBO</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>size</strong> (<cite>scalar</cite>) – number of samples from distribution</li>
-<li><strong>no_rand</strong> (<cite>bool</cite>) – whether use deterministic distribution</li>
+<li><strong>deterministic</strong> (<cite>bool</cite>) – whether use deterministic distribution</li>
 </ul>
 </td>
 </tr>
@@ -1196,7 +1159,7 @@ can be scaled to lower variance of ELBO</p>
 
 <dl class="method">
 <dt id="pymc3.variational.opvi.Approximation.sample">
-<code class="descname">sample</code><span class="sig-paren">(</span><em>draws=1</em>, <em>include_transformed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.sample" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sample</code><span class="sig-paren">(</span><em>draws=500</em>, <em>include_transformed=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw samples from variational posterior.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1273,8 +1236,30 @@ approximateinference.org/accepted/RoederEtAl2016.pdf</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="pymc3.variational.opvi.Approximation.view">
-<code class="descname">view</code><span class="sig-paren">(</span><em>space</em>, <em>name</em>, <em>reshape=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.view" title="Permalink to this definition">¶</a></dt>
+<dt id="pymc3.variational.opvi.Approximation.view_global">
+<code class="descname">view_global</code><span class="sig-paren">(</span><em>space</em>, <em>name</em>, <em>reshape=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.view_global" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct view on a variable from flattened <cite>space</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>space</strong> (<em>matrix</em><em> or </em><em>vector</em>) – space to take view of variable from</li>
+<li><strong>name</strong> (<cite>str</cite>) – name of variable</li>
+<li><strong>reshape</strong> (<cite>bool</cite>) – whether to reshape variable from vectorized view</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(reshaped) slice of matrix</em> – variable view</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymc3.variational.opvi.Approximation.view_local">
+<code class="descname">view_local</code><span class="sig-paren">(</span><em>space</em>, <em>name</em>, <em>reshape=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.opvi.Approximation.view_local" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct view on a variable from flattened <cite>space</cite></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1429,6 +1414,18 @@ approximateinference.org/accepted/RoederEtAl2016.pdf</li>
 <li>Kingma, D. P., &amp; Welling, M. (2014).
 Auto-Encoding Variational Bayes. stat, 1050, 1.</li>
 </ul>
+<dl class="attribute">
+<dt id="pymc3.variational.inference.ADVI.APPROX">
+<code class="descname">APPROX</code><a class="headerlink" href="#pymc3.variational.inference.ADVI.APPROX" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">MeanField</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymc3.variational.inference.ADVI.OP">
+<code class="descname">OP</code><a class="headerlink" href="#pymc3.variational.inference.ADVI.OP" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">KL</span></code></p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="pymc3.variational.inference.ADVI.from_mean_field">
 <em class="property">classmethod </em><code class="descname">from_mean_field</code><span class="sig-paren">(</span><em>mean_field</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.ADVI.from_mean_field" title="Permalink to this definition">¶</a></dt>
@@ -1485,6 +1482,18 @@ approximateinference.org/accepted/RoederEtAl2016.pdf</li>
 <li>Kingma, D. P., &amp; Welling, M. (2014).
 Auto-Encoding Variational Bayes. stat, 1050, 1.</li>
 </ul>
+<dl class="attribute">
+<dt id="pymc3.variational.inference.FullRankADVI.APPROX">
+<code class="descname">APPROX</code><a class="headerlink" href="#pymc3.variational.inference.FullRankADVI.APPROX" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">FullRank</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymc3.variational.inference.FullRankADVI.OP">
+<code class="descname">OP</code><a class="headerlink" href="#pymc3.variational.inference.FullRankADVI.OP" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">KL</span></code></p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="pymc3.variational.inference.FullRankADVI.from_advi">
 <em class="property">classmethod </em><code class="descname">from_advi</code><span class="sig-paren">(</span><em>advi</em>, <em>gpu_compat=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.FullRankADVI.from_advi" title="Permalink to this definition">¶</a></dt>
@@ -1543,7 +1552,7 @@ Auto-Encoding Variational Bayes. stat, 1050, 1.</li>
 
 <dl class="class">
 <dt id="pymc3.variational.inference.SVGD">
-<em class="property">class </em><code class="descclassname">pymc3.variational.inference.</code><code class="descname">SVGD</code><span class="sig-paren">(</span><em>n_particles=100</em>, <em>jitter=0.01</em>, <em>model=None</em>, <em>kernel=&lt;pymc3.variational.test_functions.RBF object&gt;</em>, <em>temperature=1</em>, <em>scale_cost_to_minibatch=False</em>, <em>start=None</em>, <em>histogram=None</em>, <em>random_seed=None</em>, <em>local_rv=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.SVGD" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.variational.inference.</code><code class="descname">SVGD</code><span class="sig-paren">(</span><em>n_particles=100</em>, <em>jitter=0.01</em>, <em>model=None</em>, <em>kernel=&lt;pymc3.variational.test_functions.RBF object&gt;</em>, <em>temperature=1</em>, <em>scale_cost_to_minibatch=False</em>, <em>start=None</em>, <em>random_seed=None</em>, <em>local_rv=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.SVGD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stein Variational Gradient Descent</p>
 <p>This inference is based on Kernelized Stein Discrepancy
 it’s main idea is to move initial noisy particles so that
@@ -1587,6 +1596,24 @@ arXiv:1608.04471</li>
 Stein Variational Policy Gradient
 arXiv:1704.02399</li>
 </ul>
+<dl class="attribute">
+<dt id="pymc3.variational.inference.SVGD.APPROX">
+<code class="descname">APPROX</code><a class="headerlink" href="#pymc3.variational.inference.SVGD.APPROX" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Empirical</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymc3.variational.inference.SVGD.OP">
+<code class="descname">OP</code><a class="headerlink" href="#pymc3.variational.inference.SVGD.OP" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">KSD</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pymc3.variational.inference.SVGD.TF">
+<code class="descname">TF</code><a class="headerlink" href="#pymc3.variational.inference.SVGD.TF" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Kernel</span></code></p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1633,9 +1660,15 @@ arXiv:1611.01722</li>
 Stein Variational Policy Gradient
 arXiv:1704.02399</li>
 </ul>
+<dl class="attribute">
+<dt id="pymc3.variational.inference.ASVGD.TF">
+<code class="descname">TF</code><a class="headerlink" href="#pymc3.variational.inference.ASVGD.TF" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Kernel</span></code></p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pymc3.variational.inference.ASVGD.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>n=10000</em>, <em>score=None</em>, <em>callbacks=None</em>, <em>progressbar=True</em>, <em>obj_n_mc=30</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.ASVGD.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>n=10000</em>, <em>score=None</em>, <em>callbacks=None</em>, <em>progressbar=True</em>, <em>obj_n_mc=300</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.inference.ASVGD.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs Amortized Stein Variational Gradient Descent</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1723,8 +1756,18 @@ See (AEVB; Kingma and Welling, 2014) for details</li>
 <li><strong>local_rv</strong> (<em>dict</em><em>[</em><em>var-&gt;tuple</em><em>]</em>) – mapping {model_variable -&gt; local_variable (<span class="math">\(\mu\)</span>, <span class="math">\(\rho\)</span>)}
 Local Vars are used for Autoencoding Variational Bayes
 See (AEVB; Kingma and Welling, 2014) for details</li>
-<li><strong>method</strong> (str or <a class="reference internal" href="#pymc3.variational.inference.Inference" title="pymc3.variational.inference.Inference"><code class="xref py py-class docutils literal"><span class="pre">Inference</span></code></a>) – string name is case insensitive in {‘advi’, ‘fullrank_advi’, ‘advi-&gt;fullrank_advi’, ‘svgd’, ‘asvgd’}</li>
-<li><strong>model</strong> (<code class="xref py py-class docutils literal"><span class="pre">pymc3.Model</span></code>) – PyMC3 model for inference</li>
+<li><strong>method</strong> (str or <a class="reference internal" href="#pymc3.variational.inference.Inference" title="pymc3.variational.inference.Inference"><code class="xref py py-class docutils literal"><span class="pre">Inference</span></code></a>) – <p>string name is case insensitive in:</p>
+<ul>
+<li>’advi’  for ADVI</li>
+<li>’fullrank_advi’  for FullRankADVI</li>
+<li>’advi-&gt;fullrank_advi’  for fitting ADVI first and then FullRankADVI</li>
+<li>’svgd’  for Stein Variational Gradient Descent</li>
+<li>’asvgd’  for Amortized Stein Variational Gradient Descent</li>
+<li>’nfvi’  for Normalizing Flow</li>
+<li>’nfvi=formula’  for Normalizing Flow using formula</li>
+</ul>
+</li>
+<li><strong>model</strong> (<code class="xref py py-class docutils literal"><span class="pre">Model</span></code>) – PyMC3 model for inference</li>
 <li><strong>random_seed</strong> (<em>None</em><em> or </em><em>int</em>) – leave None to use package global RandomStream or other
 valid value to create instance specific one</li>
 <li><strong>inf_kwargs</strong> (<em>dict</em>) – additional kwargs passed to <a class="reference internal" href="#pymc3.variational.inference.Inference" title="pymc3.variational.inference.Inference"><code class="xref py py-class docutils literal"><span class="pre">Inference</span></code></a></li>
@@ -1751,7 +1794,7 @@ valid value to create instance specific one</li>
 <span id="approximations"></span><h3>Approximations<a class="headerlink" href="#module-pymc3.variational.approximations" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymc3.variational.approximations.MeanField">
-<em class="property">class </em><code class="descclassname">pymc3.variational.approximations.</code><code class="descname">MeanField</code><span class="sig-paren">(</span><em>local_rv=None</em>, <em>model=None</em>, <em>cost_part_grad_scale=1</em>, <em>scale_cost_to_minibatch=False</em>, <em>random_seed=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.MeanField" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.variational.approximations.</code><code class="descname">MeanField</code><span class="sig-paren">(</span><em>local_rv=None</em>, <em>model=None</em>, <em>cost_part_grad_scale=1</em>, <em>scale_cost_to_minibatch=False</em>, <em>random_seed=None</em>, <em>start=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.MeanField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mean Field approximation to the posterior where spherical Gaussian family
 is fitted to minimize KL divergence from True posterior. It is assumed
 that latent space variables are uncorrelated that is the main drawback
@@ -1785,9 +1828,9 @@ valid value to create instance specific one</li>
 Sticking the Landing: A Simple Reduced-Variance Gradient for ADVI
 approximateinference.org/accepted/RoederEtAl2016.pdf</li>
 </ul>
-<dl class="method">
-<dt id="pymc3.variational.approximations.MeanField.log_q_W_global">
-<code class="descname">log_q_W_global</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.MeanField.log_q_W_global" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pymc3.variational.approximations.MeanField.symbolic_log_q_W_global">
+<code class="descname">symbolic_log_q_W_global</code><a class="headerlink" href="#pymc3.variational.approximations.MeanField.symbolic_log_q_W_global" title="Permalink to this definition">¶</a></dt>
 <dd><p>log_q_W samples over q for global vars</p>
 </dd></dl>
 
@@ -1795,7 +1838,7 @@ approximateinference.org/accepted/RoederEtAl2016.pdf</li>
 
 <dl class="class">
 <dt id="pymc3.variational.approximations.FullRank">
-<em class="property">class </em><code class="descclassname">pymc3.variational.approximations.</code><code class="descname">FullRank</code><span class="sig-paren">(</span><em>local_rv=None</em>, <em>model=None</em>, <em>cost_part_grad_scale=1</em>, <em>scale_cost_to_minibatch=False</em>, <em>gpu_compat=False</em>, <em>random_seed=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.FullRank" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.variational.approximations.</code><code class="descname">FullRank</code><span class="sig-paren">(</span><em>local_rv=None</em>, <em>model=None</em>, <em>cost_part_grad_scale=1</em>, <em>scale_cost_to_minibatch=False</em>, <em>gpu_compat=False</em>, <em>random_seed=None</em>, <em>start=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.FullRank" title="Permalink to this definition">¶</a></dt>
 <dd><p>Full Rank approximation to the posterior where Multivariate Gaussian family
 is fitted to minimize KL divergence from True posterior. In contrast to
 MeanField approach correlations between variables are taken in account. The
@@ -1852,9 +1895,9 @@ approximateinference.org/accepted/RoederEtAl2016.pdf</li>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="pymc3.variational.approximations.FullRank.log_q_W_global">
-<code class="descname">log_q_W_global</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.FullRank.log_q_W_global" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="pymc3.variational.approximations.FullRank.symbolic_log_q_W_global">
+<code class="descname">symbolic_log_q_W_global</code><a class="headerlink" href="#pymc3.variational.approximations.FullRank.symbolic_log_q_W_global" title="Permalink to this definition">¶</a></dt>
 <dd><p>log_q_W samples over q for global vars</p>
 </dd></dl>
 
@@ -1926,12 +1969,64 @@ valid value to create instance specific one</li>
 <dd><p>Shortcut to flattened Trace</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pymc3.variational.approximations.Empirical.histogram_logp">
-<code class="descname">histogram_logp</code><a class="headerlink" href="#pymc3.variational.approximations.Empirical.histogram_logp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Symbolic logp for every point in trace</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="pymc3.variational.approximations.NormalizingFlow">
+<em class="property">class </em><code class="descclassname">pymc3.variational.approximations.</code><code class="descname">NormalizingFlow</code><span class="sig-paren">(</span><em>flow=’scale-loc’</em>, <em>local_rv=None</em>, <em>model=None</em>, <em>scale_cost_to_minibatch=False</em>, <em>random_seed=None</em>, <em>jitter=0.1</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.variational.approximations.NormalizingFlow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizing flow is a series of invertible transformations on initial distribution.</p>
+<div class="math">
+\[z_K = f_K \circ \dots \circ f_2 \circ f_1(z_0)\]</div>
+<p>In that case we can compute tractable density for the flow.</p>
+<div class="math">
+\[\ln q_K(z_K) = \ln q_0(z_0) - \sum_{k=1}^{K}\ln \left|\frac{\partial f_k}{\partial z_{k-1}}\right|\]</div>
+<p>Every <span class="math">\(f_k\)</span> here is a parametric function with defined determinant.
+We can choose every step here. For example the here is a simple flow
+is an affine transform:</p>
+<div class="math">
+\[z = loc(scale(z_0)) = \mu + \sigma * z_0\]</div>
+<p>Here we get mean field approximation if <span class="math">\(z_0 \sim \mathcal{N}(0, 1)\)</span></p>
+<p><strong>Flow Formulas</strong></p>
+<p>In PyMC3 there is a flexible way to define flows with formulas. We have 5 of them by the moment:</p>
+<ul class="simple">
+<li>Loc (<code class="code docutils literal"><span class="pre">loc</span></code>): <span class="math">\(z' = z + \mu\)</span></li>
+<li>Scale (<code class="code docutils literal"><span class="pre">scale</span></code>): <span class="math">\(z' = \sigma * z\)</span></li>
+<li>Planar (<code class="code docutils literal"><span class="pre">planar</span></code>): <span class="math">\(z' = z + u * \tanh(w^T z + b)\)</span></li>
+<li>Radial (<code class="code docutils literal"><span class="pre">radial</span></code>): <span class="math">\(z' = z + \beta (\alpha + (z-z_r))^{-1}(z-z_r)\)</span></li>
+<li>Householder (<code class="code docutils literal"><span class="pre">hh</span></code>): <span class="math">\(z' = H z\)</span></li>
+</ul>
+<p>Formula can be written as a string, e.g. <cite>‘scale-loc’</cite>, <cite>‘scale-hh*4-loc’</cite>, <cite>‘panar*10’</cite>.
+Every step is separated with <cite>‘-‘</cite>, repeated flow is marked with <cite>‘*’</cite> produsing <cite>‘flow*repeats’</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>flow</strong> (<em>str|AbstractFlow</em>) – formula or initialized Flow, default is <cite>‘scale-loc’</cite> that
+is identical to MeanField</li>
+<li><strong>local_rv</strong> (<em>dict</em><em>[</em><em>var-&gt;tuple</em><em>]</em>) – Experimental for Empirical Approximation
+mapping {model_variable -&gt; local_variable (<span class="math">\(\mu\)</span>, <span class="math">\(\rho\)</span>)}
+Local Vars are used for Autoencoding Variational Bayes
+See (AEVB; Kingma and Welling, 2014) for details</li>
+<li><strong>scale_cost_to_minibatch</strong> (<cite>bool</cite>) – Scale cost to minibatch instead of full dataset, default False</li>
+<li><strong>model</strong> (<code class="xref py py-class docutils literal"><span class="pre">pymc3.Model</span></code>) – PyMC3 model for inference</li>
+<li><strong>random_seed</strong> (<em>None</em><em> or </em><em>int</em>) – leave None to use package global RandomStream or other
+valid value to create instance specific one</li>
+<li><strong>jitter</strong> (<em>float</em>) – noise for flows’ parameters initialization</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Danilo Jimenez Rezende, Shakir Mohamed, 2015
+Variational Inference with Normalizing Flows
+arXiv:1505.05770</li>
+<li>Jakub M. Tomczak, Max Welling, 2016
+Improving Variational Auto-Encoders using Householder Flow
+arXiv:1611.09630</li>
+</ul>
 </dd></dl>
 
 <dl class="function">
@@ -2018,7 +2113,7 @@ arXiv:1608.04471</li>
         <a href="glm.html" class="btn btn-neutral float-right" title="Generalized Linear Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="distributions/mixture.html" class="btn btn-neutral" title="Mixture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="bounds.html" class="btn btn-neutral" title="Bounded Variables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -92,10 +92,13 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="distributions.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html">Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="glm.html">Generalized Linear Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gp.html">Gaussian Processes</a></li>
@@ -298,7 +301,7 @@ dx.doi.org/10.1111/1467-9868.00353</p>
 
 <dl class="function">
 <dt id="pymc3.stats.waic">
-<code class="descclassname">pymc3.stats.</code><code class="descname">waic</code><span class="sig-paren">(</span><em>trace</em>, <em>model=None</em>, <em>pointwise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.waic" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.stats.</code><code class="descname">waic</code><span class="sig-paren">(</span><em>trace</em>, <em>model=None</em>, <em>pointwise=False</em>, <em>progressbar=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.waic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the widely available information criterion, its standard error
 and the effective number of parameters of the samples in trace from model.
 Read more theory here - in a paper by some of the leading authorities on
@@ -312,6 +315,9 @@ Model Selection - dx.doi.org/10.1111/1467-9868.00353</p>
 <li><strong>model</strong> (<em>PyMC Model</em>) – Optional model. Default None, taken from context.</li>
 <li><strong>pointwise</strong> (<em>bool</em>) – if True the pointwise predictive accuracy will be returned.
 Default False</li>
+<li><strong>progressbar</strong> (<em>bool</em>) – Whether or not to display a progress bar in the command line. The
+bar shows the percentage of completion, the evaluation speed, and
+the estimated time to completion</li>
 </ul>
 </td>
 </tr>
@@ -331,7 +337,7 @@ Default False</li>
 
 <dl class="function">
 <dt id="pymc3.stats.loo">
-<code class="descclassname">pymc3.stats.</code><code class="descname">loo</code><span class="sig-paren">(</span><em>trace</em>, <em>model=None</em>, <em>pointwise=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.loo" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.stats.</code><code class="descname">loo</code><span class="sig-paren">(</span><em>trace</em>, <em>model=None</em>, <em>pointwise=False</em>, <em>progressbar=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.loo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates leave-one-out (LOO) cross-validation for out of sample predictive
 model fit, following Vehtari et al. (2015). Cross-validation is computed using
 Pareto-smoothed importance sampling (PSIS).</p>
@@ -344,6 +350,9 @@ Pareto-smoothed importance sampling (PSIS).</p>
 <li><strong>model</strong> (<em>PyMC Model</em>) – Optional model. Default None, taken from context.</li>
 <li><strong>pointwise</strong> (<em>bool</em>) – if True the pointwise predictive accuracy will be returned.
 Default False</li>
+<li><strong>progressbar</strong> (<em>bool</em>) – Whether or not to display a progress bar in the command line. The
+bar shows the percentage of completion, the evaluation speed, and
+the estimated time to completion</li>
 </ul>
 </td>
 </tr>
@@ -555,7 +564,7 @@ This is only meaningful when <cite>stat_funcs</cite> is None.</li>
 
 <dl class="function">
 <dt id="pymc3.stats.compare">
-<code class="descclassname">pymc3.stats.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>traces</em>, <em>models</em>, <em>ic=’WAIC’</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.compare" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.stats.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>traces</em>, <em>models</em>, <em>ic=’WAIC’</em>, <em>method=’stacking’</em>, <em>b_samples=1000</em>, <em>alpha=1</em>, <em>seed=None</em>, <em>round_to=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.compare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare models based on the widely available information criterion (WAIC)
 or leave-one-out (LOO) cross-validation.
 Read more theory here - in a paper by some of the leading authorities on
@@ -569,6 +578,34 @@ Model Selection - dx.doi.org/10.1111/1467-9868.00353</p>
 <li><strong>models</strong> (<em>list of PyMC3 models</em>) – in the same order as traces.</li>
 <li><strong>ic</strong> (<em>string</em>) – Information Criterion (WAIC or LOO) used to compare models.
 Default WAIC.</li>
+<li><strong>method</strong> (<em>str</em>) – <p>Method used to estimate the weights for each model. Available options
+are:</p>
+<blockquote>
+<div><ul>
+<li>’stacking’ : (default) stacking of predictive distributions.</li>
+<li>’BB-pseudo-BMA’ : pseudo-Bayesian Model averaging using Akaike-type</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>weighting. The weights are stabilized using the Bayesian bootstrap</dt>
+<dd><ul class="first last">
+<li>’pseudo-BMA’: pseudo-Bayesian Model averaging using Akaike-type</li>
+</ul>
+</dd>
+</dl>
+<p>weighting, without Bootstrap stabilization (not recommended)</p>
+<p>For more information read <a class="reference external" href="https://arxiv.org/abs/1704.02030">https://arxiv.org/abs/1704.02030</a></p>
+</li>
+<li><strong>b_samples</strong> (<em>int</em>) – Number of samples taken by the Bayesian bootstrap estimation. Only
+useful when method = ‘BB-pseudo-BMA’.</li>
+<li><strong>alpha</strong> (<em>float</em>) – The shape parameter in the Dirichlet distribution used for the
+Bayesian bootstrap. Only useful when method = ‘BB-pseudo-BMA’. When
+alpha=1 (default), the distribution is uniform on the simplex. A
+smaller alpha will keeps the final weights more away from 0 and 1.</li>
+<li><strong>seed</strong> (<em>int</em><em> or </em><em>np.random.RandomState instance</em>) – If int or RandomState, use it for seeding Bayesian bootstrap. Only
+useful when method = ‘BB-pseudo-BMA’. Default None the global
+np.random state is used.</li>
+<li><strong>round_to</strong> (<em>int</em>) – Number of decimals used to round results (default 2).</li>
 </ul>
 </td>
 </tr>
@@ -580,18 +617,40 @@ Default WAIC.</li>
 <li><strong>pIC</strong> (<em>Estimated effective number of parameters.</em>)</li>
 <li><strong>dIC</strong> (<em>Relative difference between each IC (WAIC or LOO)</em>)</li>
 <li><em>and the lowest IC (WAIC or LOO).</em> – It’s always 0 for the top-ranked model.</li>
-<li><strong>weight</strong> (<em>Akaike weights for each model.</em>) – This can be loosely interpreted as the probability of each model
-(among the compared model) given the data. Be careful that these
-weights are based on point estimates of the IC (uncertainty is ignored).</li>
-<li><strong>SE</strong> (<em>Standard error of the IC estimate.</em>) – For a “large enough” sample size this is an estimate of the uncertainty
-in the computation of the IC.</li>
+<li><strong>weight</strong> (<em>Relative weight for each model.</em>) – This can be loosely interpreted as the probability of each model
+(among the compared model) given the data. By default the uncertainty
+in the weights estimation is considered using Bayesian bootstrap.</li>
+<li><strong>SE</strong> (<em>Standard error of the IC estimate.</em>) – If method = BB-pseudo-BMA these values are estimated using Bayesian
+bootstrap.</li>
 <li><strong>dSE</strong> (<em>Standard error of the difference in IC between each model and</em>)</li>
 <li><em>the top-ranked model.</em> – It’s always 0 for the top-ranked model.</li>
-<li><strong>warning</strong> (<em>A value of 1 indicates that the computation of the IC may not be</em>)</li>
-<li><strong>reliable see http</strong> (<em>//arxiv.org/abs/1507.04544 for details.</em>)</li>
+<li><strong>warning</strong> (<em>A value of 1 indicates that the computation of the IC may not be</em>) – reliable see <a class="reference external" href="http://arxiv.org/abs/1507.04544">http://arxiv.org/abs/1507.04544</a> for details.</li>
 </ul>
 </p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymc3.stats.bfmi">
+<code class="descclassname">pymc3.stats.</code><code class="descname">bfmi</code><span class="sig-paren">(</span><em>trace</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.stats.bfmi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the estimated Bayesian fraction of missing information (BFMI).</p>
+<p>BFMI quantifies how well momentum resampling matches the marginal energy
+distribution.  For more information on BFMI, see
+<a class="reference external" href="https://arxiv.org/pdf/1604.00695.pdf">https://arxiv.org/pdf/1604.00695.pdf</a>.  The current advice is that values
+smaller than 0.2 indicate poor sampling.  However, this threshold is
+provisional and may change.  See
+<a class="reference external" href="http://mc-stan.org/users/documentation/case-studies/pystan_workflow.html">http://mc-stan.org/users/documentation/case-studies/pystan_workflow.html</a>
+for more information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>trace</strong> (<em>result of an HMC/NUTS run</em><em>, </em><em>must contain energy information</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>float</cite> representing the estimated BFMI.</td>
 </tr>
 </tbody>
 </table>

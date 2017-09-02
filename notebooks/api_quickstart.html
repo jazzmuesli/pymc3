@@ -92,6 +92,7 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting started</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting started with PyMC3</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">API quickstart</a><ul>
@@ -116,8 +117,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="variational_api_quickstart.html">Variational API quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../theano.html">PyMC3 and Theano</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../advanced_theano.html">Advanced usage of Theano in PyMC3</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 </ul>
@@ -506,9 +510,42 @@ the <code class="docutils literal"><span class="pre">Model</span></code> class.<
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array(-130.93385991219947)
+<span></span>array(-135.1902745717962)
 </pre></div>
 </div>
+</div>
+<p><strong>Warning</strong> It’s worth highlighting one of the counter-intuitive design
+choices with logp. The API makes the <code class="docutils literal"><span class="pre">logp</span></code> look like an attribute,
+when it actually puts together a function based on the current state of
+the model.</p>
+<p>The current design is super maintainable, does terrible if the state
+stays constant, and great if the state keeps changing, for reasons of
+design we assume that <code class="docutils literal"><span class="pre">Model</span></code> isn’t static, in fact it’s best in our
+experience and avoids bad results.</p>
+<p>If you need to use <code class="docutils literal"><span class="pre">logp</span></code> in an inner loop and it needs to be static,
+simply use something like <code class="docutils literal"><span class="pre">logp</span> <span class="pre">=</span> <span class="pre">model.logp</span></code> below. You can see the
+caching effect with the speed up below.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> model.logp({mu: 0.1})
+<span class="n">logp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">logp</span>
+<span class="o">%</span><span class="k">timeit</span> logp({mu: 0.1})
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The slowest run took 4.45 times longer than the fastest. This could mean that an intermediate result is being cached.
+10000 loops, best of 3: 35 µs per loop
+10000 loops, best of 3: 26.6 µs per loop
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="2.-Probability-Distributions">
@@ -519,7 +556,7 @@ while unobserved RVs are defined via prior distributions. In PyMC3,
 probability distributions are available from the main module space:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -623,7 +660,7 @@ like this:</p>
 <a class="reference external" href="http://pymc-devs.github.io/pymc3/api/distributions/mixture.html">mixture</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -633,7 +670,7 @@ like this:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
+<span></span>Out[10]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -655,6 +692,7 @@ like this:</p>
  &#39;draw_values&#39;,
  &#39;generate_samples&#39;,
  &#39;get_tau_sd&#39;,
+ &#39;get_variable_name&#39;,
  &#39;logsumexp&#39;,
  &#39;np&#39;,
  &#39;tt&#39;]
@@ -668,7 +706,7 @@ parameter keyword arguments. Thus, a normal prior can be defined in a
 model context like this:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -680,7 +718,7 @@ model context like this:</p>
 <p>As with the model, we can evaluate its logp:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -690,7 +728,7 @@ model context like this:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
+<span></span>Out[12]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -705,7 +743,7 @@ model context like this:</p>
 passed into the <code class="docutils literal"><span class="pre">observed</span></code> keyword argument:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -722,7 +760,7 @@ passed into the <code class="docutils literal"><span class="pre">observed</span>
 <p>PyMC3 allows you to freely do algebra with RVs in all kinds of ways:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -741,7 +779,7 @@ automatically. Thus, if you want to keep track of a transformed
 variable, you have to use <code class="docutils literal"><span class="pre">pm.Determinstic</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [14]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -760,7 +798,7 @@ tell PyMC3 to keep track of this RV for us.</p>
 transforms bounded RVs to be unbounded.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -773,7 +811,7 @@ transforms bounded RVs to be unbounded.</p>
 there, however:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -783,7 +821,7 @@ there, however:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[16]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -799,7 +837,7 @@ non-transformed, bounded parameters. These are common determinstics (see
 above):</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -809,7 +847,7 @@ above):</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[17]:
+<span></span>Out[18]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -823,7 +861,7 @@ functions to see the transformed parameters that are used for sampling.</p>
 <p>You can also turn transforms off:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -850,7 +888,7 @@ multiple RVs. There is a tendency (mainly inherited from PyMC 2.x) to
 create list of RVs, like this:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -863,7 +901,7 @@ create list of RVs, like this:</p>
 Instead, use the <code class="docutils literal"><span class="pre">shape</span></code> kwarg:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -876,7 +914,7 @@ Instead, use the <code class="docutils literal"><span class="pre">shape</span></
 linear algebra operations on it:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -894,7 +932,7 @@ helpful to define initial values for RVs. This can be done via the
 <code class="docutils literal"><span class="pre">testval</span></code> kwarg:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -907,7 +945,7 @@ helpful to define initial values for RVs. This can be done via the
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[22]:
+<span></span>Out[23]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -917,7 +955,7 @@ helpful to define initial values for RVs. This can be done via the
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -930,11 +968,11 @@ helpful to define initial values for RVs. This can be done via the
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[23]:
+<span></span>Out[24]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.51093099,  0.78646267, -1.02921232,  0.65820029,  0.70385385])
+<span></span>array([ 0.58550005,  0.19586392, -2.19206299, -1.15200385,  1.13329314])
 </pre></div>
 </div>
 </div>
@@ -954,7 +992,7 @@ of inference: sampling and variational inference.</p>
 the right sampler(s) and auto-initialize if you don’t pass anything.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -973,10 +1011,11 @@ the right sampler(s) and auto-initialize if you don’t pass anything.</p>
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 143.54:  10%|█         | 20024/200000 [00:01&lt;00:12, 14337.29it/s]
-Convergence archived at 21000
-Interrupted at 21,000 [10%]: Average Loss = 144.89
-100%|██████████| 1500/1500 [00:00&lt;00:00, 2730.61it/s]
+WARNING (theano.configdefaults): install mkl with `conda install mkl-service`: No module named &#39;mkl&#39;
+Average Loss = 150.92:   3%|▎         | 6545/200000 [00:00&lt;00:11, 16437.29it/s]
+Convergence archived at 7400
+Interrupted at 7,400 [3%]: Average Loss = 156.53
+100%|██████████| 1500/1500 [00:00&lt;00:00, 3027.54it/s]
 </pre></div></div>
 </div>
 <p>As you can see, on a continuous model, PyMC3 assigns the NUTS sampler,
@@ -987,7 +1026,7 @@ sampler to adjust its parameters in an additional 500 iterations. These
 500 samples are discarded by default:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -997,7 +1036,7 @@ sampler to adjust its parameters in an additional 500 iterations. These
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[25]:
+<span></span>Out[26]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1008,7 +1047,7 @@ sampler to adjust its parameters in an additional 500 iterations. These
 <p>You can also run multiple chains in parallel using the <code class="docutils literal"><span class="pre">njobs</span></code> kwarg:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1027,17 +1066,17 @@ sampler to adjust its parameters in an additional 500 iterations. These
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 142.41:  22%|██▏       | 44484/200000 [00:02&lt;00:08, 18649.61it/s]
-Convergence archived at 46000
-Interrupted at 46,000 [23%]: Average Loss = 143.02
-100%|██████████| 1000/1000 [00:01&lt;00:00, 928.24it/s]
+Average Loss = 150.53:   4%|▍         | 8386/200000 [00:00&lt;00:11, 16710.37it/s]
+Convergence archived at 9900
+Interrupted at 9,900 [4%]: Average Loss = 155.52
+100%|██████████| 1000/1000 [00:00&lt;00:00, 1462.08it/s]
 </pre></div></div>
 </div>
 <p>Note, that we are now drawing 2000 samples, 500 samples for 4 chains
 each. The 500 tuning samples are discarded by default.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1047,7 +1086,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[27]:
+<span></span>Out[28]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1057,7 +1096,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [28]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1067,7 +1106,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[28]:
+<span></span>Out[29]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1077,7 +1116,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [29]:
+<span></span>In [30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1087,7 +1126,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[29]:
+<span></span>Out[30]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1098,7 +1137,7 @@ each. The 500 tuning samples are discarded by default.</p>
 <p>PyMC3, offers a variety of other samplers, found in <code class="docutils literal"><span class="pre">pm.step_methods</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1108,7 +1147,7 @@ each. The 500 tuning samples are discarded by default.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[30]:
+<span></span>Out[31]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1144,7 +1183,7 @@ initialization of NUTS, or reparameterize the model.</p>
 <p>For completeness, other sampling methods can be passed to sample:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [31]:
+<span></span>In [32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1162,13 +1201,13 @@ initialization of NUTS, or reparameterize the model.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1500/1500 [00:00&lt;00:00, 9343.52it/s]
+100%|██████████| 1500/1500 [00:00&lt;00:00, 11347.22it/s]
 </pre></div></div>
 </div>
 <p>You can also assign variables to different step methods.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [32]:
+<span></span>In [33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1188,7 +1227,7 @@ initialization of NUTS, or reparameterize the model.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 10500/10500 [00:11&lt;00:00, 890.12it/s]
+100%|██████████| 10500/10500 [00:09&lt;00:00, 1125.34it/s]
 </pre></div></div>
 </div>
 </div>
@@ -1198,7 +1237,7 @@ initialization of NUTS, or reparameterize the model.</p>
 trace-plot:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [33]:
+<span></span>In [34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1210,14 +1249,14 @@ trace-plot:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_64_0.png" src="../_images/notebooks_api_quickstart_64_0.png" />
+<img alt="../_images/notebooks_api_quickstart_66_0.png" src="../_images/notebooks_api_quickstart_66_0.png" />
 </div>
 </div>
 <p>Another common metric to look at is R-hat, also known as the
 Gelman-Rubin statistic:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [34]:
+<span></span>In [35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1227,20 +1266,20 @@ Gelman-Rubin statistic:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[34]:
+<span></span>Out[35]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>{&#39;mu&#39;: 1.0003808153475398,
- &#39;sd&#39;: 0.99997655090314819,
- &#39;sd_log__&#39;: 0.9999720004991266}
+<span></span>{&#39;mu&#39;: 1.0002705510318985,
+ &#39;sd&#39;: 0.99998336390229592,
+ &#39;sd_log__&#39;: 0.99998637638337262}
 </pre></div>
 </div>
 </div>
 <p>These are also part of the <code class="docutils literal"><span class="pre">forestplot</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [35]:
+<span></span>In [36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1252,7 +1291,7 @@ Gelman-Rubin statistic:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_68_0.png" src="../_images/notebooks_api_quickstart_68_0.png" />
+<img alt="../_images/notebooks_api_quickstart_70_0.png" src="../_images/notebooks_api_quickstart_70_0.png" />
 </div>
 </div>
 <p>Finally, for a plot of the posterior that is inspired by the book <a class="reference external" href="http://www.indiana.edu/~kruschke/DoingBayesianDataAnalysis/">Doing
@@ -1261,7 +1300,7 @@ Analysis</a>,
 you can use the:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [36]:
+<span></span>In [37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1273,7 +1312,7 @@ you can use the:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_70_0.png" src="../_images/notebooks_api_quickstart_70_0.png" />
+<img alt="../_images/notebooks_api_quickstart_72_0.png" src="../_images/notebooks_api_quickstart_72_0.png" />
 </div>
 </div>
 <p>For high-dimensional models it becomes cumbersome to look at all
@@ -1281,7 +1320,7 @@ parameter’s traces. When using <code class="docutils literal"><span class="pre
 to assess problems of convergence:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [37]:
+<span></span>In [38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1300,16 +1339,17 @@ to assess problems of convergence:</p>
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 0.056672: 100%|██████████| 200000/200000 [00:14&lt;00:00, 13997.00it/s]
-Finished [100%]: Average Loss = 0.054276
-100%|██████████| 1000/1000 [00:06&lt;00:00, 163.63it/s]
+Average Loss = 0.031327:   3%|▎         | 5727/200000 [00:00&lt;00:17, 11147.89it/s]
+Convergence archived at 5900
+Interrupted at 5,900 [2%]: Average Loss = 2.1251
+100%|██████████| 1000/1000 [00:04&lt;00:00, 204.65it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_72_1.png" src="../_images/notebooks_api_quickstart_72_1.png" />
+<img alt="../_images/notebooks_api_quickstart_74_1.png" src="../_images/notebooks_api_quickstart_74_1.png" />
 </div>
 </div>
 <p>For more information on sampler stats and the energy plot, see
@@ -1325,7 +1365,7 @@ methods are much faster, they are often also less accurate and can lead
 to biased inference. The main entry point is <code class="docutils literal"><span class="pre">pymc3.fit()</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [38]:
+<span></span>In [39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1343,8 +1383,8 @@ to biased inference. The main entry point is <code class="docutils literal"><spa
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 146.58: 100%|██████████| 10000/10000 [00:00&lt;00:00, 15134.18it/s]
-Finished [100%]: Average Loss = 146.57
+Average Loss = 163.67: 100%|██████████| 10000/10000 [00:00&lt;00:00, 13061.46it/s]
+Finished [100%]: Average Loss = 163.66
 </pre></div></div>
 </div>
 <p>The returned <code class="docutils literal"><span class="pre">Approximation</span></code> object has various capabilities, like
@@ -1352,7 +1392,7 @@ drawing samples from the approximated posterior, which we can analyse
 like a regular sampling run:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [39]:
+<span></span>In [40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1362,7 +1402,7 @@ like a regular sampling run:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[39]:
+<span></span>Out[40]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1375,7 +1415,7 @@ use and follows an object oriented design. For example, full-rank ADVI
 estimates a full covariance matrix:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [40]:
+<span></span>In [41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1392,14 +1432,14 @@ estimates a full covariance matrix:</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 0.00061705: 100%|██████████| 10000/10000 [00:02&lt;00:00, 3763.84it/s]
-Finished [100%]: Average Loss = 0.00090201
+Average Loss = 0.0065215: 100%|██████████| 10000/10000 [00:03&lt;00:00, 3021.17it/s]
+Finished [100%]: Average Loss = 0.0063589
 </pre></div></div>
 </div>
 <p>An equivalent expression using the object-oriented interface is:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [41]:
+<span></span>In [42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1414,13 +1454,13 @@ Finished [100%]: Average Loss = 0.00090201
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 0.0016698: 100%|██████████| 10000/10000 [00:02&lt;00:00, 3345.98it/s]
-Finished [100%]: Average Loss = 0.001701
+Average Loss = 0.010004: 100%|██████████| 10000/10000 [00:03&lt;00:00, 3096.42it/s]
+Finished [100%]: Average Loss = 0.010116
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [42]:
+<span></span>In [43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1432,11 +1472,11 @@ Finished [100%]: Average Loss = 0.001701
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[42]:
+<span></span>Out[43]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x11f4f2eb8&gt;
+<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x119d510b8&gt;
 </pre></div>
 </div>
 </div>
@@ -1444,14 +1484,14 @@ Finished [100%]: Average Loss = 0.001701
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_82_1.png" src="../_images/notebooks_api_quickstart_82_1.png" />
+<img alt="../_images/notebooks_api_quickstart_84_1.png" src="../_images/notebooks_api_quickstart_84_1.png" />
 </div>
 </div>
 <p>Stein Variational Gradient Descent (SVGD) uses particles to estimate the
 posterior:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [43]:
+<span></span>In [44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1469,12 +1509,12 @@ posterior:</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 10000/10000 [00:53&lt;00:00, 188.00it/s]
+100%|██████████| 10000/10000 [01:00&lt;00:00, 165.47it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [44]:
+<span></span>In [45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1484,11 +1524,20 @@ posterior:</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/peadarcoyle/anaconda/envs/pymc3_dev/lib/python3.5/site-packages/statsmodels/nonparametric/kdetools.py:20: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  y = X[:m/2+1] + np.r_[0,X[m/2+1:],0]*1j
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_85_0.png" src="../_images/notebooks_api_quickstart_85_0.png" />
+<img alt="../_images/notebooks_api_quickstart_87_1.png" src="../_images/notebooks_api_quickstart_87_1.png" />
 </div>
 </div>
 <p>For more information on variational inference, see <a class="reference external" href="http://pymc-devs.github.io/pymc3/examples.html#variational-inference">these
@@ -1501,7 +1550,7 @@ examples</a>.</p>
 posterior predictive checks.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [45]:
+<span></span>In [46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1522,14 +1571,15 @@ posterior predictive checks.</p>
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 141.37: 100%|██████████| 200000/200000 [00:15&lt;00:00, 12799.60it/s]
-Finished [100%]: Average Loss = 141.37
-100%|██████████| 1000/1000 [00:00&lt;00:00, 1963.58it/s]
+Average Loss = 155.98:   6%|▌         | 12061/200000 [00:01&lt;00:15, 11886.92it/s]
+Convergence archived at 12100
+Interrupted at 12,100 [6%]: Average Loss = 187.13
+100%|██████████| 1000/1000 [00:00&lt;00:00, 1703.97it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [46]:
+<span></span>In [47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1543,13 +1593,13 @@ Finished [100%]: Average Loss = 141.37
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 500/500 [00:06&lt;00:00, 73.82it/s]
+100%|██████████| 500/500 [00:00&lt;00:00, 2876.26it/s]
 </pre></div></div>
 </div>
 <p><code class="docutils literal"><span class="pre">sample_ppc()</span></code> returns a dict with a key for every observed node:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [47]:
+<span></span>In [48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1559,7 +1609,7 @@ Finished [100%]: Average Loss = 141.37
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[47]:
+<span></span>Out[48]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -1569,7 +1619,7 @@ Finished [100%]: Average Loss = 141.37
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [48]:
+<span></span>In [49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1581,12 +1631,21 @@ Finished [100%]: Average Loss = 141.37
 </div>
 </div>
 <div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/peadarcoyle/anaconda/envs/pymc3_dev/lib/python3.5/site-packages/statsmodels/nonparametric/kdetools.py:20: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
+  y = X[:m/2+1] + np.r_[0,X[m/2+1:],0]*1j
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[48]:
+<span></span>Out[49]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x125eac748&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x11c50ec18&gt;
 </pre></div>
 </div>
 </div>
@@ -1594,7 +1653,7 @@ Finished [100%]: Average Loss = 141.37
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_92_1.png" src="../_images/notebooks_api_quickstart_92_1.png" />
+<img alt="../_images/notebooks_api_quickstart_94_2.png" src="../_images/notebooks_api_quickstart_94_2.png" />
 </div>
 </div>
 </div>
@@ -1608,7 +1667,7 @@ theano tensors whose values can be changed later. Otherwise they can be
 passed into PyMC3 just like any other numpy array or tensor.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [49]:
+<span></span>In [50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1635,10 +1694,10 @@ passed into PyMC3 just like any other numpy array or tensor.</p>
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
 Initializing NUTS using ADVI...
-Average Loss = 21.931:   7%|▋         | 14453/200000 [00:01&lt;00:12, 15315.19it/s]
-Convergence archived at 15000
-Interrupted at 15,000 [7%]: Average Loss = 26.836
-100%|██████████| 1000/1000 [00:00&lt;00:00, 2842.64it/s]
+Average Loss = 29.296:   5%|▍         | 9252/200000 [00:00&lt;00:14, 13184.49it/s]
+Convergence archived at 9500
+Interrupted at 9,500 [4%]: Average Loss = 43.022
+100%|██████████| 1000/1000 [00:00&lt;00:00, 2538.10it/s]
 </pre></div></div>
 </div>
 <p>Now assume we want to predict on unseen data. For this we have to change
@@ -1647,7 +1706,7 @@ to set <code class="docutils literal"><span class="pre">y_shared</span></code> a
 shape of <code class="docutils literal"><span class="pre">x_shared</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [50]:
+<span></span>In [51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1664,12 +1723,12 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 500/500 [00:02&lt;00:00, 178.87it/s]
+100%|██████████| 500/500 [00:00&lt;00:00, 802.20it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [51]:
+<span></span>In [52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1679,11 +1738,11 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[51]:
+<span></span>Out[52]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.016,  0.474,  0.972])
+<span></span>array([ 0.014,  0.514,  0.97 ])
 </pre></div>
 </div>
 </div>

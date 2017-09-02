@@ -36,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="PyMC3 3.1 documentation" href="#"/>
-        <link rel="next" title="Getting started" href="getting_started.html"/> 
+        <link rel="next" title="Introduction" href="intro.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -90,7 +90,9 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
@@ -194,7 +196,7 @@
 <h1>Welcome to PyMC3’s documentation!<a class="headerlink" href="#welcome-to-pymc3-s-documentation" title="Permalink to this headline">¶</a></h1>
 <a class="reference internal image-reference" href="https://cdn.rawgit.com/pymc-devs/pymc3/master/docs/logos/svg/PyMC3_banner.svg"><div align="center" class="align-center"><img alt="PyMC3 logo" height="100px" src="https://cdn.rawgit.com/pymc-devs/pymc3/master/docs/logos/svg/PyMC3_banner.svg" /></div>
 </a>
-<p><a class="reference external" href="https://travis-ci.org/pymc-devs/pymc3"><img alt="Build Status" src="https://travis-ci.org/pymc-devs/pymc3.png?branch=master" /></a> <a class="reference external" href="https://coveralls.io/github/pymc-devs/pymc3?branch=master"><img alt="Coverage" src="https://coveralls.io/repos/github/pymc-devs/pymc3/badge.svg?branch=master" /></a></p>
+<p><a class="reference external" href="https://travis-ci.org/pymc-devs/pymc3"><img alt="Build Status" src="https://travis-ci.org/pymc-devs/pymc3.png?branch=master" /></a> <a class="reference external" href="https://coveralls.io/github/pymc-devs/pymc3?branch=master"><img alt="Coverage" src="https://coveralls.io/repos/github/pymc-devs/pymc3/badge.svg?branch=master" /></a> <a class="reference external" href="http://www.numfocus.org/"><img alt="NumFOCUS_badge" src="https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&amp;colorA=E1523D&amp;colorB=007D8A" /></a></p>
 <p>PyMC3 is a Python package for Bayesian statistical modeling and Probabilistic Machine Learning
 which focuses on advanced Markov chain Monte Carlo and variational fitting
 algorithms. Its flexibility and extensibility make it applicable to a
@@ -347,6 +349,14 @@ page</a></p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-s-new-in-version-3">What’s new in version 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#history">History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#usage-overview">Usage Overview</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html">Getting started with PyMC3</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/getting_started.html#Abstract">Abstract</a></li>
@@ -377,19 +387,34 @@ page</a></p>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/variational_api_quickstart.html#Minibatches">Minibatches</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="theano.html">PyMC3 and Theano</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="theano.html#what-is-theano">What is Theano</a></li>
+<li class="toctree-l3"><a class="reference internal" href="theano.html#how-pymc3-uses-theano">How PyMC3 uses Theano</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_theano.html">Advanced usage of Theano in PyMC3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_theano.html#using-shared-variables">Using shared variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_theano.html#writing-custom-theano-ops">Writing custom Theano Ops</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="prob_dists.html">Probability Distributions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="prob_dists.html#custom-distributions">Custom distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prob_dists.html#using-pymc-distributions-without-a-model">Using PyMC distributions without a Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prob_dists.html#auto-transformation">Auto-transformation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#howto">Howto</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/api_quickstart.html">API quickstart</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/sampler-stats.html">Sampler statistics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/sampler-stats.html#Multiple-samplers">Multiple samplers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Diagnosing_biased_Inference_with_Divergences.html">Diagnosing Biased Inference with Divergences</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/posterior_predictive.html">Posterior Predictive Checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/model_comparison.html">Model comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/model_averaging.html">Model averaging</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/howto_debugging.html">How to debug a model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/LKJ.html">LKJ Prior for fitting a Multivariate Normal Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/LKJ.html">LKJ Cholesky Covariance Priors for Multivariate Normal Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/live_sample_plots.html">Live sample plots</a></li>
 </ul>
 </li>
@@ -415,10 +440,16 @@ page</a></p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-processes">Gaussian Processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-introduction.html">Gaussian Process Regression</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-covariances.html">Kernels / Covariance functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Covariances.html">Kernels / Covariance functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Latent.html">gp.Latent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#mixture-models">Mixture Models</a><ul>
@@ -433,10 +464,8 @@ page</a></p>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GLM-hierarchical-advi-minibatch.html">GLM: Mini-batch ADVI on hierarchical regression model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/lda-advi-aevb.html">Automatic autoencoding variational Bayes for latent dirichlet allocation with PyMC3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/bayesian_neural_network_advi.html">Variational Inference: Bayesian Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/bayesian_neural_network_advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/convolutional_vae_keras_advi.html">Convolutional variational autoencoder with PyMC3 and Keras</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/bayesian_neural_network_opvi-advi.html">Changes in API: Variational Inference: Bayesian Neural Networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/bayesian_neural_network_opvi-advi.html#Minibatch-ADVI">Minibatch ADVI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/normalizing_flows_overview.html">Normalizing Flows Overview</a></li>
 </ul>
 </li>
 </ul>
@@ -447,6 +476,11 @@ page</a></p>
 <li class="toctree-l3"><a class="reference internal" href="api/distributions/discrete.html">Discrete</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/distributions/multivariate.html">Multivariate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/distributions/mixture.html">Mixture</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/bounds.html">Bounded Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/bounds.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/bounds.html#caveats">Caveats</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/inference.html">Inference</a><ul>
@@ -502,7 +536,7 @@ page</a></p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

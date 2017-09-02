@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LKJ Prior for fitting a Multivariate Normal Model &mdash; PyMC3 3.1 documentation</title>
+  <title>LKJ Cholesky Covariance Priors for Multivariate Normal Models &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -91,29 +91,11 @@
               
             
             
-              <ul class="current">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#howto">Howto</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="api_quickstart.html">API quickstart</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html">Sampler statistics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html#Multiple-samplers">Multiple samplers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Diagnosing_biased_Inference_with_Divergences.html">Diagnosing Biased Inference with Divergences</a></li>
-<li class="toctree-l3"><a class="reference internal" href="posterior_predictive.html">Posterior Predictive Checks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="model_comparison.html">Model comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="howto_debugging.html">How to debug a model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">LKJ Prior for fitting a Multivariate Normal Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="live_sample_plots.html">Live sample plots</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#variational-inference">Variational Inference</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 </ul>
 
@@ -161,7 +143,7 @@
         
           <li><a href="../examples.html">Examples</a> &raquo;</li>
         
-      <li>LKJ Prior for fitting a Multivariate Normal Model</li>
+      <li>LKJ Cholesky Covariance Priors for Multivariate Normal Models</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -374,19 +356,19 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="LKJ-Prior-for-fitting-a-Multivariate-Normal-Model">
-<h1>LKJ Prior for fitting a Multivariate Normal Model<a class="headerlink" href="#LKJ-Prior-for-fitting-a-Multivariate-Normal-Model" title="Permalink to this headline">¶</a></h1>
-<p>Author: <a class="reference external" href="http://www.austinrochford.com">Austin Rochford</a></p>
-<p>Outside of the
-<a class="reference external" href="https://en.wikipedia.org/wiki/Beta_distribution">beta</a>-<a class="reference external" href="https://en.wikipedia.org/wiki/Binomial_distribution">binomial</a>
-model, the multivariate normal model is likely the most studied Bayesian
-model in history. <code class="docutils literal"><span class="pre">PyMC3</span></code> supports sampling from the <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0047259X09000876">LKJ
-distribution</a>.
-The LKJ distribution represents the distribution on correlation matrices
-and is conjugate to the multivariate normal distribution. This post will
-show how to fit a simple multivariate normal model using <code class="docutils literal"><span class="pre">pymc3</span></code> with
-a normal-LKJ prior.</p>
-<p>First, we generate some two-dimensional sample data.</p>
+<div class="section" id="LKJ-Cholesky-Covariance-Priors-for-Multivariate-Normal-Models">
+<h1>LKJ Cholesky Covariance Priors for Multivariate Normal Models<a class="headerlink" href="#LKJ-Cholesky-Covariance-Priors-for-Multivariate-Normal-Models" title="Permalink to this headline">¶</a></h1>
+<p>While the <a class="reference external" href="https://en.wikipedia.org/wiki/Inverse-Wishart_distribution">inverse-Wishart
+distribution</a>
+is the conjugate prior for the covariance matrix of a multivariate
+normal distribution, it is <a class="reference external" href="https://github.com/pymc-devs/pymc3/issues/538#issuecomment-94153586">not very
+well-suited</a>
+to modern Bayesian computational methods. For this reason, the <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/S0047259X09000876">LKJ
+prior</a>
+is recommended when modeling the covariance matrix of a multivariate
+normal distribution.</p>
+<p>To illustrate modelling covariance with the LKJ distribution, we first
+generate a two-dimensional normally-distributed sample data set.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -403,13 +385,7 @@ a normal-LKJ prior.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Ellipse</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">tensor</span> <span class="k">as</span> <span class="n">tt</span>
+<span></span><span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">filterwarnings</span>
 </pre></div>
 </div>
 </div>
@@ -419,7 +395,11 @@ a normal-LKJ prior.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3264602</span><span class="p">)</span> <span class="c1"># from random.org</span>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Ellipse</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
 </pre></div>
 </div>
 </div>
@@ -429,14 +409,7 @@ a normal-LKJ prior.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
-
-<span class="n">mu_actual</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">cov_actual_sqrt</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">cov_actual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cov_actual_sqrt</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cov_actual_sqrt</span><span class="p">)</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mu_actual</span><span class="p">,</span> <span class="n">cov_actual</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+<span></span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;findfont&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -446,31 +419,61 @@ a normal-LKJ prior.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">var</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">cov_actual</span><span class="p">)</span>
+<span></span><span class="n">SEED</span> <span class="o">=</span> <span class="mi">3264602</span> <span class="c1"># from random.org</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="err">μ</span><span class="n">_actual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+<span class="err">Σ</span><span class="n">_actual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">],</span>
+                     <span class="p">[</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="err">μ</span><span class="n">_actual</span><span class="p">,</span> <span class="err">Σ</span><span class="n">_actual</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">var</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="err">Σ</span><span class="n">_actual</span><span class="p">)</span>
 <span class="n">angle</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-<span class="n">blue</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">blue</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
 
-<span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="n">mu_actual</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">angle</span><span class="o">=-</span><span class="n">angle</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="err">μ</span><span class="n">_actual</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">angle</span><span class="o">=</span><span class="n">angle</span><span class="p">)</span>
 <span class="n">e</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">e</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">e</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">blue</span><span class="p">)</span>
 <span class="n">e</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">);</span>
 
-<span class="n">rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="n">rect</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;95% true credible region&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="n">rect</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;95</span><span class="si">% d</span><span class="s1">ensity region&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -478,107 +481,68 @@ a normal-LKJ prior.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_LKJ_7_0.png" src="../_images/notebooks_LKJ_7_0.png" />
+<img alt="../_images/notebooks_LKJ_9_0.png" src="../_images/notebooks_LKJ_9_0.png" />
 </div>
 </div>
-<p>The sampling distribution for our model is
-<span class="math">\(x_i \sim N(\mu, \Lambda)\)</span>, where <span class="math">\(\Lambda\)</span> is the
-<a class="reference external" href="https://en.wikipedia.org/wiki/Precision_(statistics)">precision
-matrix</a> of the
-distribution. The precision matrix is the inverse of the covariance
-matrix. The support of the LKJ distribution is the set of <a class="reference external" href="https://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices">correlation
-matrices</a>,
-not covariance matrices. We will use the separation strategy from
-<a class="reference external" href="http://www3.stat.sinica.edu.tw/statistica/oldpdf/A10n416.pdf">Barnard et
-al.</a> to
-combine an LKJ prior on the correlation matrix with a prior on the
-standard deviations of each dimension to produce a prior on the
-covariance matrix.</p>
-<p>Let <span class="math">\(\sigma\)</span> be the vector of standard deviations of each
-component of our normal distribution, and <span class="math">\(\mathbf{C}\)</span> be the
-correlation matrix. The relationship</p>
+<p>The sampling distribution for the multivariate normal model is
+<span class="math">\(\mathbf{x} \sim N(\mu, \Sigma^{-1})\)</span>, where <span class="math">\(\Sigma\)</span> is the
+covariance matrix of the sampling distribution, with
+<span class="math">\(\Sigma_{ij} = \textrm{Cov}(x_i, x_j)\)</span>. The density of this
+distribution is</p>
 <div class="math">
-\[\Sigma = \operatorname{diag}(\sigma)\ \mathbf{C} \operatorname{diag}(\sigma)\]</div>
-<p>shows that priors on <span class="math">\(\sigma\)</span> and <span class="math">\(\mathbf{C}\)</span> will induce a
-prior on <span class="math">\(\Sigma\)</span>. Following Barnard et al., we place a standard
-<a class="reference external" href="https://en.wikipedia.org/wiki/Log-normal_distribution">lognormal</a>
-prior each the elements <span class="math">\(\sigma\)</span>, and an LKJ prior on the
-correlation matric <span class="math">\(\mathbf{C}\)</span>. The LKJ distribution requires a
-shape parameter <span class="math">\(\nu &gt; 0\)</span>. If <span class="math">\(\mathbf{C} \sim LKJ(\nu)\)</span>,
-then <span class="math">\(f(\mathbf{C}) \propto |\mathbf{C}|^{\nu - 1}\)</span> (here
-<span class="math">\(|\cdot|\)</span> is the determinant).</p>
-<p>We can now begin to build this model in <code class="docutils literal"><span class="pre">pymc3</span></code>. As you can see, we
-are passing summary statistics to <code class="docutils literal"><span class="pre">testval</span></code> which will be used as the
-starting point when we do inference further below. When summary
-statistics are available, it is always a good idea to use them in this
-manner.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">init_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">init_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">sigma</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Lognormal</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">testval</span><span class="o">=</span><span class="n">init_sigma</span><span class="p">)</span>
-
-    <span class="n">nu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Uniform</span><span class="p">(</span><span class="s1">&#39;nu&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-    <span class="n">C_triu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">LKJCorr</span><span class="p">(</span><span class="s1">&#39;C_triu&#39;</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">testval</span><span class="o">=</span><span class="n">init_corr</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>There is a slight complication in <code class="docutils literal"><span class="pre">pymc3</span></code>’s handling of the
-<code class="docutils literal"><span class="pre">LKJCorr</span></code> distribution; <code class="docutils literal"><span class="pre">pymc3</span></code> represents the support of this
-distribution as a one-dimensional vector of the upper triangular
-elements of the full covariance matrix.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">C_triu</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[8]:
-</pre></div>
-</div>
-<div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>(1,)
-</pre></div>
-</div>
-</div>
-<p>In order to build a the full correlation matric <span class="math">\(\mathbf{C}\)</span>, we
-first build a <span class="math">\(2 \times 2\)</span> tensor whose values are all <code class="docutils literal"><span class="pre">C_triu</span></code>
-and then set the diagonal entries to one. (Recall that a correlation
-matrix must be symmetric and positive definite with all diagonal entries
-equal to one.) We can then proceed to build the covariance matrix
-<span class="math">\(\Sigma\)</span> and the precision matrix <span class="math">\(\Lambda\)</span>.</p>
+\[f(\mathbf{x}\ |\ \mu, \Sigma^{-1}) = (2 \pi)^{-\frac{k}{2}} |\Sigma|^{-\frac{1}{2}} \exp\left(-\frac{1}{2} (\mathbf{x} - \mu)^{\top} \Sigma^{-1} (\mathbf{x} - \mu)\right).\]</div>
+<p>The LKJ distribution provides a prior on the correlation matrix,
+<span class="math">\(\mathbf{C} = \textrm{Corr}(x_i, x_j)\)</span>, which, combined with
+priors on the standard deviations of each component,
+<a class="reference external" href="http://www3.stat.sinica.edu.tw/statistica/oldpdf/A10n416.pdf">induces</a>
+a prior on the covariance matrix, <span class="math">\(\Sigma\)</span>. Since inverting
+<span class="math">\(\Sigma\)</span> is numerically unstable and inefficient, it is
+computationally advantageous to use the <a class="reference external" href="https://en.wikipedia.org/wiki/Cholesky_decomposition">Cholesky
+decompositon</a>
+of <span class="math">\(\Sigma\)</span>, <span class="math">\(\Sigma = \mathbf{L} \mathbf{L}^{\top}\)</span>, where
+<span class="math">\(\mathbf{L}\)</span> is a lower-triangular matrix. This decompositon
+allows computation of the term
+<span class="math">\((\mathbf{x} - \mu)^{\top} \Sigma^{-1} (\mathbf{x} - \mu)\)</span> using
+back-substitution, which is more numerically stable and efficient than
+direct matrix inversion.</p>
+<p>PyMC3 supports LKJ priors for the Cholesky decomposition of the
+covariance matrix via the
+<code class="docutils literal"><span class="pre">`LKJCholeskyCov</span></code> &lt;<a class="reference external" href="http://pymc-devs.github.io/pymc3/api/distributions/multivariate.html#pymc3.distributions.multivariate.LKJCholeskyCov">http://pymc-devs.github.io/pymc3/api/distributions/multivariate.html#pymc3.distributions.multivariate.LKJCholeskyCov</a>&gt;`__
+distribution. This distribution has parameters <code class="docutils literal"><span class="pre">n</span></code> and <code class="docutils literal"><span class="pre">sd_dist</span></code>,
+which are the dimension of the observations, <span class="math">\(\mathbf{x}\)</span>, and the
+PyMC3 distribution of the component standard deviations, repsectively.
+It also has a hyperparamter <code class="docutils literal"><span class="pre">eta</span></code>, which controls the amount of
+correlation between components of <span class="math">\(\mathbf{x}\)</span>. The LKJ
+distribution has the density
+<span class="math">\(f(\mathbf{C}\ |\ \eta) \propto |\mathbf{C}|^{\eta - 1}\)</span>, so
+<span class="math">\(\eta = 1\)</span> leads to a uniform distribution on correlation
+matrices, while the magnitude of correlations between components
+decreases as <span class="math">\(\eta \to \infty\)</span>.</p>
+<p>In this example, we model the standard deviations with
+<span class="math">\(\textrm{HalfCauchy}(2.5)\)</span> priors, and the correlation matrix as
+<span class="math">\(\mathbf{C} \sim \textrm{LKJ}(\eta = 2)\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">C_triu</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)],</span> <span class="mf">1.</span><span class="p">))</span>
-
-    <span class="n">sigma_diag</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;sigma_mat&#39;</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">nlinalg</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
-    <span class="n">cov</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;cov&#39;</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">nlinalg</span><span class="o">.</span><span class="n">matrix_dot</span><span class="p">(</span><span class="n">sigma_diag</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">sigma_diag</span><span class="p">))</span>
+<span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+    <span class="n">packed_L</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">LKJCholeskyCov</span><span class="p">(</span><span class="s1">&#39;packed_L&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                 <span class="n">eta</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">sd_dist</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="mf">2.5</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
+<p>Since the Cholesky decompositon of <span class="math">\(\Sigma\)</span> is lower triangular,
+<code class="docutils literal"><span class="pre">LKJCholeskyCov</span></code> only stores the diagonal and sub-diagonal entries,
+for efficiency.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">cov</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span>
+<span></span><span class="n">packed_L</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -588,19 +552,15 @@ equal to one.) We can then proceed to build the covariance matrix
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([[ 0.54737873,  0.88092866],
-       [ 0.88092866,  1.98234664]])
+<span></span>(3,)
 </pre></div>
 </div>
 </div>
-<p>While defining <code class="docutils literal"><span class="pre">C</span></code> in terms of <code class="docutils literal"><span class="pre">C_triu</span></code> was simple in this case
-because our sampling distribution is two-dimensional, the example from
-this <a class="reference external" href="http://stackoverflow.com/questions/29759789/modified-bpmf-in-pymc3-using-lkjcorr-priors-positivedefiniteerror-using-nuts">StackOverflow
-question</a>
-shows how to generalize this transformation to arbitrarily many
-dimensions.</p>
-<p>Finally, we define the prior on <span class="math">\(\mu\)</span> and the sampling
-distribution.</p>
+<p>We use
+<code class="docutils literal"><span class="pre">`expand_packed_triangular</span></code> &lt;<a class="reference external" href="http://pymc-devs.github.io/pymc3/api/math.html#pymc3.math.expand_packed_triangular">http://pymc-devs.github.io/pymc3/api/math.html#pymc3.math.expand_packed_triangular</a>&gt;`__
+to transform this vector into the lower triangular matrix
+<span class="math">\(\mathbf{L}\)</span>, which appears in the Cholesky decomposition
+<span class="math">\(\Sigma = \mathbf{L} \mathbf{L}^{\top}\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [11]:
@@ -608,21 +568,55 @@ distribution.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">testval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-
-    <span class="n">x_</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">expand_packed_triangular</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">packed_L</span><span class="p">)</span>
+    <span class="err">Σ</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;Σ&#39;</span><span class="p">,</span> <span class="n">L</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<p>We are now ready to fit this model using <code class="docutils literal"><span class="pre">pymc3</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">L</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">test_value</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>(2, 2)
+</pre></div>
+</div>
+</div>
+<p>To complete our model specification, we place independent, vague normal
+priors, <span class="math">\(\mu_i \sim N(0, 10^2),\)</span> on the components of <span class="math">\(\mu\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
-    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">Metropolis</span><span class="p">(),</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="err">μ</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;μ&#39;</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                  <span class="n">testval</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="err">μ</span><span class="p">,</span> <span class="n">chol</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We sample from this model using NUTS.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -631,36 +625,23 @@ distribution.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 2000/2000 [00:03&lt;00:00, 545.75it/s]
+Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+Average Loss = 24,314:   6%|▋         | 12779/200000 [00:13&lt;02:59, 1045.84it/s]
+Convergence archived at 12800
+Interrupted at 12,800 [6%]: Average Loss = 30,353
+100%|██████████| 1000/1000 [00:15&lt;00:00, 65.87it/s]
 </pre></div></div>
 </div>
-<p>We see that the posterior estimate of <span class="math">\(\mu\)</span> is reasonably
-accurate.</p>
+<p>Both the traces and Gelman-Rubin statistics indicate excellent
+convergence.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">],</span> <span class="n">lines</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mu&#39;</span><span class="p">:</span><span class="n">mu_actual</span><span class="p">});</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_LKJ_20_0.png" src="../_images/notebooks_LKJ_20_0.png" />
-</div>
-</div>
-<p>The estimates of the standard deviations are certainly biased.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [34]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">],</span> <span class="n">lines</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov_actual_sqrt</span><span class="p">)});</span>
+<span></span><span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -671,50 +652,115 @@ accurate.</p>
 <img alt="../_images/notebooks_LKJ_22_0.png" src="../_images/notebooks_LKJ_22_0.png" />
 </div>
 </div>
-<p>However, the 95% posterior credible region is visually quite close to
-the true credible region, so we can be fairly satisfied with our model.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [35]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">post_cov</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[</span><span class="s1">&#39;cov&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="n">post_sigma</span><span class="p">,</span> <span class="n">post_U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">post_cov</span><span class="p">)</span>
-<span class="n">post_angle</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">post_U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span></span><span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">gr_stats</span><span class="p">)</span> <span class="k">for</span> <span class="n">gr_stats</span> <span class="ow">in</span> <span class="n">pm</span><span class="o">.</span><span class="n">gelman_rubin</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>1.0041914870298023
+</pre></div>
+</div>
+</div>
+<p>We see that the posterior expected value of the each component of
+<span class="math">\(\mu\)</span> and <span class="math">\(\Sigma\)</span> is within 2% of the true value.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="err">μ</span><span class="n">_post</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[</span><span class="s1">&#39;μ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="mi">1</span> <span class="o">-</span> <span class="err">μ</span><span class="n">_post</span> <span class="o">/</span> <span class="err">μ</span><span class="n">_actual</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([-0.0183651 , -0.00919685])
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [36]:
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="err">Σ</span><span class="n">_post</span> <span class="o">=</span> <span class="n">trace</span><span class="p">[</span><span class="s1">&#39;Σ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="mi">1</span> <span class="o">-</span> <span class="err">Σ</span><span class="n">_post</span> <span class="o">/</span> <span class="err">Σ</span><span class="n">_actual</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[18]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>array([[ 0.0172408 ,  0.01600426],
+       [ 0.01600426, -0.00240787]])
+</pre></div>
+</div>
+</div>
+<p>The following plot also shows excellent visual agreement between the
+true distribution and the posterior distribution.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">var_post</span><span class="p">,</span> <span class="n">U_post</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="err">Σ</span><span class="n">_post</span><span class="p">)</span>
+<span class="n">angle_post</span> <span class="o">=</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U_post</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-<span class="n">blue</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="n">mu_actual</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">post_sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">post_sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">angle</span><span class="o">=-</span><span class="n">post_angle</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="err">μ</span><span class="n">_actual</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">angle</span><span class="o">=</span><span class="n">angle</span><span class="p">)</span>
 <span class="n">e</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">e</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">blue</span><span class="p">)</span>
-<span class="n">e</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">9</span><span class="p">);</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
-
-<span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="n">mu_actual</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">angle</span><span class="o">=-</span><span class="n">angle</span><span class="p">)</span>
-<span class="n">e</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">e</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
 <span class="n">e</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">);</span>
+<span class="n">e_post</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="err">μ</span><span class="n">_post</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var_post</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                 <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.991</span> <span class="o">*</span> <span class="n">var_post</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                 <span class="n">angle</span><span class="o">=</span><span class="n">angle_post</span><span class="p">)</span>
+<span class="n">e_post</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">e_post</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">red</span><span class="p">)</span>
+<span class="n">e_post</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">e_post</span><span class="p">);</span>
 
-<span class="n">rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">post_rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="n">rect</span><span class="p">,</span> <span class="n">post_rect</span><span class="p">],</span>
-          <span class="p">[</span><span class="s1">&#39;95% true credible region&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;95% posterior credible region&#39;</span><span class="p">],</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">);</span>
+
+<span class="n">rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">rect_post</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">red</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="n">rect</span><span class="p">,</span> <span class="n">rect_post</span><span class="p">],</span>
+          <span class="p">[</span><span class="s1">&#39;95</span><span class="si">% d</span><span class="s1">ensity region&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;95% posterior density region&#39;</span><span class="p">],</span>
           <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -723,7 +769,7 @@ the true credible region, so we can be fairly satisfied with our model.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_LKJ_25_0.png" src="../_images/notebooks_LKJ_25_0.png" />
+<img alt="../_images/notebooks_LKJ_29_0.png" src="../_images/notebooks_LKJ_29_0.png" />
 </div>
 </div>
 </div>

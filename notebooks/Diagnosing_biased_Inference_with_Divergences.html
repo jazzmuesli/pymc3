@@ -91,35 +91,11 @@
               
             
             
-              <ul class="current">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#howto">Howto</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="api_quickstart.html">API quickstart</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html">Sampler statistics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html#Multiple-samplers">Multiple samplers</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Diagnosing Biased Inference with Divergences</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#The-Eight-Schools-Model">The Eight Schools Model</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#A-Centered-Eight-Schools-Implementation">A Centered Eight Schools Implementation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Mitigating-Divergences-by-Adjusting-PyMC3's-Adaptation-Routine">Mitigating Divergences by Adjusting PyMC3’s Adaptation Routine</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#A-Non-Centered-Eight-Schools-Implementation">A Non-Centered Eight Schools Implementation</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="posterior_predictive.html">Posterior Predictive Checks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="model_comparison.html">Model comparison</a></li>
-<li class="toctree-l3"><a class="reference internal" href="howto_debugging.html">How to debug a model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LKJ.html">LKJ Prior for fitting a Multivariate Normal Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="live_sample_plots.html">Live sample plots</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#variational-inference">Variational Inference</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 </ul>
 
@@ -389,11 +365,10 @@ original
 post</a>
 and Betancourt’s <a class="reference external" href="https://arxiv.org/abs/1701.02434">excellent
 paper</a>.**</p>
-<p>Bayesian statistics is all about building your model and estimating the
-parameters in the model. However, due to limitations in our current
-mathematical understanding and computation capacity, naive or direct
-parameterization of our probability model often ran into problem (<a class="reference external" href="http://twiecki.github.io/blog/2017/02/08/bayesian-hierchical-non-centered/">you
-can check out Thomas Wiecki’s blog post on the same issue in
+<p>Bayesian statistics is all about building a model and estimating the
+parameters in that model. However, a naive or direct parameterization of
+our probability model can sometimes be ineffective (<a class="reference external" href="http://twiecki.github.io/blog/2017/02/08/bayesian-hierchical-non-centered/">you can check out
+Thomas Wiecki’s blog post on the same issue in
 PyMC3</a>).
 Suboptimal parameterization is often lead to slow sampling, and more
 problematic, biased MCMC estimators.</p>
@@ -462,6 +437,8 @@ post</a>.</p>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sb</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
+
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">20090425</span>
 
 <span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -565,7 +542,7 @@ estimation.</p>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">Centered_eight</span><span class="p">:</span>
-    <span class="n">short_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+    <span class="n">short_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -574,26 +551,25 @@ estimation.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Assigned NUTS to mu
-Assigned NUTS to tau_log__
-Assigned NUTS to theta
- 89%|████████▉ | 978/1100 [00:14&lt;00:01, 81.16it/s] /Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 25 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+ 98%|█████████▊| 982/1000 [00:02&lt;00:00, 512.82it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 4 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|█████████▉| 1097/1100 [00:16&lt;00:00, 54.40it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 16 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+100%|██████████| 1000/1000 [00:02&lt;00:00, 466.70it/s]
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:451: UserWarning: The acceptance probability in chain 1 does not match the target. It is 0.699607938826, but should be close to 0.8. Try to increase the number of tuning steps.
+  % (self._chain_id, mean_accept, target_accept))
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 28 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|██████████| 1100/1100 [00:16&lt;00:00, 66.60it/s]
 </pre></div></div>
 </div>
-<div class="line-block">
-<div class="line">In the <a class="reference external" href="http://mc-stan.org/documentation/case-studies/divergences_and_bias.html">the original
+<p>In the <a class="reference external" href="http://mc-stan.org/documentation/case-studies/divergences_and_bias.html">the original
 post</a>
 a single chain of 1200 sample is applied. However, since split
-<span class="math">\(\hat{R}\)</span> is not implemented in <code class="docutils literal"><span class="pre">PyMC3</span></code> we fit 2 chains with
-600 sample each instead.</div>
-<div class="line">The Gelman-Rubin diagnostic <span class="math">\(\hat{R}\)</span> doesn’t indicate any
-problems (value close to 1) and the effective sample size per
-iteration is reasonable</div>
-</div>
+<span class="math">\(\hat{R}\)</span> is not implemented in <code class="docutils literal"><span class="pre">PyMC3</span></code> we fit 2 chains with 600
+sample each instead.</p>
+<p>The Gelman-Rubin diagnostic <span class="math">\(\hat{R}\)</span> doesn’t indicate any
+problems (values are all close to 1) and the effective sample size per
+iteration is reasonable</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>In [5]:
@@ -609,8 +585,8 @@ iteration is reasonable</div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;mu&#39;: 1.001280705958407, &#39;tau_log__&#39;: 1.0293205970617825, &#39;theta&#39;: array([ 1.00193831,  0.99930905,  0.99987355,  1.00004678,  0.99934883,
-        1.00491229,  1.00999731,  1.00349803]), &#39;tau&#39;: 1.0060945117696833}
+{&#39;mu&#39;: 1.0009084849949781, &#39;tau_log__&#39;: 1.0861170424725697, &#39;theta&#39;: array([ 1.00596529,  1.00326524,  0.99900594,  1.00108895,  0.99983061,
+        1.00202009,  1.00579846,  1.00308917]), &#39;tau&#39;: 1.0323753014428065}
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -628,7 +604,7 @@ iteration is reasonable</div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;mu&#39;: 84.0, &#39;tau_log__&#39;: 21.0, &#39;theta&#39;: array([ 184.,  126.,  161.,  215.,  104.,  125.,  155.,  172.]), &#39;tau&#39;: 27.0}
+{&#39;mu&#39;: 56.0, &#39;tau_log__&#39;: 47.0, &#39;theta&#39;: array([ 264.,  105.,  143.,   78.,  127.,  209.,  142.,  126.]), &#39;tau&#39;: 81.0}
 </pre></div><p>Moreover, the trace plots all look fine. Let’s consider, for
 example, the hierarchical standard deviation <span class="math">\(\tau\)</span>, or more
 specifically, its logarithm, <span class="math">\(log(\tau)\)</span>. Because <span class="math">\(\tau\)</span>
@@ -683,7 +659,7 @@ shown in grey.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.text.Text at 0x12b929ac8&gt;
+<span></span>&lt;matplotlib.text.Text at 0x1296b6978&gt;
 </pre></div>
 </div>
 </div>
@@ -716,8 +692,8 @@ divergence.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of Divergent 41
-Percentage of Divergent 0.06833
+Number of Divergent 32
+Percentage of Divergent 0.06400
 </pre></div><p>Even with a single short chain these divergences are able to
 identity the bias and advise skepticism of any resulting MCMC
 estimators.</p>
@@ -743,7 +719,7 @@ space.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;log(tau)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;theta[0]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;scatter plot between log(tau) and theta[1]&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;scatter plot between log(tau) and theta[0]&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -826,7 +802,7 @@ incredibly powerful diagnostic for biased MCMC estimation.</div></blockquote>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">Centered_eight</span><span class="p">:</span>
-    <span class="n">longer_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">longer_trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -835,16 +811,15 @@ incredibly powerful diagnostic for biased MCMC estimation.</div></blockquote>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Assigned NUTS to mu
-Assigned NUTS to tau_log__
-Assigned NUTS to theta
- 87%|████████▋ | 5222/6000 [01:21&lt;00:10, 71.76it/s] /Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:440: UserWarning: The acceptance probability in chain 1 does not match the target. It is 0.681646826976, but should be close to 0.8. Try to increase the number of tuning steps.
+Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+100%|█████████▉| 4991/5000 [00:08&lt;00:00, 700.69it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:451: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.705184332576, but should be close to 0.8. Try to increase the number of tuning steps.
   % (self._chain_id, mean_accept, target_accept))
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 394 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 64 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|█████████▉| 5993/6000 [01:29&lt;00:00, 134.41it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 82 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+100%|██████████| 5000/5000 [00:08&lt;00:00, 580.85it/s]
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 47 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [01:30&lt;00:00, 66.64it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -876,8 +851,8 @@ Assigned NUTS to theta
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of Divergent 476
-Percentage of Divergent 0.09520
+Number of Divergent 111
+Percentage of Divergent 0.02775
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -902,8 +877,8 @@ Percentage of Divergent 0.09520
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;mu&#39;: 1.0002806474995387, &#39;tau_log__&#39;: 1.0220809259576806, &#39;theta&#39;: array([ 0.99995056,  1.00003906,  1.00105038,  1.00005632,  1.00027606,
-        1.00108921,  0.99994926,  0.99999379]), &#39;tau&#39;: 1.0036314278941008}
+{&#39;mu&#39;: 1.0001285386481875, &#39;tau_log__&#39;: 1.0026023052354254, &#39;theta&#39;: array([ 0.99987791,  1.00005316,  0.99995059,  0.99999018,  1.00054173,
+        1.00004192,  1.00000659,  0.99991046]), &#39;tau&#39;: 1.0003640685433934}
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -922,10 +897,10 @@ Percentage of Divergent 0.09520
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>{&#39;mu&#39;: 1022.0,
- &#39;tau&#39;: 130.0,
- &#39;tau_log__&#39;: 37.0,
- &#39;theta&#39;: array([ 1019.,  1527.,  1861.,  1485.,  1727.,  1864.,   524.,  1527.])}
+<span></span>{&#39;mu&#39;: 1161.0,
+ &#39;tau&#39;: 793.0,
+ &#39;tau_log__&#39;: 493.0,
+ &#39;theta&#39;: array([ 1798.,  1087.,  2331.,  2187.,  1984.,  2444.,  1618.,  2555.])}
 
 
 
@@ -998,16 +973,16 @@ closer to its maximum value of 1.</p>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">Centered_eight</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">target_accept</span><span class="o">=.</span><span class="mi">85</span><span class="p">)</span>
-    <span class="n">fit_cp85</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">fit_cp85</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Centered_eight</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">target_accept</span><span class="o">=.</span><span class="mi">90</span><span class="p">)</span>
-    <span class="n">fit_cp90</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">fit_cp90</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Centered_eight</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">target_accept</span><span class="o">=.</span><span class="mi">95</span><span class="p">)</span>
-    <span class="n">fit_cp95</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">fit_cp95</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">Centered_eight</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">target_accept</span><span class="o">=.</span><span class="mi">99</span><span class="p">)</span>
-    <span class="n">fit_cp99</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">fit_cp99</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1016,30 +991,30 @@ closer to its maximum value of 1.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|█████████▉| 5994/6000 [01:28&lt;00:00, 108.46it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 53 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+ 99%|█████████▉| 5942/6000 [00:20&lt;00:00, 315.79it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 42 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [01:28&lt;00:00, 67.56it/s]
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 92 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+100%|█████████▉| 5976/6000 [00:20&lt;00:00, 318.93it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 42 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|█████████▉| 5990/6000 [01:34&lt;00:00, 114.85it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 69 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
-  % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [01:34&lt;00:00, 63.56it/s]
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 33 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
-  % (self._chain_id, n_diverging))
-100%|█████████▉| 5998/6000 [01:33&lt;00:00, 25.57it/s] /Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:440: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.90304950153, but should be close to 0.95. Try to increase the number of tuning steps.
+100%|██████████| 6000/6000 [00:20&lt;00:00, 289.28it/s]
+ 99%|█████████▉| 5941/6000 [00:12&lt;00:00, 411.05it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:451: UserWarning: The acceptance probability in chain 1 does not match the target. It is 0.790358314049, but should be close to 0.9. Try to increase the number of tuning steps.
   % (self._chain_id, mean_accept, target_accept))
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 111 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 148 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [01:33&lt;00:00, 64.34it/s]
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 26 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
-  % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [02:56&lt;00:00, 23.05it/s] /Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:440: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.90091106113, but should be close to 0.99. Try to increase the number of tuning steps.
+100%|█████████▉| 5986/6000 [00:12&lt;00:00, 380.38it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:451: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.790358314049, but should be close to 0.9. Try to increase the number of tuning steps.
   % (self._chain_id, mean_accept, target_accept))
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 262 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 148 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 19 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+100%|██████████| 6000/6000 [00:12&lt;00:00, 487.70it/s]
+100%|█████████▉| 5975/6000 [00:24&lt;00:00, 197.38it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 113 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
+100%|█████████▉| 5996/6000 [00:24&lt;00:00, 178.01it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 113 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+  % (self._chain_id, n_diverging))
+100%|██████████| 6000/6000 [00:24&lt;00:00, 242.68it/s]
+ 98%|█████████▊| 5885/6000 [00:59&lt;00:01, 102.18it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 4 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+  % (self._chain_id, n_diverging))
+100%|█████████▉| 5987/6000 [01:00&lt;00:00, 129.51it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 4 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+  % (self._chain_id, n_diverging))
+100%|██████████| 6000/6000 [01:00&lt;00:00, 99.64it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1069,20 +1044,19 @@ closer to its maximum value of 1.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
    Step_size  Divergent delta
-0   0.255482        476   .80
-1   0.219471        145   .85
-2   0.198943        102   .90
-3   0.157182        137   .95
-4   0.094333        281   .99
+0   0.254729        111   .80
+1   0.136171         84   .85
+2   0.207764        296   .90
+3   0.084554        226   .95
+4   0.035350          8   .99
 </pre></div></div>
 </div>
-<p>Interestingly, unlike in <code class="docutils literal"><span class="pre">Stan</span></code>, the number of divergent transitions
-decrease since we increased the adapt_delta and decreased the step
-size. &gt; This behavior also has a nice geometric intuition. The more we
-decrease the step size the more the Hamiltonian Markov chain can explore
-the neck of the funnel. Consequently, the marginal posterior
-distribution for <span class="math">\(log (\tau)\)</span> stretches further and further
-towards negative values with the decreasing step size.</p>
+<p>Here, the number of divergent transitions dropped dramatically when
+delta was increased to 0.99. &gt; This behavior also has a nice geometric
+intuition. The more we decrease the step size the more the Hamiltonian
+Markov chain can explore the neck of the funnel. Consequently, the
+marginal posterior distribution for <span class="math">\(log (\tau)\)</span> stretches further
+and further towards negative values with the decreasing step size.</p>
 <p>Since in <code class="docutils literal"><span class="pre">PyMC3</span></code> after tuning we have a smaller step size than
 <code class="docutils literal"><span class="pre">Stan</span></code>, the geometery is better explored. &gt; However, the Hamiltonian
 transition is still not geometrically ergodic with respect to the
@@ -1121,7 +1095,7 @@ expected given the observed bias.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x12ed48208&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x12a214eb8&gt;
 </pre></div>
 </div>
 </div>
@@ -1162,7 +1136,7 @@ expected given the observed bias.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x12b285b70&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x12a322f98&gt;
 </pre></div>
 </div>
 </div>
@@ -1224,7 +1198,7 @@ scaling and a translation.</p>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1239,13 +1213,13 @@ scaling and a translation.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [21]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">NonCentered_eight</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">target_accept</span><span class="o">=.</span><span class="mi">80</span><span class="p">)</span>
-    <span class="n">fit_ncp80</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">fit_ncp80</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1254,16 +1228,16 @@ scaling and a translation.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
- 99%|█████████▊| 5918/6000 [00:14&lt;00:00, 477.00it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 2 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+100%|█████████▉| 5994/6000 [00:08&lt;00:00, 552.97it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 0 contains 15 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
- 99%|█████████▉| 5967/6000 [00:14&lt;00:00, 465.08it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 2 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
+100%|██████████| 6000/6000 [00:08&lt;00:00, 669.35it/s]
+/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:467: UserWarning: Chain 1 contains 15 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
   % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [00:14&lt;00:00, 405.25it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1276,14 +1250,14 @@ scaling and a translation.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;mu&#39;: 0.99995070949175346, &#39;tau_log__&#39;: 0.99999195722094614, &#39;theta_t&#39;: array([ 0.99990004,  0.99991418,  0.99994003,  0.99999129,  1.0000012 ,
-        0.99995481,  1.00021652,  0.99998889]), &#39;tau&#39;: 1.0000226553218077, &#39;theta&#39;: array([ 1.00020932,  0.99994893,  0.9999166 ,  1.00012739,  0.99991459,
-        0.99998477,  1.00045456,  0.99990587])}
+{&#39;mu&#39;: 0.99989999499949989, &#39;tau_log__&#39;: 0.99989999499949989, &#39;theta_t&#39;: array([ 0.99989999,  0.99989999,  0.99989999,  0.99989999,  0.99989999,
+        0.99989999,  0.99989999,  0.99989999]), &#39;tau&#39;: 0.9998999949995, &#39;theta&#39;: array([ 0.99989999,  0.99989999,  0.99989999,  0.99989999,  0.99989999,
+        0.99989999,  0.99989999,  0.99989999])}
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1296,8 +1270,9 @@ scaling and a translation.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;mu&#39;: 1575.0, &#39;tau_log__&#39;: 4578.0, &#39;theta_t&#39;: array([ 10000.,  10000.,  10000.,  10000.,  10000.,  10000.,  10000.,
-        10000.]), &#39;tau&#39;: 5146.0, &#39;theta&#39;: array([ 3966.,  3681.,  3261.,  3434.,  3545.,  3761.,  4038.,  3607.])}
+{&#39;mu&#39;: 7994.0, &#39;tau_log__&#39;: 4772.0, &#39;theta_t&#39;: array([  7533.,  10000.,   9560.,   9334.,   8536.,   6570.,  10000.,
+         8653.]), &#39;tau&#39;: 5614.0, &#39;theta&#39;: array([  7728.,  10000.,   7462.,   9025.,   8731.,   7320.,   8161.,
+         8167.])}
 </pre></div><p>As shown above, the effective sample size per iteration has
 drastically improved, and the trace plots no longer show any
 “stickyness”. However, we do still see the rare divergence. These
@@ -1307,7 +1282,7 @@ space, which is indicative of the divergences being false positives.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1334,8 +1309,8 @@ space, which is indicative of the divergences being false positives.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of Divergent 4
-Percentage of Divergent 0.00080
+Number of Divergent 30
+Percentage of Divergent 0.00600
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1349,13 +1324,13 @@ entirely by decreasing the step size,</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">NonCentered_eight</span><span class="p">:</span>
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">(</span><span class="n">target_accept</span><span class="o">=.</span><span class="mi">90</span><span class="p">)</span>
-    <span class="n">fit_ncp90</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">fit_ncp90</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tune</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 
 <span class="c1"># display the total number and percentage of divergent</span>
 <span class="n">divergent</span> <span class="o">=</span> <span class="n">fit_ncp90</span><span class="p">[</span><span class="s1">&#39;diverging&#39;</span><span class="p">]</span>
@@ -1368,9 +1343,7 @@ entirely by decreasing the step size,</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
- 99%|█████████▉| 5953/6000 [00:18&lt;00:00, 479.56it/s]/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 1 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
-  % (self._chain_id, n_diverging))
-100%|██████████| 6000/6000 [00:18&lt;00:00, 330.46it/s]
+100%|██████████| 6000/6000 [00:07&lt;00:00, 803.69it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1378,7 +1351,7 @@ entirely by decreasing the step size,</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Number of Divergent 1
+Number of Divergent 0
 </pre></div><p>The more agreeable geometry of the non-centered implementation
 allows the Markov chain to explore deep into the neck of the funnel,
 capturing even the smallest values of <span class="math">\(\tau\)</span> that are
@@ -1389,7 +1362,7 @@ expectation values.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1422,11 +1395,11 @@ expectation values.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[26]:
+<span></span>Out[27]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x127241d68&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x12bd0bc50&gt;
 </pre></div>
 </div>
 </div>
@@ -1439,7 +1412,7 @@ expectation values.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1463,11 +1436,11 @@ expectation values.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[27]:
+<span></span>Out[28]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x126050588&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x12c21c400&gt;
 </pre></div>
 </div>
 </div>
