@@ -91,11 +91,40 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#howto">Howto</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sampler-stats.html">Sampler statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Diagnosing_biased_Inference_with_Divergences.html">Diagnosing Biased Inference with Divergences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posterior_predictive.html">Posterior Predictive Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_comparison.html">Model comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_averaging.html">Model averaging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto_debugging.html">How to debug a model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PyMC3 Modeling tips and heuristic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Background-information">Background information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#A-WinBugs/PyMC2-implementation">A WinBugs/PyMC2 implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PyMC3-implementation-using-theano.scan">PyMC3 implementation using <code class="docutils literal"><span class="pre">theano.scan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PyMC3-implementation-using-matrix-&quot;trick&quot;">PyMC3 implementation using matrix “trick”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PyMC3-implementation-using-Matrix-multiplication">PyMC3 implementation using Matrix multiplication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PyMC3-implementation-using-Sparse-Matrix">PyMC3 implementation using Sparse Matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#A-few-other-warnings">A few other warnings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Final-remarks">Final remarks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="LKJ.html">LKJ Cholesky Covariance Priors for Multivariate Normal Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="live_sample_plots.html">Live sample plots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#mixture-models">Mixture Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#variational-inference">Variational Inference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 </ul>
 
@@ -642,7 +671,7 @@ below), as exposure to sunlight is a risk factor.</p>
 <code class="docutils literal"><span class="pre">car.normal</span></code> function in <code class="docutils literal"><span class="pre">WinBugs</span></code>. It is a likelihood function that
 conditions each realization on some neigbour realization (a smoothed
 property). In <code class="docutils literal"><span class="pre">PyMC2</span></code>, it could be implemented as a <cite>custom likelihood
-function (a “&#64;stochastic`</cite> node) <code class="docutils literal"><span class="pre">mu_phi</span></code> &lt;<a class="reference external" href="http://glau.ca/?p=340">http://glau.ca/?p=340</a>&gt;`__:</p>
+function (a ``&#64;stochastic`</cite> node) <code class="docutils literal"><span class="pre">mu_phi</span></code> &lt;<a class="reference external" href="http://glau.ca/?p=340">http://glau.ca/?p=340</a>&gt;`__:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@stochastic</span>
 <span class="k">def</span> <span class="nf">mu_phi</span><span class="p">(</span><span class="n">tau</span><span class="o">=</span><span class="n">tau_c</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)):</span>
     <span class="c1"># Calculate mu based on average of neighbours</span>
@@ -1667,7 +1696,7 @@ parameters are correlated.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

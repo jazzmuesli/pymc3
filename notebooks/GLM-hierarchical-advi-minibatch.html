@@ -426,7 +426,7 @@ env: THEANO_FLAGS=device=cpu, floatX=float32, warn_float64=ignore
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -444,7 +444,7 @@ just set mu and sd to a fixed value while here we plug in a common group
 distribution for all a and b (which are vectors of length n_counties).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [ ]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -461,7 +461,7 @@ distribution for all a and b (which are vectors of length n_counties).</p>
 county to its coefficients.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -474,7 +474,7 @@ county to its coefficients.</p>
 <p>Finally, we specify the likelihood:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [3]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -496,7 +496,7 @@ above.</p>
 <p>Then, run ADVI with mini-batch.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -510,14 +510,14 @@ above.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 1,123.9: 100%|██████████| 100000/100000 [00:27&lt;00:00, 3653.22it/s]
+Average Loss = 1,123.5: 100%|██████████| 100000/100000 [00:27&lt;00:00, 3692.56it/s]
 Finished [100%]: Average Loss = 1,124
 </pre></div></div>
 </div>
 <p>Check the trace of ELBO and compare the result with MCMC.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -529,11 +529,11 @@ Finished [100%]: Average Loss = 1,124
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[5]:
+<span></span>Out[8]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&lt;matplotlib.lines.Line2D at 0x12af8c5c0&gt;]
+<span></span>[&lt;matplotlib.lines.Line2D at 0x1169a56a0&gt;]
 </pre></div>
 </div>
 </div>
@@ -546,7 +546,7 @@ Finished [100%]: Average Loss = 1,124
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -579,27 +579,23 @@ Finished [100%]: Average Loss = 1,124
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|█████████▉| 2499/2500 [01:33&lt;00:00, 55.31it/s] /Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:440: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.637204020924, but should be close to 0.8. Try to increase the number of tuning steps.
-  % (self._chain_id, mean_accept, target_accept))
-/Users/fonnescj/Repos/pymc3/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 252 diverging samples after tuning. If increasing `target_accept` does not help try to reparameterize.
-  % (self._chain_id, n_diverging))
-100%|██████████| 2500/2500 [01:33&lt;00:00, 26.77it/s]
+100%|██████████| 2500/2500 [00:31&lt;00:00, 82.77it/s]
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [7]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="n">means</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
-<span class="n">sds</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span></span><span class="n">means</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">bij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="n">sds</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">bij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -688,7 +684,7 @@ Finished [100%]: Average Loss = 1,124
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

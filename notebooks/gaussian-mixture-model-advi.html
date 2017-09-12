@@ -430,7 +430,7 @@ env: THEANO_FLAGS=device=cpu,floatX=float32
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.collections.PathCollection at 0x1101d68d0&gt;
+<span></span>&lt;matplotlib.collections.PathCollection at 0x109e4ea20&gt;
 </pre></div>
 </div>
 </div>
@@ -519,7 +519,7 @@ Warning: Desired error not necessarily achieved due to precision loss.
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1500/1500 [00:02&lt;00:00, 631.59it/s]
+100%|██████████| 1500/1500 [00:02&lt;00:00, 639.74it/s]
 </pre></div></div>
 </div>
 <p>Check posterior of component means and weights. We can see that the MCMC
@@ -576,7 +576,7 @@ clusters.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1153e2978&gt;
+<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1141f79b0&gt;
 </pre></div>
 </div>
 </div>
@@ -590,7 +590,7 @@ clusters.</p>
 <p>We can use the same model with ADVI as follows.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [8]:
+<span></span>In [6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -602,10 +602,10 @@ clusters.</p>
 
 <span class="k">with</span> <span class="n">model</span><span class="p">:</span>
     <span class="o">%</span><span class="k">time</span> approx = pm.fit(n=4500, obj_optimizer=pm.adagrad(learning_rate=1e-1))
-<span class="n">gbij</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">gbij</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+
+<span class="n">means</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">bij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
 <span class="n">cov</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-<span class="n">sds</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span><span class="o">**.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">sds</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">bij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span><span class="o">**.</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -614,7 +614,7 @@ clusters.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 323.94: 100%|██████████| 4500/4500 [00:01&lt;00:00, 3286.74it/s]
+Average Loss = 323.94: 100%|██████████| 4500/4500 [00:01&lt;00:00, 3200.80it/s]
 Finished [100%]: Average Loss = 323.94
 </pre></div></div>
 </div>
@@ -623,8 +623,8 @@ Finished [100%]: Average Loss = 323.94
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 3.75 s, sys: 44.1 ms, total: 3.79 s
-Wall time: 3.8 s
+CPU times: user 4.96 s, sys: 567 ms, total: 5.52 s
+Wall time: 10.6 s
 </pre></div></div>
 </div>
 <p>The function returns three variables. ‘means’ and ‘sds’ are the mean and
@@ -635,7 +635,7 @@ transformation is applied. Then we can see the variational posterior in
 the original space.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [9]:
+<span></span>In [7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -674,7 +674,7 @@ the original space.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[9]:
+<span></span>Out[7]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -695,7 +695,7 @@ the original space.</p>
 the algorithm.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -705,11 +705,11 @@ the algorithm.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[10]:
+<span></span>Out[8]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>[&lt;matplotlib.lines.Line2D at 0x11773b128&gt;]
+<span></span>[&lt;matplotlib.lines.Line2D at 0x1153be4e0&gt;]
 </pre></div>
 </div>
 </div>
@@ -724,7 +724,7 @@ the algorithm.</p>
 create 100,000 samples from the same mixture distribution.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -746,7 +746,7 @@ create 100,000 samples from the same mixture distribution.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[11]:
+<span></span>Out[9]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -764,7 +764,7 @@ create 100,000 samples from the same mixture distribution.</p>
 <p>MCMC took 55 seconds, 20 times longer than the small dataset.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [12]:
+<span></span>In [10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -797,14 +797,14 @@ Warning: Desired error not necessarily achieved due to precision loss.
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1500/1500 [01:48&lt;00:00, 11.93it/s]
+100%|██████████| 1500/1500 [02:00&lt;00:00, 12.44it/s]
 </pre></div></div>
 </div>
 <p>Posterior samples are concentrated on the true means, so looks like
 single point for each component.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [13]:
+<span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -820,7 +820,7 @@ single point for each component.</p>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[13]:
+<span></span>Out[11]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -844,7 +844,7 @@ log-likelihood term, we need to give ObservedRV objects
 the tensor (‘minibatch_tensors’).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [15]:
+<span></span>In [12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -864,7 +864,7 @@ the tensor (‘minibatch_tensors’).</p>
 and it’s not a fair comparison.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -872,9 +872,8 @@ and it’s not a fair comparison.</p>
 <span class="c1"># is there more smart way?</span>
 <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
     <span class="n">approx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">obj_optimizer</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">adagrad</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">),</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">gbij</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">gbij</span>
-    <span class="n">means</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
-    <span class="n">sds</span> <span class="o">=</span> <span class="n">gbij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+    <span class="n">means</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">bij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+    <span class="n">sds</span> <span class="o">=</span> <span class="n">approx</span><span class="o">.</span><span class="n">bij</span><span class="o">.</span><span class="n">rmap</span><span class="p">(</span><span class="n">approx</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">means</span><span class="p">,</span> <span class="n">sds</span><span class="p">,</span> <span class="n">approx</span><span class="o">.</span><span class="n">hist</span>
 
 <span class="o">%</span><span class="k">time</span> means, sds, elbos = f()
@@ -886,8 +885,8 @@ and it’s not a fair comparison.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 3.2644e+05: 100%|██████████| 1500/1500 [00:00&lt;00:00, 2353.04it/s]
-Finished [100%]: Average Loss = 3.2641e+05
+Average Loss = 3.2686e+05: 100%|██████████| 1500/1500 [00:00&lt;00:00, 2433.03it/s]
+Finished [100%]: Average Loss = 3.2678e+05
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -895,14 +894,14 @@ Finished [100%]: Average Loss = 3.2641e+05
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 3.54 s, sys: 52.8 ms, total: 3.59 s
-Wall time: 3.6 s
+CPU times: user 4.85 s, sys: 544 ms, total: 5.4 s
+Wall time: 11.4 s
 </pre></div></div>
 </div>
 <p>The result is almost the same.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -922,7 +921,7 @@ Wall time: 3.6 s
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>Out[19]:
+<span></span>Out[14]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
@@ -941,7 +940,7 @@ Wall time: 3.6 s
 because of the subsampling from the whole samples.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
-<span></span>In [20]:
+<span></span>In [15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
@@ -1012,7 +1011,7 @@ because of the subsampling from the whole samples.</p>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

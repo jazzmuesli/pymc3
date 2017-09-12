@@ -337,7 +337,7 @@ defined that returns a MultiTrace object.</p>
 <p>Store sampling values in memory as a NumPy array.</p>
 <dl class="class">
 <dt id="pymc3.backends.ndarray.NDArray">
-<em class="property">class </em><code class="descclassname">pymc3.backends.ndarray.</code><code class="descname">NDArray</code><span class="sig-paren">(</span><em>name=None</em>, <em>model=None</em>, <em>vars=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.backends.ndarray.NDArray" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.backends.ndarray.</code><code class="descname">NDArray</code><span class="sig-paren">(</span><em>name=None</em>, <em>model=None</em>, <em>vars=None</em>, <em>test_point=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.backends.ndarray.NDArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>NDArray trace object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -436,7 +436,7 @@ For example, a variable with the shape (2, 2) would be stored as</p>
 The chain column denotes the chain index and starts at 0.</p>
 <dl class="class">
 <dt id="pymc3.backends.sqlite.SQLite">
-<em class="property">class </em><code class="descclassname">pymc3.backends.sqlite.</code><code class="descname">SQLite</code><span class="sig-paren">(</span><em>name</em>, <em>model=None</em>, <em>vars=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.backends.sqlite.SQLite" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.backends.sqlite.</code><code class="descname">SQLite</code><span class="sig-paren">(</span><em>name</em>, <em>model=None</em>, <em>vars=None</em>, <em>test_point=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.backends.sqlite.SQLite" title="Permalink to this definition">¶</a></dt>
 <dd><p>SQLite trace object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -447,6 +447,7 @@ The chain column denotes the chain index and starts at 0.</p>
 <li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
 <li><strong>vars</strong> (<em>list of variables</em>) – Sampling values will be stored for these variables. If None,
 <cite>model.unobserved_RVs</cite> is used.</li>
+<li><strong>test_point</strong> (<em>dict</em>) – use different test point that might be with changed variables shapes</li>
 </ul>
 </td>
 </tr>
@@ -554,7 +555,7 @@ index labels.  For example, the heading</p>
 shape of (3, 2).</p>
 <dl class="class">
 <dt id="pymc3.backends.text.Text">
-<em class="property">class </em><code class="descclassname">pymc3.backends.text.</code><code class="descname">Text</code><span class="sig-paren">(</span><em>name</em>, <em>model=None</em>, <em>vars=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.backends.text.Text" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymc3.backends.text.</code><code class="descname">Text</code><span class="sig-paren">(</span><em>name</em>, <em>model=None</em>, <em>vars=None</em>, <em>test_point=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.backends.text.Text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text trace object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -565,6 +566,7 @@ shape of (3, 2).</p>
 <li><strong>model</strong> (<em>Model</em>) – If None, the model is taken from the <cite>with</cite> context.</li>
 <li><strong>vars</strong> (<em>list of variables</em>) – Sampling values will be stored for these variables. If None,
 <cite>model.unobserved_RVs</cite> is used.</li>
+<li><strong>test_point</strong> (<em>dict</em>) – use different test point that might be with changed variables shapes</li>
 </ul>
 </td>
 </tr>
@@ -758,7 +760,7 @@ DataFrame.</li>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -139,6 +139,8 @@
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#mixture-models">Mixture Models</a><ul>
@@ -651,6 +653,31 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Gaussian-Process-Regression">Gaussian Process Regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Generate-some-example-data">Generate some example data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Examine-actual-posterior-distribution">Examine actual posterior distribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Sample-from-posterior-distribution">Sample from posterior distribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Evaluate-posterior-fit">Evaluate posterior fit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Gaussian-Process-Classification">Gaussian Process Classification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Generate-some-example-data">Generate some example data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Sample-from-posterior-distribution">Sample from posterior distribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Evaluate-posterior-fit">Evaluate posterior fit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-smoothing.html">Gaussian Process (GP) smoothing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-smoothing.html#Let's-try-a-linear-regression-first">Let’s try a linear regression first</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-smoothing.html#Linear-regression-model-recap">Linear regression model recap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-smoothing.html#Gaussian-Process-smoothing-model">Gaussian Process smoothing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-smoothing.html#Let's-describe-the-above-GP-smoothing-model-in-PyMC3">Let’s describe the above GP-smoothing model in PyMC3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-smoothing.html#Exploring-different-levels-of-smoothing">Exploring different levels of smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-smoothing.html#Smoothing-&quot;to-the-limits&quot;">Smoothing “to the limits”</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -806,7 +833,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

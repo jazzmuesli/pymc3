@@ -254,7 +254,7 @@ interval and score the Geweke score on the interval.</p>
 
 <dl class="function">
 <dt id="pymc3.diagnostics.gelman_rubin">
-<code class="descclassname">pymc3.diagnostics.</code><code class="descname">gelman_rubin</code><span class="sig-paren">(</span><em>mtrace</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.diagnostics.gelman_rubin" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.diagnostics.</code><code class="descname">gelman_rubin</code><span class="sig-paren">(</span><em>mtrace</em>, <em>varnames=None</em>, <em>include_transformed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.diagnostics.gelman_rubin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns estimate of R for a set of traces.</p>
 <p>The Gelman-Rubin diagnostic tests for lack of convergence by comparing
 the variance between multiple chains to the variance within each chain.
@@ -266,11 +266,18 @@ values that are dispersed relative to the target distribution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mtrace</strong> (<em>MultiTrace</em>) – A MultiTrace object containing parallel traces (minimum 2)
-of one or more stochastic parameters.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mtrace</strong> (<em>MultiTrace</em>) – A MultiTrace object containing parallel traces (minimum 2)
+of one or more stochastic parameters.</li>
+<li><strong>varnames</strong> (<em>list</em>) – Names of variables to include in the rhat report</li>
+<li><strong>include_transformed</strong> (<em>bool</em>) – Flag for reporting automatically transformed variables in addition
+to original variables (defaults to False).</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>Rhat</strong> (<em>dict</em>) – Returns dictionary of the potential scale reduction
-factors, <span class="math">\(\hat{R}\)</span></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>Rhat</strong> (<em>dict</em>) – Returns dictionary of the potential scale reduction
+factors, <span class="math">\(\hat{R}\)</span></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -292,16 +299,23 @@ Gelman and Rubin (1992)</p>
 
 <dl class="function">
 <dt id="pymc3.diagnostics.effective_n">
-<code class="descclassname">pymc3.diagnostics.</code><code class="descname">effective_n</code><span class="sig-paren">(</span><em>mtrace</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.diagnostics.effective_n" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.diagnostics.</code><code class="descname">effective_n</code><span class="sig-paren">(</span><em>mtrace</em>, <em>varnames=None</em>, <em>include_transformed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.diagnostics.effective_n" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns estimate of the effective sample size of a set of traces.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mtrace</strong> (<em>MultiTrace</em>) – A MultiTrace object containing parallel traces (minimum 2)
-of one or more stochastic parameters.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mtrace</strong> (<em>MultiTrace</em>) – A MultiTrace object containing parallel traces (minimum 2)
+of one or more stochastic parameters.</li>
+<li><strong>varnames</strong> (<em>list</em>) – Names of variables to include in the effective_n report</li>
+<li><strong>include_transformed</strong> (<em>bool</em>) – Flag for reporting automatically transformed variables in addition
+to original variables (defaults to False).</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>n_eff</strong> (<em>float</em>) – Return the effective sample size, <span class="math">\(\hat{n}_{eff}\)</span></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>n_eff</strong> (<em>float</em>) – Return the effective sample size, <span class="math">\(\hat{n}_{eff}\)</span></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -372,7 +386,7 @@ is the first odd positive integer for which the sum
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

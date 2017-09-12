@@ -510,7 +510,7 @@ the <code class="docutils literal"><span class="pre">Model</span></code> class.<
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array(-135.1902745717962)
+<span></span>array(-139.7234487505281)
 </pre></div>
 </div>
 </div>
@@ -542,9 +542,8 @@ caching effect with the speed up below.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-The slowest run took 4.45 times longer than the fastest. This could mean that an intermediate result is being cached.
-10000 loops, best of 3: 35 µs per loop
-10000 loops, best of 3: 26.6 µs per loop
+91.8 ms ± 1.95 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+35.6 µs ± 2.01 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 </pre></div></div>
 </div>
 </div>
@@ -594,6 +593,23 @@ class Normal(pymc3.distributions.distribution.Continuous)
  |
  |     \tau = \dfrac{1}{\sigma^2}
  |
+ |  .. plot::
+ |
+ |      import matplotlib.pyplot as plt
+ |      import numpy as np
+ |      import scipy.stats as st
+ |      x = np.linspace(-5.0, 5.0, 1000)
+ |      fig, ax = plt.subplots()
+ |      f = lambda mu, sd : st.norm.pdf(x, loc=mu, scale=sd)
+ |      plot_pdf = lambda a, b : ax.plot(x, f(a,b), label=r&#39;$\mu$={0}, $\sigma$={1}&#39;.format(a,b))
+ |      plot_pdf(0.0, 0.4)
+ |      plot_pdf(0.0, 1.0)
+ |      plot_pdf(0.0, 2.0)
+ |      plot_pdf(-2.0, 0.4)
+ |      plt.legend(loc=&#39;upper right&#39;, frameon=False)
+ |      ax.set(xlim=[-5,5], ylim=[0,1.2], xlabel=&#39;x&#39;, ylabel=&#39;f(x)&#39;)
+ |      plt.show()
+ |
  |  Parameters
  |  ----------
  |  mu : float
@@ -623,11 +639,32 @@ class Normal(pymc3.distributions.distribution.Continuous)
  |
  |  __getnewargs__(self)
  |
+ |  __latex__ = _repr_latex_(self, name=None, dist=None)
+ |      Magic method name for IPython to use for LaTeX formatting.
+ |
  |  default(self)
  |
  |  get_test_val(self, val, defaults)
  |
  |  getattr_value(self, val)
+ |
+ |  logp_nojac(self, *args, **kwargs)
+ |      Return the logp, but do not include a jacobian term for transforms.
+ |
+ |      If we use different parametrizations for the same distribution, we
+ |      need to add the determinant of the jacobian of the transformation
+ |      to make sure the densities still describe the same distribution.
+ |      However, MAP estimates are not invariant with respect to the
+ |      parametrization, we need to exclude the jacobian terms in this case.
+ |
+ |      This function should be overwritten in base classes for transformed
+ |      distributions.
+ |
+ |  logp_sum(self, *args, **kwargs)
+ |      Return the sum of the logp values for the given observations.
+ |
+ |      Subclasses can use this to improve the speed of logp evaluations
+ |      if only the sum of the logp values is needed.
  |
  |  ----------------------------------------------------------------------
  |  Class methods inherited from pymc3.distributions.distribution.Distribution:
@@ -972,7 +1009,7 @@ helpful to define initial values for RVs. This can be done via the
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.58550005,  0.19586392, -2.19206299, -1.15200385,  1.13329314])
+<span></span>array([ 0.421665  , -1.63966614,  0.92402752,  0.14413675, -1.39721381])
 </pre></div>
 </div>
 </div>
@@ -1010,12 +1047,8 @@ the right sampler(s) and auto-initialize if you don’t pass anything.</p>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using ADVI...
-WARNING (theano.configdefaults): install mkl with `conda install mkl-service`: No module named &#39;mkl&#39;
-Average Loss = 150.92:   3%|▎         | 6545/200000 [00:00&lt;00:11, 16437.29it/s]
-Convergence archived at 7400
-Interrupted at 7,400 [3%]: Average Loss = 156.53
-100%|██████████| 1500/1500 [00:00&lt;00:00, 3027.54it/s]
+Initializing NUTS using jitter+adapt_diag...
+100%|██████████| 1500/1500 [00:01&lt;00:00, 1026.78it/s]
 </pre></div></div>
 </div>
 <p>As you can see, on a continuous model, PyMC3 assigns the NUTS sampler,
@@ -1065,11 +1098,8 @@ sampler to adjust its parameters in an additional 500 iterations. These
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using ADVI...
-Average Loss = 150.53:   4%|▍         | 8386/200000 [00:00&lt;00:11, 16710.37it/s]
-Convergence archived at 9900
-Interrupted at 9,900 [4%]: Average Loss = 155.52
-100%|██████████| 1000/1000 [00:00&lt;00:00, 1462.08it/s]
+Initializing NUTS using jitter+adapt_diag...
+100%|██████████| 1000/1000 [00:01&lt;00:00, 851.68it/s]
 </pre></div></div>
 </div>
 <p>Note, that we are now drawing 2000 samples, 500 samples for 4 chains
@@ -1165,13 +1195,14 @@ each. The 500 tuning samples are discarded by default.</p>
  &#39;NUTS&#39;,
  &#39;NormalProposal&#39;,
  &#39;PoissonProposal&#39;,
+ &#39;SGFS&#39;,
  &#39;SMC&#39;,
  &#39;Slice&#39;]
 </pre></div>
 </div>
 </div>
 <p>Commonly used step-methods besides NUTS are <code class="docutils literal"><span class="pre">Metropolis</span></code> and
-<code class="docutils literal"><span class="pre">Slice</span></code>. <strong>For almost all continuous models, “NUTS“ should be
+<code class="docutils literal"><span class="pre">Slice</span></code>. <strong>For almost all continuous models, ``NUTS`` should be
 preferred.</strong> There are hard-to-sample models for which <code class="docutils literal"><span class="pre">NUTS</span></code> will be
 very slow causing many users to use <code class="docutils literal"><span class="pre">Metropolis</span></code> instead. This
 practice, however, is rarely successful. NUTS is fast on simple models
@@ -1201,7 +1232,7 @@ initialization of NUTS, or reparameterize the model.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1500/1500 [00:00&lt;00:00, 11347.22it/s]
+100%|██████████| 1500/1500 [00:00&lt;00:00, 5511.71it/s]
 </pre></div></div>
 </div>
 <p>You can also assign variables to different step methods.</p>
@@ -1227,7 +1258,7 @@ initialization of NUTS, or reparameterize the model.</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 10500/10500 [00:09&lt;00:00, 1125.34it/s]
+100%|██████████| 10500/10500 [00:13&lt;00:00, 774.35it/s]
 </pre></div></div>
 </div>
 </div>
@@ -1270,9 +1301,9 @@ Gelman-Rubin statistic:</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>{&#39;mu&#39;: 1.0002705510318985,
- &#39;sd&#39;: 0.99998336390229592,
- &#39;sd_log__&#39;: 0.99998637638337262}
+<span></span>{&#39;mu&#39;: 1.0001326715972627,
+ &#39;sd&#39;: 0.99995267558629874,
+ &#39;sd_log__&#39;: 0.99995398290485815}
 </pre></div>
 </div>
 </div>
@@ -1338,11 +1369,8 @@ to assess problems of convergence:</p>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using ADVI...
-Average Loss = 0.031327:   3%|▎         | 5727/200000 [00:00&lt;00:17, 11147.89it/s]
-Convergence archived at 5900
-Interrupted at 5,900 [2%]: Average Loss = 2.1251
-100%|██████████| 1000/1000 [00:04&lt;00:00, 204.65it/s]
+Initializing NUTS using jitter+adapt_diag...
+100%|██████████| 1000/1000 [00:05&lt;00:00, 198.29it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1383,8 +1411,8 @@ to biased inference. The main entry point is <code class="docutils literal"><spa
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 163.67: 100%|██████████| 10000/10000 [00:00&lt;00:00, 13061.46it/s]
-Finished [100%]: Average Loss = 163.66
+Average Loss = 150.94: 100%|██████████| 10000/10000 [00:03&lt;00:00, 2988.43it/s]
+Finished [100%]: Average Loss = 150.93
 </pre></div></div>
 </div>
 <p>The returned <code class="docutils literal"><span class="pre">Approximation</span></code> object has various capabilities, like
@@ -1406,7 +1434,7 @@ like a regular sampling run:</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;MultiTrace: 1 chains, 500 iterations, 2 variables&gt;
+<span></span>&lt;MultiTrace: 1 chains, 500 iterations, 3 variables&gt;
 </pre></div>
 </div>
 </div>
@@ -1432,8 +1460,8 @@ estimates a full covariance matrix:</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 0.0065215: 100%|██████████| 10000/10000 [00:03&lt;00:00, 3021.17it/s]
-Finished [100%]: Average Loss = 0.0063589
+Average Loss = 0.0068883: 100%|██████████| 10000/10000 [00:08&lt;00:00, 1233.38it/s]
+Finished [100%]: Average Loss = 0.0065707
 </pre></div></div>
 </div>
 <p>An equivalent expression using the object-oriented interface is:</p>
@@ -1454,8 +1482,8 @@ Finished [100%]: Average Loss = 0.0063589
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Average Loss = 0.010004: 100%|██████████| 10000/10000 [00:03&lt;00:00, 3096.42it/s]
-Finished [100%]: Average Loss = 0.010116
+Average Loss = 0.01127: 100%|██████████| 10000/10000 [00:08&lt;00:00, 1225.82it/s]
+Finished [100%]: Average Loss = 0.011343
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1476,7 +1504,7 @@ Finished [100%]: Average Loss = 0.010116
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x119d510b8&gt;
+<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x11817c908&gt;
 </pre></div>
 </div>
 </div>
@@ -1509,7 +1537,7 @@ posterior:</p>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 10000/10000 [01:00&lt;00:00, 165.47it/s]
+100%|██████████| 10000/10000 [01:21&lt;00:00, 123.44it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1524,20 +1552,11 @@ posterior:</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/Users/peadarcoyle/anaconda/envs/pymc3_dev/lib/python3.5/site-packages/statsmodels/nonparametric/kdetools.py:20: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
-  y = X[:m/2+1] + np.r_[0,X[m/2+1:],0]*1j
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_87_1.png" src="../_images/notebooks_api_quickstart_87_1.png" />
+<img alt="../_images/notebooks_api_quickstart_87_0.png" src="../_images/notebooks_api_quickstart_87_0.png" />
 </div>
 </div>
 <p>For more information on variational inference, see <a class="reference external" href="http://pymc-devs.github.io/pymc3/examples.html#variational-inference">these
@@ -1570,11 +1589,10 @@ posterior predictive checks.</p>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using ADVI...
-Average Loss = 155.98:   6%|▌         | 12061/200000 [00:01&lt;00:15, 11886.92it/s]
-Convergence archived at 12100
-Interrupted at 12,100 [6%]: Average Loss = 187.13
-100%|██████████| 1000/1000 [00:00&lt;00:00, 1703.97it/s]
+Initializing NUTS using jitter+adapt_diag...
+ 97%|█████████▋| 968/1000 [00:01&lt;00:00, 1050.37it/s]/Users/ferres/dev/pymc3/pymc3/step_methods/hmc/nuts.py:451: UserWarning: The acceptance probability in chain 0 does not match the target. It is 0.886449584522, but should be close to 0.8. Try to increase the number of tuning steps.
+  % (self._chain_id, mean_accept, target_accept))
+100%|██████████| 1000/1000 [00:01&lt;00:00, 949.39it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1593,7 +1611,7 @@ Interrupted at 12,100 [6%]: Average Loss = 187.13
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 500/500 [00:00&lt;00:00, 2876.26it/s]
+100%|██████████| 500/500 [00:01&lt;00:00, 484.68it/s]
 </pre></div></div>
 </div>
 <p><code class="docutils literal"><span class="pre">sample_ppc()</span></code> returns a dict with a key for every observed node:</p>
@@ -1631,21 +1649,12 @@ Interrupted at 12,100 [6%]: Average Loss = 187.13
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="stderr output_area docutils container">
-<div class="highlight"><pre>
-/Users/peadarcoyle/anaconda/envs/pymc3_dev/lib/python3.5/site-packages/statsmodels/nonparametric/kdetools.py:20: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
-  y = X[:m/2+1] + np.r_[0,X[m/2+1:],0]*1j
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
 <span></span>Out[49]:
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.legend.Legend at 0x11c50ec18&gt;
+<span></span>&lt;matplotlib.legend.Legend at 0x11a8af940&gt;
 </pre></div>
 </div>
 </div>
@@ -1653,7 +1662,7 @@ Interrupted at 12,100 [6%]: Average Loss = 187.13
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_api_quickstart_94_2.png" src="../_images/notebooks_api_quickstart_94_2.png" />
+<img alt="../_images/notebooks_api_quickstart_94_1.png" src="../_images/notebooks_api_quickstart_94_1.png" />
 </div>
 </div>
 </div>
@@ -1693,11 +1702,8 @@ passed into PyMC3 just like any other numpy array or tensor.</p>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
 Auto-assigning NUTS sampler...
-Initializing NUTS using ADVI...
-Average Loss = 29.296:   5%|▍         | 9252/200000 [00:00&lt;00:14, 13184.49it/s]
-Convergence archived at 9500
-Interrupted at 9,500 [4%]: Average Loss = 43.022
-100%|██████████| 1000/1000 [00:00&lt;00:00, 2538.10it/s]
+Initializing NUTS using jitter+adapt_diag...
+100%|██████████| 1000/1000 [00:00&lt;00:00, 1369.19it/s]
 </pre></div></div>
 </div>
 <p>Now assume we want to predict on unseen data. For this we have to change
@@ -1723,7 +1729,7 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 500/500 [00:00&lt;00:00, 802.20it/s]
+100%|██████████| 500/500 [00:01&lt;00:00, 463.31it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1742,7 +1748,7 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
 </pre></div>
 </div>
 <div class="output_area highlight-none"><div class="highlight"><pre>
-<span></span>array([ 0.014,  0.514,  0.97 ])
+<span></span>array([ 0.026,  0.516,  0.966])
 </pre></div>
 </div>
 </div>
@@ -1803,7 +1809,7 @@ shape of <code class="docutils literal"><span class="pre">x_shared</span></code>
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
