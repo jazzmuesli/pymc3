@@ -122,6 +122,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api_quickstart.html">API quickstart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="variational_api_quickstart.html">Variational API quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html">Gaussian Processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../theano.html">PyMC3 and Theano</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../advanced_theano.html">Advanced usage of Theano in PyMC3</a></li>
 </ul>
@@ -1227,7 +1228,7 @@ data from Yahoo!-Finance; it can be installed with
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
-<span class="n">returns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_data_google</span><span class="p">(</span><span class="s1">&#39;SPY&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2008-5-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2009-12-1&#39;</span><span class="p">)[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
+<span class="n">returns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_data_yahoo</span><span class="p">(</span><span class="s1">&#39;SPY&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;2008-5-1&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2009-12-1&#39;</span><span class="p">)[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span>
 
 <span class="nb">len</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>
 </pre></div>

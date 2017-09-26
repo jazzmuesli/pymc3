@@ -107,7 +107,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../inference.html">Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../glm.html">Generalized Linear Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gp.html">Gaussian Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html">GP Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html#mean-functions">Mean Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html#covariance-functions">Covariance Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plots.html">Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../stats.html">Stats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../diagnostics.html">Diagnostics</a></li>
@@ -1213,6 +1215,48 @@ given by</p>
 <p>When alpha=0 we recover the Normal distribution and mu becomes the mean,
 tau the precision and sd the standard deviation. In the limit of alpha
 approaching plus/minus infinite we get a half-normal distribution.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymc3.distributions.continuous.Logistic">
+<em class="property">class </em><code class="descclassname">pymc3.distributions.continuous.</code><code class="descname">Logistic</code><span class="sig-paren">(</span><em>mu=0.0</em>, <em>s=1.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.distributions.continuous.Logistic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logistic log-likelihood.</p>
+<div class="math">
+\[f(x \mid \mu, s) =
+    \frac{\exp\left(-\frac{x - \mu}{s}\right)}{s \left(1 + \exp\left(-\frac{x - \mu}{s}\right)\right)^2}\]</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Support</td>
+<td><span class="math">\(x \in \mathbb{R}\)</span></td>
+</tr>
+<tr class="row-even"><td>Mean</td>
+<td><span class="math">\(\mu\)</span></td>
+</tr>
+<tr class="row-odd"><td>Variance</td>
+<td><span class="math">\(\frac{s^2 \pi^2}{3}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>(<a class="reference external" href="../../api/distributions/continuous-20.py">Source code</a>, <a class="reference external" href="../../api/distributions/continuous-20.png">png</a>, <a class="reference external" href="../../api/distributions/continuous-20.hires.png">hires.png</a>, <a class="reference external" href="../../api/distributions/continuous-20.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="../../_images/continuous-20.png" src="../../_images/continuous-20.png" />
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mu</strong> (<em>float</em>) – Mean.</li>
+<li><strong>s</strong> (<em>float</em>) – Scale (s &gt; 0).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">

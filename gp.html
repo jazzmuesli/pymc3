@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gaussian Processes in PyMC3 &mdash; PyMC3 3.1 documentation</title>
+  <title>Gaussian Processes &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -35,7 +35,10 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="PyMC3 3.1 documentation" href="index.html"/> 
+    <link rel="top" title="PyMC3 3.1 documentation" href="index.html"/>
+        <link rel="up" title="Getting started" href="getting_started.html"/>
+        <link rel="next" title="PyMC3 and Theano" href="theano.html"/>
+        <link rel="prev" title="Variational API quickstart" href="notebooks/variational_api_quickstart.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,9 +91,23 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html">Getting started with PyMC3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/api_quickstart.html">API quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/variational_api_quickstart.html">Variational API quickstart</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gaussian Processes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gp-basics">GP Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mean-and-covariance-functions">Mean and covariance functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gp-implementations">GP Implementations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additive-gps">Additive GPs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="theano.html">PyMC3 and Theano</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_theano.html">Advanced usage of Theano in PyMC3</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="prob_dists.html">Probability Distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
@@ -138,7 +155,9 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Gaussian Processes in PyMC3</li>
+          <li><a href="getting_started.html">Getting started</a> &raquo;</li>
+        
+      <li>Gaussian Processes</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,8 +210,8 @@
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="gaussian-processes-in-pymc3">
-<h1>Gaussian Processes in PyMC3<a class="headerlink" href="#gaussian-processes-in-pymc3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="gaussian-processes">
+<h1>Gaussian Processes<a class="headerlink" href="#gaussian-processes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="gp-basics">
 <h2>GP Basics<a class="headerlink" href="#gp-basics" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes an unknown parameter or variable in a model is not a scalar value or
@@ -289,7 +308,7 @@ with non-standard covariance and mean functons.  For more information check out
 the tutorial on covariance functions.</p>
 </div>
 <div class="section" id="gp-implementations">
-<h2><code class="code docutils literal"><span class="pre">gp.*</span></code> implementations<a class="headerlink" href="#gp-implementations" title="Permalink to this headline">¶</a></h2>
+<h2>GP Implementations<a class="headerlink" href="#gp-implementations" title="Permalink to this headline">¶</a></h2>
 <p>PyMC3 includes several GP implementations, including marginal and latent
 variable models and also some fast approximations.  Their usage all follows a
 similar pattern:  First, a GP is instantiated with a mean function and a
@@ -430,6 +449,15 @@ in PyMC3.</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="theano.html" class="btn btn-neutral float-right" title="PyMC3 and Theano" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="notebooks/variational_api_quickstart.html" class="btn btn-neutral" title="Variational API quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

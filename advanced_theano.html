@@ -97,10 +97,14 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html">Getting started with PyMC3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/api_quickstart.html">API quickstart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/variational_api_quickstart.html">Variational API quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gp.html">Gaussian Processes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theano.html">PyMC3 and Theano</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Advanced usage of Theano in PyMC3</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#using-shared-variables">Using shared variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#writing-custom-theano-ops">Writing custom Theano Ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-custom-theano-ops">Writing custom Theano Ops</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#finding-the-root-of-a-function">Finding the root of a function</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -301,6 +305,109 @@ We would definitely like to hear about any such examples.</li>
 </ul>
 <p>Theano has extensive <a class="reference external" href="http://deeplearning.net/software/theano/extending/index.html">documentation,</a>
 about how to write new Ops.</p>
+<div class="section" id="finding-the-root-of-a-function">
+<h3>Finding the root of a function<a class="headerlink" href="#finding-the-root-of-a-function" title="Permalink to this headline">¶</a></h3>
+<p>We’ll use finding the root of a function as a simple example.
+Let’s say we want to define a model where a parameter is defined
+implicitly as the root of a function, that depends on another
+parameter:</p>
+<div class="math">
+\[\begin{split}\theta \sim N^+(0, 1)\\
+\text{$\mu\in \mathbb{R}^+$ such that $R(\mu, \theta)
+      = \mu + \mu e^{\theta \mu} - 1= 0$}\\
+y \sim N(\mu, 0.1^2)\end{split}\]</div>
+<p>First, we observe that this problem is well-defined, because
+<span class="math">\(R(\cdot, \theta)\)</span> is monotone and has the image <span class="math">\((-1, \infty)\)</span>
+for <span class="math">\(\mu, \theta \in \mathbb{R}^+\)</span>. To avoid overflows in
+<span class="math">\(\exp(\mu \theta)\)</span> for large
+values of <span class="math">\(\mu\theta\)</span> we instead find the root of</p>
+<div class="math">
+\[R'(\mu, \theta)
+    = \log(R(\mu, \theta) + 1)
+    = \log(\mu) + \log(1 + e^{\theta\mu}).\]</div>
+<p>Also, we have</p>
+<div class="math">
+\[\frac{\partial}{\partial\mu}R'(\mu, \theta)
+    = \theta\, \text{logit}^{-1}(\theta\mu) + \mu^{-1}.\]</div>
+<p>We can now use <cite>scipy.optimize.newton</cite> to find the root:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">special</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">thetamu</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="n">mu</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">logaddexp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">thetamu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+<span class="k">def</span> <span class="nf">jac</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="n">thetamu</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="n">mu</span>
+    <span class="n">jac</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="n">special</span><span class="o">.</span><span class="n">expit</span><span class="p">(</span><span class="n">thetamu</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">mu</span>
+    <span class="k">return</span> <span class="n">jac</span>
+
+<span class="k">def</span> <span class="nf">mu_from_theta</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">optimize</span><span class="o">.</span><span class="n">newton</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fprime</span><span class="o">=</span><span class="n">jac</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,))</span>
+</pre></div>
+</div>
+<p>We could wrap <cite>mu_from_theta</cite> with <cite>tt.as_op</cite> and use gradient-free
+methods like Metropolis, but to get NUTS and ADVI working, we also
+need to define the derivative of <cite>mu_from_theta</cite>. We can find this
+derivative using the implicit function theorem, or equivalently we
+take the derivative with respect of <span class="math">\(\theta\)</span> for both sides of
+<span class="math">\(R(\mu(\theta), \theta) = 0\)</span> and solve for <span class="math">\(\frac{d\mu}{d\theta}\)</span>.
+This isn’t hard to do by hand, but for the fun of it, let’s do it using
+sympy:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span>
+
+<span class="n">mu</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="s1">&#39;mu&#39;</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">)</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">mu</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">mu</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">sympy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">theta</span> <span class="o">*</span> <span class="n">mu</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">mu</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">theta</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We get</p>
+<div class="math">
+\[\frac{d}{d\theta}\mu(\theta)
+    = - \frac{\mu(\theta)^2}{1 + \theta\mu(\theta) + e^{-\theta\mu(\theta)}}\]</div>
+<p>Now, we use this to define a theano op, that also computes the gradient:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">theano</span>
+<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="k">as</span> <span class="nn">tt</span>
+<span class="kn">import</span> <span class="nn">theano.tests.unittest_tools</span>
+
+<span class="k">class</span> <span class="nc">MuFromTheta</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">Op</span><span class="p">):</span>
+    <span class="n">itypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tt</span><span class="o">.</span><span class="n">dscalar</span><span class="p">]</span>
+    <span class="n">otypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tt</span><span class="o">.</span><span class="n">dscalar</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="n">theta</span><span class="p">,</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">mu_from_theta</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+        <span class="n">theta</span><span class="p">,</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">thetamu</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">*</span> <span class="n">mu</span>
+        <span class="k">return</span> <span class="p">[</span><span class="o">-</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">thetamu</span> <span class="o">+</span> <span class="n">tt</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">thetamu</span><span class="p">))]</span>
+</pre></div>
+</div>
+<p>If you value your sanity, always check that the gradient is ok:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">theano</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">unittest_tools</span><span class="o">.</span><span class="n">verify_grad</span><span class="p">(</span><span class="n">MuFromTheta</span><span class="p">(),</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)])</span>
+<span class="n">theano</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">unittest_tools</span><span class="o">.</span><span class="n">verify_grad</span><span class="p">(</span><span class="n">MuFromTheta</span><span class="p">(),</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">)])</span>
+<span class="n">theano</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">unittest_tools</span><span class="o">.</span><span class="n">verify_grad</span><span class="p">(</span><span class="n">MuFromTheta</span><span class="p">(),</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>We can now define our model using this new op:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
+
+<span class="n">tt_mu_from_theta</span> <span class="o">=</span> <span class="n">MuFromTheta</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Deterministic</span><span class="p">(</span><span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="n">tt_mu_from_theta</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.21</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 

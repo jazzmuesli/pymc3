@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gp.Marginal &mdash; PyMC3 3.1 documentation</title>
+  <title>Marginal Likelihood Implementation &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="Kernels / Covariance functions" href="GP-Covariances.html"/>
-        <link rel="prev" title="GLM: Negative Binomial Regression" href="GLM-negative-binomial-regression.html"/> 
+        <link rel="next" title="Latent Variable Implementation" href="GP-Latent.html"/>
+        <link rel="prev" title="Mean and Covariance Functions" href="GP-MeansAndCovs.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -100,22 +100,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#.marginal_likelihood"><code class="docutils literal"><span class="pre">.marginal_likelihood</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#.conditional"><code class="docutils literal"><span class="pre">.conditional</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#.predict"><code class="docutils literal"><span class="pre">.predict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MeansAndCovs.html">Mean and Covariance Functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Marginal Likelihood Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#The-.marginal_likelihood-method">The <code class="docutils literal"><span class="pre">.marginal_likelihood</span></code> method</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#The-.conditional-distribution">The <code class="docutils literal"><span class="pre">.conditional</span></code> distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Making-predictions">Making predictions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Example:-Regression-with-white,-Gaussian-noise">Example: Regression with white, Gaussian noise</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="GP-Covariances.html">Kernels / Covariance functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-Latent.html">gp.Latent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html#Examples">Examples</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-Latent.html">Latent Variable Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html">Sparse Approximations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html">Student-t Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: CO<span class="math">\(_2\)</span> at Mauna Loa</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
 </ul>
@@ -171,7 +167,7 @@
         
           <li><a href="../examples.html">Examples</a> &raquo;</li>
         
-      <li><code class="docutils literal"><span class="pre">gp.Marginal</span></code></li>
+      <li>Marginal Likelihood Implementation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -384,8 +380,8 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="gp.Marginal">
-<h1><code class="docutils literal"><span class="pre">gp.Marginal</span></code><a class="headerlink" href="#gp.Marginal" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Marginal-Likelihood-Implementation">
+<h1>Marginal Likelihood Implementation<a class="headerlink" href="#Marginal-Likelihood-Implementation" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal"><span class="pre">gp.Marginal</span></code> class implements the more common case of GP
 regression: the observed data are the sum of a GP and Gaussian noise.
 <code class="docutils literal"><span class="pre">gp.Marginal</span></code> has a <code class="docutils literal"><span class="pre">marginal_likelihood</span></code> method, a <code class="docutils literal"><span class="pre">conditional</span></code>
@@ -399,8 +395,8 @@ the function <span class="math">\(f(x)\)</span> is modeled as,</p>
   \epsilon &amp;\sim N(0, \Sigma) \\
   y &amp;= f(x) + \epsilon \\
 \end{aligned}\end{split}\]</div>
-<div class="section" id=".marginal_likelihood">
-<h2><code class="docutils literal"><span class="pre">.marginal_likelihood</span></code><a class="headerlink" href="#.marginal_likelihood" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="The-.marginal_likelihood-method">
+<h2>The <code class="docutils literal"><span class="pre">.marginal_likelihood</span></code> method<a class="headerlink" href="#The-.marginal_likelihood-method" title="Permalink to this headline">¶</a></h2>
 <p>The unknown latent function can be analytically integrated out of the
 product of the GP prior probability with a normal likelihood. This
 quantity is called the marginal likelihood.</p>
@@ -445,8 +441,8 @@ above. Some sample code would be,</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id=".conditional">
-<h2><code class="docutils literal"><span class="pre">.conditional</span></code><a class="headerlink" href="#.conditional" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="The-.conditional-distribution">
+<h2>The <code class="docutils literal"><span class="pre">.conditional</span></code> distribution<a class="headerlink" href="#The-.conditional-distribution" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">.conditional</span></code> has an optional flag for <code class="docutils literal"><span class="pre">pred_noise</span></code>, which
 defaults to <code class="docutils literal"><span class="pre">False</span></code>. When <code class="docutils literal"><span class="pre">pred_noise=False</span></code>, the <code class="docutils literal"><span class="pre">conditional</span></code>
 method produces the predictive distribution for the underlying function
@@ -469,8 +465,8 @@ argument <code class="docutils literal"><span class="pre">given</span></code>. F
 the main documentation page. For an example, see the Mauna Loa
 CO<span class="math">\(_2\)</span> notebook.</p>
 </div>
-<div class="section" id=".predict">
-<h2><code class="docutils literal"><span class="pre">.predict</span></code><a class="headerlink" href="#.predict" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Making-predictions">
+<h2>Making predictions<a class="headerlink" href="#Making-predictions" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">.predict</span></code> method returns the conditional mean and variance of the
 <code class="docutils literal"><span class="pre">gp</span></code> given a <code class="docutils literal"><span class="pre">point</span></code> as NumPy arrays. The <code class="docutils literal"><span class="pre">point</span></code> can be the
 result of <code class="docutils literal"><span class="pre">find_MAP</span></code> or a sample from the trace. The <code class="docutils literal"><span class="pre">.predict</span></code>
@@ -573,13 +569,9 @@ components of additive GPs.</p>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-Optimization terminated successfully.
-         Current function value: 231.669316
-         Iterations: 11
-         Function evaluations: 15
-         Gradient evaluations: 15
+lp = -231.67, ||grad|| = 0.0013468: 100%|██████████| 12/12 [00:00&lt;00:00, 84.33it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -630,19 +622,19 @@ Optimization terminated successfully.
       <th>0</th>
       <td>ℓ</td>
       <td>1.0</td>
-      <td>1.004599</td>
+      <td>1.004619</td>
     </tr>
     <tr>
       <th>1</th>
       <td>η</td>
       <td>3.0</td>
-      <td>3.488956</td>
+      <td>3.488940</td>
     </tr>
     <tr>
       <th>2</th>
       <td>σ</td>
       <td>2.0</td>
-      <td>1.904500</td>
+      <td>1.904490</td>
     </tr>
   </tbody>
 </table>
@@ -675,7 +667,7 @@ Optimization terminated successfully.
 </div>
 <div class="stderr output_area docutils container">
 <div class="highlight"><pre>
-100%|██████████| 2000/2000 [01:42&lt;00:00, 19.54it/s]
+100%|██████████| 2000/2000 [01:51&lt;00:00, 17.98it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -827,10 +819,10 @@ of <code class="docutils literal"><span class="pre">.conditional</span></code> h
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="GP-Covariances.html" class="btn btn-neutral float-right" title="Kernels / Covariance functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="GP-Latent.html" class="btn btn-neutral float-right" title="Latent Variable Implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="GLM-negative-binomial-regression.html" class="btn btn-neutral" title="GLM: Negative Binomial Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="GP-MeansAndCovs.html" class="btn btn-neutral" title="Mean and Covariance Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -113,7 +113,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#Compare-Watanabe---Akaike-Information-Criterion-[WAIC]">Compare Watanabe - Akaike Information Criterion [WAIC]</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Compare-leave-one-out-Cross-Validation-[LOO]">Compare leave-one-out Cross-Validation [LOO]</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Final-remarks-and-tips">Final remarks and tips</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Bayes-Factor">Bayes Factor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="GLM-rolling-regression.html">Rolling Regression</a></li>
@@ -1655,39 +1654,21 @@ doesn’t stand out as much as it did when using DIC</li>
 </div>
 <div class="section" id="Final-remarks-and-tips">
 <h2>Final remarks and tips<a class="headerlink" href="#Final-remarks-and-tips" title="Permalink to this headline">¶</a></h2>
-<p>It is important to keep in mind that, with more data point, the real
+<p>It is important to keep in mind that, with more data points, the real
 underlying model (one that we used to generate the data) should
 outperforms other models.</p>
-<p>In general, PSIS-LOO is recommanded. To quote from <a class="reference external" href="https://github.com/pymc-devs/pymc3/issues/938#issuecomment-313425552">avehtari’s
+<p>In general, PSIS-LOO is recommended. To quote from <a class="reference external" href="https://github.com/pymc-devs/pymc3/issues/938#issuecomment-313425552">avehtari’s
 comment</a>:
 “I also recommend using PSIS-LOO instead of WAIC, because it’s more
 reliable and has better diagnostics as discussed in
 <a class="reference external" href="http://link.springer.com/article/10.1007/s11222-016-9696-4">http://link.springer.com/article/10.1007/s11222-016-9696-4</a> (preprint
 <a class="reference external" href="https://arxiv.org/abs/1507.04544">https://arxiv.org/abs/1507.04544</a>), but if you insist to have one
-information criterion then leave WAIC.”</p>
-<hr class="docutils" />
-</div>
-<hr class="docutils" />
-<div class="section" id="Bayes-Factor">
-<h2>Bayes Factor<a class="headerlink" href="#Bayes-Factor" title="Permalink to this headline">¶</a></h2>
-<p>Following text lifted directly from <a class="reference external" href="https://jakevdp.github.io/blog/2015/08/07/frequentism-and-bayesianism-5-model-selection/">JakeVDP
-blogpost</a></p>
-<p>The Bayesian approach proceeds very differently. Recall that the
-Bayesian model involves computing the odds ratio between two models:</p>
-<div class="math">
-\[O_{21}=\frac{P(M_{2} \;|\; D)}{P(M_{1} \;|\; D)}=\frac{P(D \;|\; M_{2})}{P(D \;|\; M_{1})}\frac{P(M_{2})}{P(M_{1})}\]</div>
-<p>Here the ratio <span class="math">\(\frac{P(M2)}{P(M1)}\)</span> is the prior odds ratio, and
-is often assumed to be equal to 1 if no compelling prior evidence favors
-one model over another. The ratio
-<span class="math">\(\frac{P(D \;|\; M2)}{P(D \;|\; M1)}\)</span> is the <strong>Bayes factor</strong>, and
-is the key to Bayesian model selection.</p>
-<p>The Bayes factor can be computed by evaluating the integral over the
-parameter likelihood:</p>
-<div class="math">
-\[P(D \;|\; M)=\int_{\Omega}P(D \;|\; \theta,M) \; P(\theta \;|\; M) \;d\theta\]</div>
-<p>This integral is over the entire parameter space of the model, and thus
-can be extremely computationally intensive, especially as the dimension
-of the model grows beyond a few.</p>
+information criterion then leave WAIC”. Alternatively Watanabe
+<a class="reference external" href="http://watanabe-www.math.dis.titech.ac.jp/users/swatanab/index.html">says</a>
+“WAIC is a better approximator of the generalization error than the
+pareto smoothing importance sampling cross validation. The Pareto
+smoothing cross validation may be the better approximator of the cross
+validation than WAIC, however, it is not of the generalization error”.</p>
 <p>Example originally contributed by Jonathan Sedar 2016-01-09
 <a class="reference external" href="https://github.com/jonsedar">github.com/jonsedar</a>. Edited by Junpeng
 Lao 2017-07-6 <a class="reference external" href="https://github.com/junpenglao">github.com/junpenglao</a></p>

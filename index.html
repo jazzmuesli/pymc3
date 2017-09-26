@@ -201,8 +201,7 @@
 which focuses on advanced Markov chain Monte Carlo and variational fitting
 algorithms. Its flexibility and extensibility make it applicable to a
 large suite of problems.</p>
-<p>Check out the <a class="reference external" href="http://pymc-devs.github.io/pymc3/notebooks/getting_started.html">getting started
-guide</a>!</p>
+<p>Check out the <a class="reference internal" href="notebooks/getting_started.html"><span class="std std-ref">getting started guide</span></a>!</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
@@ -235,10 +234,9 @@ for large data sets.</li>
 <div class="section" id="if-you-already-know-about-bayesian-statistics">
 <h2>If you already know about Bayesian statistics:<a class="headerlink" href="#if-you-already-know-about-bayesian-statistics" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="http://pymc-devs.github.io/pymc3/notebooks/api_quickstart.html">API quickstart guide</a></li>
-<li>The <a class="reference external" href="http://pymc-devs.github.io/pymc3/notebooks/getting_started.html">PyMC3 tutorial</a></li>
-<li><a class="reference external" href="http://pymc-devs.github.io/pymc3/examples.html">PyMC3 examples</a>
-and the <a class="reference external" href="http://pymc-devs.github.io/pymc3/api.html">API reference</a></li>
+<li><a class="reference internal" href="notebooks/api_quickstart.html"><span class="std std-ref">API quickstart guide</span></a></li>
+<li>The <a class="reference internal" href="notebooks/getting_started.html"><span class="std std-ref">PyMC3 tutorial</span></a></li>
+<li><a class="reference internal" href="examples.html#examples"><span class="std std-ref">PyMC3 examples</span></a> and the <a class="reference internal" href="api.html#api"><span class="std std-ref">API reference</span></a></li>
 </ul>
 </div>
 <div class="section" id="learn-bayesian-statistics-with-a-book-together-with-pymc3">
@@ -388,6 +386,13 @@ page</a></p>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/variational_api_quickstart.html#Minibatches">Minibatches</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gp.html">Gaussian Processes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gp.html#gp-basics">GP Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gp.html#mean-and-covariance-functions">Mean and covariance functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gp.html#gp-implementations">GP Implementations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gp.html#additive-gps">Additive GPs</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="theano.html">PyMC3 and Theano</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="theano.html#what-is-theano">What is Theano</a></li>
 <li class="toctree-l3"><a class="reference internal" href="theano.html#how-pymc3-uses-theano">How PyMC3 uses Theano</a></li>
@@ -413,6 +418,7 @@ page</a></p>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/posterior_predictive.html">Posterior Predictive Checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/model_comparison.html">Model comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/model_averaging.html">Model averaging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Bayes_factor.html">Bayes Factors and Marginal Likelihood</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/howto_debugging.html">How to debug a model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/LKJ.html">LKJ Cholesky Covariance Priors for Multivariate Normal Models</a></li>
@@ -441,16 +447,12 @@ page</a></p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#gaussian-processes">Gaussian Processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Covariances.html">Kernels / Covariance functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Latent.html">gp.Latent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Examples">Examples</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html">Mean and Covariance Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html">Marginal Likelihood Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Latent.html">Latent Variable Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html">Sparse Approximations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-TProcess.html">Student-t Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: CO<span class="math">\(_2\)</span> at Mauna Loa</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
 </ul>
@@ -493,11 +495,9 @@ page</a></p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/glm.html">Generalized Linear Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/gp.html">Gaussian Processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/gp.html#module-pymc3.gp.gp">GP</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/gp.html#covariance-functions-kernels">Covariance Functions / Kernels</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="api/gp.html">GP Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/gp.html#mean-functions">Mean Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/gp.html#covariance-functions">Covariance Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/plots.html">Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/stats.html">Stats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/diagnostics.html">Diagnostics</a></li>

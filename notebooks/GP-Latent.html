@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gp.Latent &mdash; PyMC3 3.1 documentation</title>
+  <title>Latent Variable Implementation &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="gp.MarginalSparse" href="GP-SparseApprox.html"/>
-        <link rel="prev" title="Kernels / Covariance functions" href="GP-Covariances.html"/> 
+        <link rel="next" title="Sparse Approximations" href="GP-SparseApprox.html"/>
+        <link rel="prev" title="Marginal Likelihood Implementation" href="GP-Marginal.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -100,22 +100,18 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-Covariances.html">Kernels / Covariance functions</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">gp.Latent</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GP-MeansAndCovs.html">Mean and Covariance Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-Marginal.html">Marginal Likelihood Implementation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Latent Variable Implementation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#.prior"><code class="docutils literal"><span class="pre">.prior</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#.conditional"><code class="docutils literal"><span class="pre">.conditional</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Example-1:-Regression-with-Student-T-distributed-noise">Example 1: Regression with Student-T distributed noise</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Example-2:-Classification">Example 2: Classification</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html#Examples">Examples</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-SparseApprox.html">Sparse Approximations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html">Student-t Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: CO<span class="math">\(_2\)</span> at Mauna Loa</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
 </ul>
@@ -171,7 +167,7 @@
         
           <li><a href="../examples.html">Examples</a> &raquo;</li>
         
-      <li>gp.Latent</li>
+      <li>Latent Variable Implementation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -384,8 +380,8 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="gp.Latent">
-<h1>gp.Latent<a class="headerlink" href="#gp.Latent" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Latent-Variable-Implementation">
+<h1>Latent Variable Implementation<a class="headerlink" href="#Latent-Variable-Implementation" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal"><span class="pre">gp.Latent</span></code> class is a direct implementation of a GP. It is called
 “Latent” because the underlying function values are treated as latent
 variables. It has a <code class="docutils literal"><span class="pre">prior</span></code> method, and a <code class="docutils literal"><span class="pre">conditional</span></code> method.
@@ -468,10 +464,7 @@ a GP.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;/home/bill/pymc3/&quot;</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
+<span></span><span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
 <span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">tt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
@@ -873,10 +866,10 @@ Initializing NUTS using jitter+adapt_diag...
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="GP-SparseApprox.html" class="btn btn-neutral float-right" title="gp.MarginalSparse" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="GP-SparseApprox.html" class="btn btn-neutral float-right" title="Sparse Approximations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="GP-Covariances.html" class="btn btn-neutral" title="Kernels / Covariance functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="GP-Marginal.html" class="btn btn-neutral" title="Marginal Likelihood Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

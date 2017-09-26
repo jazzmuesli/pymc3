@@ -101,6 +101,7 @@
 <li class="toctree-l3"><a class="reference internal" href="notebooks/posterior_predictive.html">Posterior Predictive Checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/model_comparison.html">Model comparison</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/model_averaging.html">Model averaging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Bayes_factor.html">Bayes Factors and Marginal Likelihood</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/howto_debugging.html">How to debug a model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/PyMC3_tips_and_heuristic.html">PyMC3 Modeling tips and heuristic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/LKJ.html">LKJ Cholesky Covariance Priors for Multivariate Normal Models</a></li>
@@ -129,16 +130,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#gaussian-processes">Gaussian Processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Covariances.html">Kernels / Covariance functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Latent.html">gp.Latent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Examples">Examples</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html">Mean and Covariance Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html">Marginal Likelihood Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Latent.html">Latent Variable Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html">Sparse Approximations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-TProcess.html">Student-t Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: CO<span class="math">\(_2\)</span> at Mauna Loa</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
 </ul>
@@ -308,6 +305,19 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/model_averaging.html#Pseudo-Bayesian-model-averaging-with-Bayesian-Bootstrapping">Pseudo Bayesian model averaging with Bayesian Bootstrapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/model_averaging.html#Stacking">Stacking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/model_averaging.html#Weighted-posterior-predictive-samples">Weighted posterior predictive samples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Bayes_factor.html">Bayes Factors and Marginal Likelihood</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Bayes_factor.html#Bayesian-model-selection">Bayesian model selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Bayes_factor.html#Bayesian-model-averaging">Bayesian model averaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Bayes_factor.html#Some-remarks">Some remarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Bayes_factor.html#Computing-Bayes-factors">Computing Bayes factors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Bayes_factor.html#Using-a-hierarchical-model">Using a hierarchical model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Bayes_factor.html#Analytically">Analytically</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Bayes_factor.html#Sequential-Monte-Carlo">Sequential Monte Carlo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Bayes_factor.html#Bayes-factors-and-inference">Bayes factors and inference</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/howto_debugging.html">How to debug a model</a></li>
@@ -492,7 +502,6 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GLM-model-selection.html#Compare-Watanabe---Akaike-Information-Criterion-[WAIC]">Compare Watanabe - Akaike Information Criterion [WAIC]</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GLM-model-selection.html#Compare-leave-one-out-Cross-Validation-[LOO]">Compare leave-one-out Cross-Validation [LOO]</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GLM-model-selection.html#Final-remarks-and-tips">Final remarks and tips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GLM-model-selection.html#Bayes-Factor">Bayes Factor</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/GLM-rolling-regression.html">Rolling Regression</a><ul>
@@ -583,10 +592,45 @@
 <h2>Gaussian Processes<a class="headerlink" href="#gaussian-processes" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#.marginal_likelihood"><code class="docutils literal"><span class="pre">.marginal_likelihood</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#.conditional"><code class="docutils literal"><span class="pre">.conditional</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#.predict"><code class="docutils literal"><span class="pre">.predict</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html">Mean and Covariance Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Mean-functions">Mean functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Zero">Zero</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Constant">Constant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Linear">Linear</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Defining-a-custom-mean-function">Defining a custom mean function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Covariance-functions">Covariance functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Exponentiated-Quadratic">Exponentiated Quadratic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Two-(and-higher)-Dimensional-Inputs">Two (and higher) Dimensional Inputs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Both-dimensions-active">Both dimensions active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#One-dimension-active">One dimension active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Product-of-covariances-over-different-dimensions">Product of covariances over different dimensions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#White-Noise">White Noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Constant">Constant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Rational-Quadratic">Rational Quadratic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Exponential">Exponential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Matern-5/2">Matern 5/2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Matern-3/2">Matern 3/2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Cosine">Cosine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Linear">Linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Polynomial">Polynomial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Multiplication-with-a-precomputed-covariance-matrix">Multiplication with a precomputed covariance matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Applying-an-arbitary-warping-function-on-the-inputs">Applying an arbitary warping function on the inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Constructing-Periodic-using-WarpedInput">Constructing <code class="docutils literal"><span class="pre">Periodic</span></code> using <code class="docutils literal"><span class="pre">WarpedInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Periodic">Periodic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Gibbs">Gibbs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-MeansAndCovs.html#Defining-a-custom-covariance-function">Defining a custom covariance function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-Marginal.html">Marginal Likelihood Implementation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#The-.marginal_likelihood-method">The <code class="docutils literal"><span class="pre">.marginal_likelihood</span></code> method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#The-.conditional-distribution">The <code class="docutils literal"><span class="pre">.conditional</span></code> distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#Making-predictions">Making predictions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Marginal.html#Example:-Regression-with-white,-Gaussian-noise">Example: Regression with white, Gaussian noise</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html#Using-.conditional">Using <code class="docutils literal"><span class="pre">.conditional</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Marginal.html#Using-.predict">Using <code class="docutils literal"><span class="pre">.predict</span></code></a></li>
@@ -594,30 +638,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-Covariances.html">Kernels / Covariance functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Exponentiated-Quadratic">Exponentiated Quadratic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Two-(and-higher)-Dimensional-Inputs">Two (and higher) Dimensional Inputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Both-dimensions-active">Both dimensions active</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#One-dimension-active">One dimension active</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Product-of-two-covariances,-active-over-each-dimension">Product of two covariances, active over each dimension</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#White-Noise">White Noise</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Rational-Quadratic">Rational Quadratic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Exponential">Exponential</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Matern-5/2">Matern 5/2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Matern-3/2">Matern 3/2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Cosine">Cosine</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Linear">Linear</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Polynomial">Polynomial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Multiplication-with-a-precomputed-covariance-matrix">Multiplication with a precomputed covariance matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Applying-an-arbitary-warping-function-on-the-inputs">Applying an arbitary warping function on the inputs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Covariances.html#Periodic">Periodic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-Covariances.html#Locally-Periodic-(Gabor)">Locally Periodic (Gabor)</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Covariances.html#Gibbs">Gibbs</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-Latent.html">gp.Latent</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-Latent.html">Latent Variable Implementation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Latent.html#.prior"><code class="docutils literal"><span class="pre">.prior</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Latent.html#.conditional"><code class="docutils literal"><span class="pre">.conditional</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Latent.html#Example-1:-Regression-with-Student-T-distributed-noise">Example 1: Regression with Student-T distributed noise</a><ul>
@@ -629,30 +650,28 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-Latent.html#Example-2:-Classification">Example 2: Classification</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-SparseApprox.html"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Examples">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Initializing-the-inducing-points-with-K-means">Initializing the inducing points with K-means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Optimizing-inducing-point-locations-as-part-of-the-model">Optimizing inducing point locations as part of the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-SparseApprox.html">Sparse Approximations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Initializing-the-inducing-points-with-K-means">Initializing the inducing points with K-means</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/GP-SparseApprox.html#Optimizing-inducing-point-locations-as-part-of-the-model">Optimizing inducing point locations as part of the model</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a><ul>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-TProcess.html">Student-t Process</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-TProcess.html#Samples-from-a-TP-prior">Samples from a TP prior</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-TProcess.html#Poisson-data-generated-by-a-T-process">Poisson data generated by a T process</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: The Keeling Curve</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MaunaLoa.html">Example: CO<span class="math">\(_2\)</span> at Mauna Loa</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Preparing-the-data">Preparing the data</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Hyperparameter-priors">Hyperparameter priors</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Examining-the-fit">Examining the fit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/GP-MaunaLoa.html#Prediction">Prediction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Gaussian-Process-Regression">Gaussian Process Regression</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/GP-slice-sampling.html#Generate-some-example-data">Generate some example data</a></li>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gp.MarginalSparse &mdash; PyMC3 3.1 documentation</title>
+  <title>Sparse Approximations &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
         <link rel="up" title="Examples" href="../examples.html"/>
-        <link rel="next" title="gp.TP" href="GP-TProcess.html"/>
-        <link rel="prev" title="gp.Latent" href="GP-Latent.html"/> 
+        <link rel="next" title="Student-t Process" href="GP-TProcess.html"/>
+        <link rel="prev" title="Latent Variable Implementation" href="GP-Latent.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -100,20 +100,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#applied">Applied</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#glm">GLM</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../examples.html#gaussian-processes">Gaussian Processes</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="GP-Marginal.html"><code class="docutils literal"><span class="pre">gp.Marginal</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-Covariances.html">Kernels / Covariance functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-Latent.html">gp.Latent</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Examples">Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Initializing-the-inducing-points-with-K-means">Initializing the inducing points with K-means</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Optimizing-inducing-point-locations-as-part-of-the-model">Optimizing inducing point locations as part of the model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MeansAndCovs.html">Mean and Covariance Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-Marginal.html">Marginal Likelihood Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-Latent.html">Latent Variable Implementation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sparse Approximations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Examples">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html"><code class="docutils literal"><span class="pre">gp.TP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: The Keeling Curve</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Modeling-the-Keeling-Curve-using-GPs">Modeling the Keeling Curve using GPs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#The-model-in-PyMC3">The model in PyMC3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html#Prediction">Prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-TProcess.html">Student-t Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GP-MaunaLoa.html">Example: CO<span class="math">\(_2\)</span> at Mauna Loa</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-slice-sampling.html">Gaussian Process Regression and Classification with Elliptical Slice Sampling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GP-smoothing.html">Gaussian Process (GP) smoothing</a></li>
 </ul>
@@ -169,7 +164,7 @@
         
           <li><a href="../examples.html">Examples</a> &raquo;</li>
         
-      <li><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code></li>
+      <li>Sparse Approximations</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -382,8 +377,8 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="gp.MarginalSparse">
-<h1><code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code><a class="headerlink" href="#gp.MarginalSparse" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Sparse-Approximations">
+<h1>Sparse Approximations<a class="headerlink" href="#Sparse-Approximations" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal"><span class="pre">gp.MarginalSparse</span></code> class implements sparse, or inducing point, GP
 approximations. It works identically to <code class="docutils literal"><span class="pre">gp.Marginal</span></code>, except it
 additionally requires the locations of the inducing points (denoted
@@ -414,9 +409,8 @@ inducing points.</p>
 2006</a> and
 <a class="reference external" href="https://pdfs.semanticscholar.org/9c13/b87b5efb4bb011acc89d90b15f637fa48593.pdf">Titsias
 2009</a>.</p>
-</div>
 <div class="section" id="Examples">
-<h1>Examples<a class="headerlink" href="#Examples" title="Permalink to this headline">¶</a></h1>
+<h2>Examples<a class="headerlink" href="#Examples" title="Permalink to this headline">¶</a></h2>
 <p>For the following examples, we use the same data set as was used in the
 <code class="docutils literal"><span class="pre">gp.Marginal</span></code> example, but with more data points.</p>
 <div class="nbinput nblast docutils container">
@@ -482,7 +476,7 @@ inducing points.</p>
 </div>
 </div>
 <div class="section" id="Initializing-the-inducing-points-with-K-means">
-<h2>Initializing the inducing points with K-means<a class="headerlink" href="#Initializing-the-inducing-points-with-K-means" title="Permalink to this headline">¶</a></h2>
+<h3>Initializing the inducing points with K-means<a class="headerlink" href="#Initializing-the-inducing-points-with-K-means" title="Permalink to this headline">¶</a></h3>
 <p>We use the NUTS sampler and the <code class="docutils literal"><span class="pre">FITC</span></code> approximation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none"><div class="highlight"><pre>
@@ -582,7 +576,7 @@ Interrupted at 10,600 [5%]: Average Loss = 4,654.4
 </div>
 </div>
 <div class="section" id="Optimizing-inducing-point-locations-as-part-of-the-model">
-<h2>Optimizing inducing point locations as part of the model<a class="headerlink" href="#Optimizing-inducing-point-locations-as-part-of-the-model" title="Permalink to this headline">¶</a></h2>
+<h3>Optimizing inducing point locations as part of the model<a class="headerlink" href="#Optimizing-inducing-point-locations-as-part-of-the-model" title="Permalink to this headline">¶</a></h3>
 <p>For demonstration purposes, we set <code class="docutils literal"><span class="pre">approx=&quot;VFE&quot;</span></code>. Any inducing point
 initialization can be done with any approximation.</p>
 <div class="nbinput docutils container">
@@ -655,6 +649,7 @@ lp = -4,298.1, ||grad|| = 2.834e-05:   0%|          | 116/50000 [00:01&lt;10:36,
 </div>
 </div>
 </div>
+</div>
 
 
            </div>
@@ -666,10 +661,10 @@ lp = -4,298.1, ||grad|| = 2.834e-05:   0%|          | 116/50000 [00:01&lt;10:36,
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="GP-TProcess.html" class="btn btn-neutral float-right" title="gp.TP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="GP-TProcess.html" class="btn btn-neutral float-right" title="Student-t Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="GP-Latent.html" class="btn btn-neutral" title="gp.Latent" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="GP-Latent.html" class="btn btn-neutral" title="Latent Variable Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

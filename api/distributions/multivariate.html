@@ -107,7 +107,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../inference.html">Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../glm.html">Generalized Linear Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gp.html">Gaussian Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html">GP Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html#mean-functions">Mean Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gp.html#covariance-functions">Covariance Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plots.html">Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../stats.html">Stats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../diagnostics.html">Diagnostics</a></li>
@@ -456,10 +458,11 @@ over the n trials.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<em>int</em><em> or </em><em>array</em>) – Number of trials (n &gt; 0).</li>
+<li><strong>n</strong> (<em>int</em><em> or </em><em>array</em>) – Number of trials (n &gt; 0). If n is an array its shape must be (N,) with
+N = p.shape[0]</li>
 <li><strong>p</strong> (<em>one-</em><em> or </em><em>two-dimensional array</em>) – Probability of each one of the different outcomes. Elements must
-be non-negative and sum to 1 along the last axis. They will be automatically
-rescaled otherwise.</li>
+be non-negative and sum to 1 along the last axis. They will be
+automatically rescaled otherwise.</li>
 </ul>
 </td>
 </tr>

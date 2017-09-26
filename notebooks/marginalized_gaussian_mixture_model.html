@@ -483,11 +483,10 @@ x\ |\ z
     &amp; \sim N(\mu_z, \tau^{-1}_z).
 \end{align*}\end{split}\]</div>
 <p>An implementation of this parameterization in PyMC3 is available
-<a class="reference external" href="http://pymc-devs.github.io/pymc3/notebooks/gaussian_mixture_model.html">here</a>.
-A drawback of this parameterization is that is posterior relies on
-sampling the discrete latent variable <span class="math">\(z\)</span>. This reliance can cause
-slow mixing and ineffective exploration of the tails of the
-distribution.</p>
+<a class="reference internal" href="gaussian_mixture_model.html"><span class="doc">here</span></a>. A drawback of this
+parameterization is that is posterior relies on sampling the discrete
+latent variable <span class="math">\(z\)</span>. This reliance can cause slow mixing and
+ineffective exploration of the tails of the distribution.</p>
 <p>An alternative, equivalent parameterization that addresses these
 problems is to marginalize over <span class="math">\(z\)</span>. The marginalized model is</p>
 <div class="math">

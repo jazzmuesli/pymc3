@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gaussian Processes &mdash; PyMC3 3.1 documentation</title>
+  <title>GP Implementations &mdash; PyMC3 3.1 documentation</title>
   
 
   
@@ -101,11 +101,9 @@
 <li class="toctree-l2"><a class="reference internal" href="bounds.html">Bounded Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html">Inference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="glm.html">Generalized Linear Models</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Gaussian Processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-pymc3.gp.gp">GP</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#covariance-functions-kernels">Covariance Functions / Kernels</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GP Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mean-functions">Mean Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#covariance-functions">Covariance Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plots.html">Plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Stats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diagnostics.html">Diagnostics</a></li>
@@ -160,7 +158,7 @@
         
           <li><a href="../api.html">API Reference</a> &raquo;</li>
         
-      <li>Gaussian Processes</li>
+      <li>GP Implementations</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -213,10 +211,8 @@
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="gaussian-processes">
-<h1>Gaussian Processes<a class="headerlink" href="#gaussian-processes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-pymc3.gp.gp">
-<span id="gp"></span><h2>GP<a class="headerlink" href="#module-pymc3.gp.gp" title="Permalink to this headline">¶</a></h2>
+<span id="gp-implementations"></span><h1>GP Implementations<a class="headerlink" href="#module-pymc3.gp.gp" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pymc3.gp.gp.Latent">
 <em class="property">class </em><code class="descclassname">pymc3.gp.gp.</code><code class="descname">Latent</code><span class="sig-paren">(</span><em>mean_func=&lt;pymc3.gp.mean.Zero object&gt;</em>, <em>cov_func=&lt;pymc3.gp.cov.Constant object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Latent" title="Permalink to this definition">¶</a></dt>
@@ -225,7 +221,7 @@
 noise is assumed.  It is called “Latent” because the underlying function
 values are treated as latent variables.  It has a <cite>prior</cite> method and a
 <cite>conditional</cite> method.  Given a mean and covariance function the
-function $f(x)$ is modeled as,</p>
+function <span class="math">\(f(x)\)</span> is modeled as,</p>
 <div class="math">
 \[f(x) \sim \mathcal{GP}\left(\mu(x), k(x, x')\right)\]</div>
 <p>Use the <cite>prior</cite> and <cite>conditional</cite> methods to actually construct random
@@ -272,10 +268,9 @@ see their docstrings.</p>
 </div>
 <dl class="method">
 <dt id="pymc3.gp.gp.Latent.conditional">
-<code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>given={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Latent.conditional" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the conditional distribution evaluated over new input</div></blockquote>
-<p>locations <cite>Xnew</cite>.</p>
+<code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>given=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Latent.conditional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the conditional distribution evaluated over new input
+locations <cite>Xnew</cite>.</p>
 <p>Given a set of function values <cite>f</cite> that
 the GP prior was over, the conditional distribution over a
 set of new points, <cite>f_*</cite> is</p>
@@ -305,9 +300,8 @@ constructor.</li>
 <dl class="method">
 <dt id="pymc3.gp.gp.Latent.prior">
 <code class="descname">prior</code><span class="sig-paren">(</span><em>name</em>, <em>X</em>, <em>reparameterize=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Latent.prior" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the GP prior distribution evaluated over the input</div></blockquote>
-<p>locations <cite>X</cite>.</p>
+<dd><p>Returns the GP prior distribution evaluated over the input
+locations <cite>X</cite>.</p>
 <p>This is the prior probability over the space
 of functions described by its mean and covariance function.</p>
 <div class="math">
@@ -379,10 +373,9 @@ information on the <cite>prior</cite> and <cite>conditional</cite> methods, see 
 </div>
 <dl class="method">
 <dt id="pymc3.gp.gp.Marginal.conditional">
-<code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>pred_noise=False</em>, <em>given={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.conditional" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the conditional distribution evaluated over new input</div></blockquote>
-<p>locations <cite>Xnew</cite>.</p>
+<code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>pred_noise=False</em>, <em>given=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.conditional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the conditional distribution evaluated over new input
+locations <cite>Xnew</cite>.</p>
 <p>Given a set of function values <cite>f</cite> that the GP prior was over, the
 conditional distribution over a set of new points, <cite>f_*</cite> is:</p>
 <div class="math">
@@ -414,9 +407,8 @@ constructor.</li>
 <dl class="method">
 <dt id="pymc3.gp.gp.Marginal.marginal_likelihood">
 <code class="descname">marginal_likelihood</code><span class="sig-paren">(</span><em>name</em>, <em>X</em>, <em>y</em>, <em>noise</em>, <em>is_observed=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.marginal_likelihood" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the marginal likelihood distribution, given the input</div></blockquote>
-<p>locations <cite>X</cite> and the data <cite>y</cite>.</p>
+<dd><p>Returns the marginal likelihood distribution, given the input
+locations <cite>X</cite> and the data <cite>y</cite>.</p>
 <p>This is integral over the product of the GP prior and a normal likelihood.</p>
 <div class="math">
 \[y \mid X,\theta \sim \int p(y \mid f,\, X,\, \theta) \, p(f \mid X,\, \theta) \, df\]</div>
@@ -445,7 +437,7 @@ constructor.</li>
 
 <dl class="method">
 <dt id="pymc3.gp.gp.Marginal.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>Xnew</em>, <em>point=None</em>, <em>diag=False</em>, <em>pred_noise=False</em>, <em>given={}</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>Xnew</em>, <em>point=None</em>, <em>diag=False</em>, <em>pred_noise=False</em>, <em>given=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean vector and covariance matrix of the conditional
 distribution as numpy arrays, given a <cite>point</cite>, such as the MAP
 estimate or a sample from a <cite>trace</cite>.</p>
@@ -471,7 +463,7 @@ Default is <cite>False</cite>.</li>
 
 <dl class="method">
 <dt id="pymc3.gp.gp.Marginal.predictt">
-<code class="descname">predictt</code><span class="sig-paren">(</span><em>Xnew</em>, <em>diag=False</em>, <em>pred_noise=False</em>, <em>given={}</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.predictt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predictt</code><span class="sig-paren">(</span><em>Xnew</em>, <em>diag=False</em>, <em>pred_noise=False</em>, <em>given=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.Marginal.predictt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean vector and covariance matrix of the conditional
 distribution as symbolic variables.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -502,7 +494,7 @@ Default is <cite>False</cite>.</li>
 <p>The usage is nearly identical to that of <cite>gp.Latent</cite>.  The differences
 are that it must be initialized with a degrees of freedom parameter, and
 TP is not additive.  Given a mean and covariance function, and a degrees of
-freedom parameter, the function $f(x)$ is modeled as,</p>
+freedom parameter, the function <span class="math">\(f(x)\)</span> is modeled as,</p>
 <div class="math">
 \[f(X) \sim \mathcal{TP}\left( \mu(X), k(X, X'), \nu \right)\]</div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -513,18 +505,21 @@ freedom parameter, the function $f(x)$ is modeled as,</p>
 <li><strong>cov_func</strong> (<em>None</em><em>, </em><em>2D array</em><em>, or </em><em>instance of Covariance</em>) – The covariance function.  Defaults to zero.</li>
 <li><strong>mean_func</strong> (<em>None</em><em>, </em><em>instance of Mean</em>) – The mean function.  Defaults to zero.</li>
 <li><strong>nu</strong> (<em>float</em>) – The degrees of freedom</li>
-<li><strong>more information</strong><strong>, </strong><strong>see https</strong> (<em>For</em>) – </li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Shah, A., Wilson, A. G., and Ghahramani, Z. (2014).  Student-t
+Processes as Alternatives to Gaussian Processes.  arXiv preprint arXiv:1402.4306.</li>
+</ul>
 <dl class="method">
 <dt id="pymc3.gp.gp.TP.conditional">
 <code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.TP.conditional" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the conditional distribution evaluated over new input</div></blockquote>
-<p>locations <cite>Xnew</cite>.</p>
+<dd><p>Returns the conditional distribution evaluated over new input
+locations <cite>Xnew</cite>.</p>
 <p>Given a set of function values <cite>f</cite> that
 the TP prior was over, the conditional distribution over a
 set of new points, <cite>f_*</cite> is</p>
@@ -547,9 +542,8 @@ constructor.</li>
 <dl class="method">
 <dt id="pymc3.gp.gp.TP.prior">
 <code class="descname">prior</code><span class="sig-paren">(</span><em>name</em>, <em>X</em>, <em>reparameterize=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.TP.prior" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the TP prior distribution evaluated over the input</div></blockquote>
-<p>locations <cite>X</cite>.</p>
+<dd><p>Returns the TP prior distribution evaluated over the input
+locations <cite>X</cite>.</p>
 <p>This is the prior probability over the space
 of functions described by its mean and covariance function.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -585,10 +579,6 @@ available approximations are:</p>
 <li>FITC: Fully independent Training Conditional</li>
 <li>VFE: Variational Free Energy</li>
 </ul>
-<p>For more information on these approximations, see e.g. “A unifying view of
-sparse approximate Gaussian process regression”, 2005, <em>Quinonero-Candela, Rasmussen</em>,
-and “Variational Learning of Inducing Variables in Sparse Gaussian Processes”,
-2009, <em>Titsias</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -630,12 +620,18 @@ and “Variational Learning of Inducing Variables in Sparse Gaussian Processes�
     <span class="n">fcond</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="s2">&quot;fcond&quot;</span><span class="p">,</span> <span class="n">Xnew</span><span class="o">=</span><span class="n">Xnew</span><span class="p">)</span>
 </pre></div>
 </div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>Quinonero-Candela, J., and Rasmussen, C. (2005). A Unifying View of
+Sparse Approximate Gaussian Process Regression.</li>
+<li>Titsias, M. (2009). Variational Learning of Inducing Variables in
+Sparse Gaussian Processes.</li>
+</ul>
 <dl class="method">
 <dt id="pymc3.gp.gp.MarginalSparse.conditional">
-<code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>pred_noise=False</em>, <em>given={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.MarginalSparse.conditional" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the approximate conditional distribution of the GP evaluated over</div></blockquote>
-<p>new input locations <cite>Xnew</cite>.</p>
+<code class="descname">conditional</code><span class="sig-paren">(</span><em>name</em>, <em>Xnew</em>, <em>pred_noise=False</em>, <em>given=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.MarginalSparse.conditional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the approximate conditional distribution of the GP evaluated over
+new input locations <cite>Xnew</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -661,9 +657,8 @@ constructor.</li>
 <dl class="method">
 <dt id="pymc3.gp.gp.MarginalSparse.marginal_likelihood">
 <code class="descname">marginal_likelihood</code><span class="sig-paren">(</span><em>name</em>, <em>X</em>, <em>Xu</em>, <em>y</em>, <em>sigma</em>, <em>is_observed=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.gp.gp.MarginalSparse.marginal_likelihood" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div>Returns the approximate marginal likelihood distribution, given the input</div></blockquote>
-<p>locations <cite>X</cite>, inducing point locations <cite>Xu</cite>, data <cite>y</cite>, and white noise
+<dd><p>Returns the approximate marginal likelihood distribution, given the input
+locations <cite>X</cite>, inducing point locations <cite>Xu</cite>, data <cite>y</cite>, and white noise
 standard deviations <cite>sigma</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -691,14 +686,40 @@ constructor.</li>
 </dd></dl>
 
 </div>
-<div class="section" id="covariance-functions-kernels">
-<h2>Covariance Functions / Kernels<a class="headerlink" href="#covariance-functions-kernels" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mean-functions">
+<h1>Mean Functions<a class="headerlink" href="#mean-functions" title="Permalink to this headline">¶</a></h1>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">Zero</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.Constant" title="pymc3.gp.cov.Constant"><code class="xref py py-obj docutils literal"><span class="pre">Constant</span></code></a>(c)</td>
+<td>Constant valued covariance function.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.Linear" title="pymc3.gp.cov.Linear"><code class="xref py py-obj docutils literal"><span class="pre">Linear</span></code></a>(input_dim,&nbsp;c[,&nbsp;active_dims])</td>
+<td>The Linear kernel.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="covariance-functions">
+<h1>Covariance Functions<a class="headerlink" href="#covariance-functions" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.Constant" title="pymc3.gp.cov.Constant"><code class="xref py py-obj docutils literal"><span class="pre">Constant</span></code></a>(c)</td>
+<td>Constant valued covariance function.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.WhiteNoise" title="pymc3.gp.cov.WhiteNoise"><code class="xref py py-obj docutils literal"><span class="pre">WhiteNoise</span></code></a>(sigma)</td>
+<td>White noise covariance function.</td>
+</tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.ExpQuad" title="pymc3.gp.cov.ExpQuad"><code class="xref py py-obj docutils literal"><span class="pre">ExpQuad</span></code></a>(input_dim[,&nbsp;ls,&nbsp;ls_inv,&nbsp;active_dims])</td>
 <td>The Exponentiated Quadratic kernel.</td>
 </tr>
@@ -717,16 +738,19 @@ constructor.</li>
 <tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.Cosine" title="pymc3.gp.cov.Cosine"><code class="xref py py-obj docutils literal"><span class="pre">Cosine</span></code></a>(input_dim[,&nbsp;ls,&nbsp;ls_inv,&nbsp;active_dims])</td>
 <td>The Cosine kernel.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.Linear" title="pymc3.gp.cov.Linear"><code class="xref py py-obj docutils literal"><span class="pre">Linear</span></code></a>(input_dim,&nbsp;c[,&nbsp;active_dims])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.Periodic" title="pymc3.gp.cov.Periodic"><code class="xref py py-obj docutils literal"><span class="pre">Periodic</span></code></a>(input_dim,&nbsp;period[,&nbsp;ls,&nbsp;ls_inv,&nbsp;…])</td>
+<td>The Periodic kernel.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.Linear" title="pymc3.gp.cov.Linear"><code class="xref py py-obj docutils literal"><span class="pre">Linear</span></code></a>(input_dim,&nbsp;c[,&nbsp;active_dims])</td>
 <td>The Linear kernel.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.Polynomial" title="pymc3.gp.cov.Polynomial"><code class="xref py py-obj docutils literal"><span class="pre">Polynomial</span></code></a>(input_dim,&nbsp;c,&nbsp;d,&nbsp;offset[,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.Polynomial" title="pymc3.gp.cov.Polynomial"><code class="xref py py-obj docutils literal"><span class="pre">Polynomial</span></code></a>(input_dim,&nbsp;c,&nbsp;d,&nbsp;offset[,&nbsp;…])</td>
 <td>The Polynomial kernel.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.WarpedInput" title="pymc3.gp.cov.WarpedInput"><code class="xref py py-obj docutils literal"><span class="pre">WarpedInput</span></code></a>(input_dim,&nbsp;cov_func,&nbsp;warp_func)</td>
+<tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.WarpedInput" title="pymc3.gp.cov.WarpedInput"><code class="xref py py-obj docutils literal"><span class="pre">WarpedInput</span></code></a>(input_dim,&nbsp;cov_func,&nbsp;warp_func)</td>
 <td>Warp the inputs of any kernel using an arbitrary function defined using Theano.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#pymc3.gp.cov.Gibbs" title="pymc3.gp.cov.Gibbs"><code class="xref py py-obj docutils literal"><span class="pre">Gibbs</span></code></a>(input_dim,&nbsp;lengthscale_func[,&nbsp;args,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#pymc3.gp.cov.Gibbs" title="pymc3.gp.cov.Gibbs"><code class="xref py py-obj docutils literal"><span class="pre">Gibbs</span></code></a>(input_dim,&nbsp;lengthscale_func[,&nbsp;args,&nbsp;…])</td>
 <td>The Gibbs kernel.</td>
 </tr>
 </tbody>
@@ -868,7 +892,6 @@ using Theano.  Only tested in one dimension.</p>
 </table>
 </dd></dl>
 
-</div>
 </div>
 
 
