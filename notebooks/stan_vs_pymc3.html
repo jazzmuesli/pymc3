@@ -1,0 +1,583 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>STAN vs PyMC3: A biased comparison &#8212; PyMC3 3.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="STAN-vs-PyMC3:-A-biased-comparison">
+<h1>STAN vs PyMC3: A biased comparison<a class="headerlink" href="#STAN-vs-PyMC3:-A-biased-comparison" title="Permalink to this headline">¶</a></h1>
+<p>In this blog post I want to look at some differences between STAN and
+PyMC3. As a PyMC3 developer myself I won’t even pretend that I would be
+able to do so in a fair and unbiased way. In fact the idea is rather to
+highlight PyMC3’s strengths, but I will do my best to be fair.</p>
+<p>Lets start with how amazing STAN is. It is carefully crafted, written in
+highly performant C++, has a fantastic community, and has introduced
+many revolutionary features that PyMC3 has been directly inspired by or
+just straight-out copied (NUTS, ADVI, auto-transforming of variables to
+name but a few). The developers are also the academics resposnsible for
+advancing a lot of the theory underlying the inference. Moreover, the
+STAN developers have been very generous with their time and have been
+helping PyMC3 development on more than a few occasions.</p>
+<p>At the same time, I think PyMC3 has a few key advantages. These result
+mainly from being written to use <code class="docutils literal"><span class="pre">Theano</span></code>. Out of the gate, PyMC3
+starts with autodiff, JIT compilation to C, powerful linear algebra
+support. All that without having to write a single line of C, C++, or
+CUDA code – PyMC3’s code base is 100% Python.</p>
+<p>Let’s start with a few basic things:</p>
+<div class="section" id="Syntax">
+<h2>Syntax<a class="headerlink" href="#Syntax" title="Permalink to this headline">¶</a></h2>
+<p>STAN has a <a href="#id1"><span class="problematic" id="id2">`DSL &lt;&gt;`__</span></a> to write models that is heavily inspired by the
+BUGS language. With [PyStan] you can specify and fit models in Python
+but the model specification will have to be a string.</p>
+<p>PyMC3 allows you to build models and run inference in Python. The Random
+Variables are Theano expressions that can easily be linked together.
+This allows for more direct model interaction and easier debugging
+(although Theano can still give obscure error messages). Of course, this
+eternally marries PyMC3 to Python, whereas Stan has interfaces to all
+kind of different languages, including R, Julia and Mathematica.</p>
+<p>PyMC3 also has support for linear algebra which makes specification of
+multivariate models more succinct. I think this is a point that will
+become increasingly important as Probabilistic Programming and Machine
+Learning become more intertwined (more below). Lets look at a
+comparison:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="kn">as</span> <span class="nn">pm</span>
+<span class="kn">from</span> <span class="nn">pymc3</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">MvNormal</span><span class="p">,</span> <span class="n">HalfCauchy</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">traceplot</span><span class="p">,</span> <span class="n">summary</span><span class="p">,</span> <span class="n">find_MAP</span><span class="p">,</span> <span class="n">NUTS</span><span class="p">,</span> <span class="n">Deterministic</span>
+<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="kn">as</span> <span class="nn">tt</span>
+<span class="kn">from</span> <span class="nn">theano</span> <span class="kn">import</span> <span class="n">shared</span>
+<span class="kn">from</span> <span class="nn">theano.tensor.nlinalg</span> <span class="kn">import</span> <span class="n">matrix_inverse</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Stan-model">
+<h3>Stan model<a class="headerlink" href="#Stan-model" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">schools_dat</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;J&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+               <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">12</span><span class="p">]),</span>
+               <span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">])}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pystan</span>
+<span class="n">schools_code</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">data {</span>
+<span class="s2">    int&lt;lower=0&gt; J; // number of schools</span>
+<span class="s2">    real y[J]; // estimated treatment effects</span>
+<span class="s2">    real&lt;lower=0&gt; sigma[J]; // s.e. of effect estimates</span>
+<span class="s2">}</span>
+<span class="s2">parameters {</span>
+<span class="s2">    real mu;</span>
+<span class="s2">    real&lt;lower=0&gt; tau;</span>
+<span class="s2">    real eta[J];</span>
+<span class="s2">}</span>
+<span class="s2">transformed parameters {</span>
+<span class="s2">    real theta[J];</span>
+<span class="s2">    for (j in 1:J)</span>
+<span class="s2">    theta[j] &lt;- mu + tau * eta[j];</span>
+<span class="s2">}</span>
+<span class="s2">model {</span>
+<span class="s2">    eta ~ normal(0, 1);</span>
+<span class="s2">    tau ~ normal(0, 1);</span>
+<span class="s2">    y ~ normal(theta, sigma);</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">fit</span> <span class="o">=</span> <span class="n">pystan</span><span class="o">.</span><span class="n">stan</span><span class="p">(</span><span class="n">model_code</span><span class="o">=</span><span class="n">schools_code</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">schools_dat</span><span class="p">,</span>
+                  <span class="nb">iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">chains</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.
+</pre></div></div>
+</div>
+<p>The model specification is around 20 lines. What I don’t like about
+this, although I bet there are good reasons for it, is how everything is
+broken up into different sections so in order to find out that theta is
+normal, positive and relates to theta I have to look in three different
+places. Let’s compare that to PyMC3.</p>
+</div>
+<div class="section" id="PyMC3-model">
+<h3>PyMC3 model<a class="headerlink" href="#PyMC3-model" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">eight_schools_model</span><span class="p">:</span>
+    <span class="err">η</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;η&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">schools_dat</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">])</span>
+    <span class="err">μ</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Flat</span><span class="p">(</span><span class="s1">&#39;μ&#39;</span><span class="p">)</span>
+    <span class="err">τ</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfNormal</span><span class="p">(</span><span class="s1">&#39;τ&#39;</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="err">θ</span> <span class="o">=</span> <span class="err">μ</span> <span class="o">+</span> <span class="err">τ</span> <span class="o">*</span> <span class="err">η</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="err">θ</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="n">schools_dat</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">],</span> <span class="n">observed</span><span class="o">=</span><span class="n">schools_dat</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">njobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+Auto-assigning NUTS sampler...
+INFO:pymc3:Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+INFO:pymc3:Initializing NUTS using ADVI...
+Average Loss = 28.371:  11%|█         | 22180/200000 [00:01&lt;00:12, 14364.15it/s]
+Convergence archived at 23000
+INFO:pymc3.variational.inference:Convergence archived at 23000
+Interrupted at 23,000 [11%]: Average Loss = 28.782
+INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782
+ 99%|█████████▉| 1485/1500 [00:03&lt;00:00, 419.00it/s]/Users/twiecki/working/projects/pymc/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 1 diverging samples after tuning. If increasing `target_accept` doesn&#39;t help try to reparameterize.
+  % (self._chain_id, n_diverging))
+100%|██████████| 1500/1500 [00:03&lt;00:00, 381.13it/s]
+</pre></div></div>
+</div>
+<p>The model specification takes 5 lines, you can read this from top to
+bottom like a regular program, and everything related to a variable like
+its shape or transformation is together with the declaration of the RV.
+We also get automatic broadcasting, so when we define <span class="math">\(\theta\)</span> we
+do not have to loop. The other feature to note is that since everything
+is Python, we can directly pass in the data and don’t need to restate
+it. We can also directly interact with each individual part.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math">
+\[y \sim \text{Normal}(\mathit{mu}=f(f(μ),f(f(τ),η)), \mathit{sd}=array)\]</div>
+</div>
+</div>
+<p>However, Stan automatically assigns flat priors if you don’t specify
+them.</p>
+</div>
+</div>
+<div class="section" id="Speed">
+<h2>Speed<a class="headerlink" href="#Speed" title="Permalink to this headline">¶</a></h2>
+<p>Proper benchmarks are very hard</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">timeit</span>
+
+fit = pystan.stan(model_code=schools_code, data=schools_dat,
+                  iter=1000, chains=4)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.
+INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.
+INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.
+INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 loop, best of 3: 35.5 s per loop
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">timeit</span>
+
+#!theano-cache purge
+
+with pm.Model() as eight_schools_model:
+    η = pm.Normal(&#39;η&#39;, mu=0, sd=1, shape=schools_dat[&#39;J&#39;])
+    μ = pm.Flat(&#39;μ&#39;)
+    τ = pm.HalfNormal(&#39;τ&#39;, sd=1)
+
+    θ = μ + τ * η
+    y = pm.Normal(&#39;y&#39;, mu=θ, sd=schools_dat[&#39;sigma&#39;], observed=schools_dat[&#39;y&#39;])
+
+    trace = pm.sample(1000, njobs=4)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+Auto-assigning NUTS sampler...
+INFO:pymc3:Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+INFO:pymc3:Initializing NUTS using ADVI...
+Average Loss = 28.145:  11%|█         | 21566/200000 [00:01&lt;00:12, 14373.57it/s]
+Convergence archived at 23000
+INFO:pymc3.variational.inference:Convergence archived at 23000
+Interrupted at 23,000 [11%]: Average Loss = 28.782
+INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782
+100%|██████████| 1500/1500 [00:05&lt;00:00, 268.90it/s]
+Auto-assigning NUTS sampler...
+INFO:pymc3:Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+INFO:pymc3:Initializing NUTS using ADVI...
+Average Loss = 28.207:  11%|█         | 21774/200000 [00:01&lt;00:13, 13700.90it/s]
+Convergence archived at 23000
+INFO:pymc3.variational.inference:Convergence archived at 23000
+Interrupted at 23,000 [11%]: Average Loss = 28.782
+INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782
+100%|██████████| 1500/1500 [00:04&lt;00:00, 325.60it/s]
+Auto-assigning NUTS sampler...
+INFO:pymc3:Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+INFO:pymc3:Initializing NUTS using ADVI...
+Average Loss = 28.254:  11%|█         | 22433/200000 [00:01&lt;00:14, 12055.09it/s]
+Convergence archived at 23000
+INFO:pymc3.variational.inference:Convergence archived at 23000
+Interrupted at 23,000 [11%]: Average Loss = 28.782
+INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782
+100%|██████████| 1500/1500 [00:04&lt;00:00, 316.86it/s]
+Auto-assigning NUTS sampler...
+INFO:pymc3:Auto-assigning NUTS sampler...
+Initializing NUTS using ADVI...
+INFO:pymc3:Initializing NUTS using ADVI...
+Average Loss = 28.418:  11%|█         | 21934/200000 [00:01&lt;00:14, 12675.27it/s]
+Convergence archived at 23000
+INFO:pymc3.variational.inference:Convergence archived at 23000
+Interrupted at 23,000 [11%]: Average Loss = 28.782
+INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782
+100%|██████████| 1500/1500 [00:05&lt;00:00, 271.78it/s]
+/Users/twiecki/working/projects/pymc/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 1 diverging samples after tuning. If increasing `target_accept` doesn&#39;t help try to reparameterize.
+  % (self._chain_id, n_diverging))
+/Users/twiecki/working/projects/pymc/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 2 contains 1 diverging samples after tuning. If increasing `target_accept` doesn&#39;t help try to reparameterize.
+  % (self._chain_id, n_diverging))
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 loop, best of 3: 10.7 s per loop
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Missing-Data">
+<h2>Missing Data<a class="headerlink" href="#Missing-Data" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="Deployment">
+<h2>Deployment<a class="headerlink" href="#Deployment" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">STAN vs PyMC3: A biased comparison</a><ul>
+<li><a class="reference internal" href="#Syntax">Syntax</a><ul>
+<li><a class="reference internal" href="#Stan-model">Stan model</a></li>
+<li><a class="reference internal" href="#PyMC3-model">PyMC3 model</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Speed">Speed</a></li>
+<li><a class="reference internal" href="#Missing-Data">Missing Data</a></li>
+<li><a class="reference internal" href="#Deployment">Deployment</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/stan_vs_pymc3.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, John Salvatier, Christopher Fonnesbeck, Thomas Wiecki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/notebooks/stan_vs_pymc3.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,240 +1,53 @@
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Inference &mdash; PyMC3 3.1 documentation</title>
-  
-
-  
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
-        <link rel="up" title="API Reference" href="../api.html"/>
-        <link rel="next" title="Generalized Linear Models" href="glm.html"/>
-        <link rel="prev" title="Bounded Variables" href="bounds.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
-</head>
-
-<body class="wy-body-for-nav" role="document">
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Inference &#8212; PyMC3 3.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Generalized Linear Models" href="glm.html" />
+    <link rel="prev" title="Bounded Variables" href="bounds.html" />
    
-  <div class="wy-grid-for-nav">
-
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
-
-          
-            <a href="../index.html" class="icon icon-home"> PyMC3
-          
-
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                3.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="distributions.html">Distributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bounds.html">Bounded Variables</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Inference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-pymc3.sampling">Sampling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-methods">Step-methods</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#module-pymc3.step_methods.hmc.nuts">NUTS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pymc3.step_methods.metropolis">Metropolis</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pymc3.step_methods.slicer">Slice</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hamiltonian-monte-carlo">Hamiltonian Monte Carlo</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#variational">Variational</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#module-pymc3.variational.opvi">OPVI</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">Inference</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pymc3.variational.approximations">Approximations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-pymc3.variational.operators">Operators</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="glm.html">Generalized Linear Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gp.html">GP Implementations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gp.html#mean-functions">Mean Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gp.html#covariance-functions">Covariance Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html">Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stats.html">Stats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="diagnostics.html">Diagnostics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="backends.html">Backends</a></li>
-<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">PyMC3</a>
-        
-      </nav>
-
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-        
-      <li>Inference</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/api/inference.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
   
-<style>
-/* CSS overrides for sphinx_rtd_theme */
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
+  </head>
+  <body>
+  
 
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="section" id="inference">
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="inference">
 <h1>Inference<a class="headerlink" href="#inference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-pymc3.sampling">
 <span id="sampling"></span><h2>Sampling<a class="headerlink" href="#module-pymc3.sampling" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pymc3.sampling.sample">
-<code class="descclassname">pymc3.sampling.</code><code class="descname">sample</code><span class="sig-paren">(</span><em>draws=500</em>, <em>step=None</em>, <em>init='auto'</em>, <em>n_init=200000</em>, <em>start=None</em>, <em>trace=None</em>, <em>chain=0</em>, <em>njobs=1</em>, <em>tune=500</em>, <em>nuts_kwargs=None</em>, <em>step_kwargs=None</em>, <em>progressbar=True</em>, <em>model=None</em>, <em>random_seed=-1</em>, <em>live_plot=False</em>, <em>discard_tuned_samples=True</em>, <em>live_plot_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.sample" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.sampling.</code><code class="descname">sample</code><span class="sig-paren">(</span><em>draws=500</em>, <em>step=None</em>, <em>init='auto'</em>, <em>n_init=200000</em>, <em>start=None</em>, <em>trace=None</em>, <em>chain=0</em>, <em>chains=None</em>, <em>njobs=None</em>, <em>tune=500</em>, <em>nuts_kwargs=None</em>, <em>step_kwargs=None</em>, <em>progressbar=True</em>, <em>model=None</em>, <em>random_seed=None</em>, <em>live_plot=False</em>, <em>discard_tuned_samples=True</em>, <em>live_plot_kwargs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw samples from the posterior using the given step methods.</p>
 <p>Multiple step methods are supported via compound step methods.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -277,7 +90,8 @@ the trace.</li>
 If ‘ADVI’, number of iterations, if ‘nuts’, number of draws.</li>
 <li><strong>start</strong> (<em>dict</em><em>, or </em><em>array of dict</em>) – Starting point in parameter space (or partial point)
 Defaults to trace.point(-1)) if there is a trace provided and
-model.test_point if not (defaults to empty dict).</li>
+model.test_point if not (defaults to empty dict). Initialization
+methods for NUTS (see <cite>init</cite> keyword) can overwrite the default.</li>
 <li><strong>trace</strong> (<em>backend</em><em>, </em><em>list</em><em>, or </em><em>MultiTrace</em>) – This should be a backend instance, a list of variables to track,
 or a MultiTrace object with past values. If a MultiTrace object
 is given, it must contain samples for the chain number <cite>chain</cite>.
@@ -285,13 +99,19 @@ If None or a list of variables, the NDArray backend is used.
 Passing either “text” or “sqlite” is taken as a shortcut to set
 up the corresponding backend (with “mcmc” used as the base
 name).</li>
-<li><strong>chain</strong> (<em>int</em>) – Chain number used to store sample in backend. If <cite>njobs</cite> is
+<li><strong>chain</strong> (<em>int</em>) – Chain number used to store sample in backend. If <cite>chains</cite> is
 greater than one, chain numbers will start here.</li>
-<li><strong>njobs</strong> (<em>int</em>) – Number of parallel jobs to start. If None, set to number of cpus
-in the system - 2.</li>
+<li><strong>chains</strong> (<em>int</em>) – The number of chains to sample. Running independent chains
+is important for some convergence statistics and can also
+reveal multiple modes in the posterior.</li>
+<li><strong>njobs</strong> (<em>int</em>) – The number of chains to run in parallel. If None, set to the
+number of CPUs in the system, but at most 4. Keep in mind that
+some chains might themselves be multithreaded via openmp or
+BLAS. In those cases it might be faster to set this to one.</li>
 <li><strong>tune</strong> (<em>int</em>) – Number of iterations to tune, if applicable (defaults to 500).
-These samples will be drawn in addition to samples and discarded
-unless discard_tuned_samples is set to True.</li>
+Samplers adjust the step sizes, scalings or similar during
+tuning. These samples will be drawn in addition to samples
+and discarded unless discard_tuned_samples is set to True.</li>
 <li><strong>nuts_kwargs</strong> (<em>dict</em>) – <p>Options for the NUTS sampler. See the docstring of NUTS
 for a complete list of options. Common options are</p>
 <ul>
@@ -315,7 +135,7 @@ bar shows the percentage of completion, the sampling speed in
 samples per second (SPS), and the estimated remaining time until
 completion (“expected time of arrival”; ETA).</li>
 <li><strong>model</strong> (Model (optional if in <cite>with</cite> context)) – </li>
-<li><strong>random_seed</strong> (<em>int</em><em> or </em><em>list of ints</em>) – A list is accepted if more if <cite>njobs</cite> is greater than one.</li>
+<li><strong>random_seed</strong> (<em>int</em><em> or </em><em>list of ints</em>) – A list is accepted if <cite>njobs</cite> is greater than one.</li>
 <li><strong>live_plot</strong> (<em>bool</em>) – Flag for live plotting the trace while sampling</li>
 <li><strong>live_plot_kwargs</strong> (<em>dict</em>) – Options for traceplot. Example: live_plot_kwargs={‘varnames’: [‘x’]}</li>
 <li><strong>discard_tuned_samples</strong> (<em>bool</em>) – Whether to discard posterior samples of the tune interval.</li>
@@ -348,7 +168,7 @@ completion (“expected time of arrival”; ETA).</li>
 
 <dl class="function">
 <dt id="pymc3.sampling.iter_sample">
-<code class="descclassname">pymc3.sampling.</code><code class="descname">iter_sample</code><span class="sig-paren">(</span><em>draws</em>, <em>step</em>, <em>start=None</em>, <em>trace=None</em>, <em>chain=0</em>, <em>tune=None</em>, <em>model=None</em>, <em>random_seed=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.iter_sample" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.sampling.</code><code class="descname">iter_sample</code><span class="sig-paren">(</span><em>draws</em>, <em>step</em>, <em>start=None</em>, <em>trace=None</em>, <em>chain=0</em>, <em>tune=None</em>, <em>model=None</em>, <em>random_seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.iter_sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator that returns a trace on each iteration using the given
 step method.  Multiple step methods supported via compound step
 method returns the amount of time taken.</p>
@@ -418,7 +238,7 @@ posterior predictive samples.</p>
 
 <dl class="function">
 <dt id="pymc3.sampling.sample_ppc_w">
-<code class="descclassname">pymc3.sampling.</code><code class="descname">sample_ppc_w</code><span class="sig-paren">(</span><em>traces</em>, <em>samples=None</em>, <em>models=None</em>, <em>size=None</em>, <em>weights=None</em>, <em>random_seed=None</em>, <em>progressbar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.sample_ppc_w" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.sampling.</code><code class="descname">sample_ppc_w</code><span class="sig-paren">(</span><em>traces</em>, <em>samples=None</em>, <em>models=None</em>, <em>weights=None</em>, <em>random_seed=None</em>, <em>progressbar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.sample_ppc_w" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate weighted posterior predictive samples from a list of models and
 a list of traces according to a set of weights.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -436,8 +256,6 @@ should be the same for all models.
 By default a single model will be inferred from <cite>with</cite> context, in this
 case results will only be meaningful if all models share the same
 distributions for the observed RVs.</li>
-<li><strong>size</strong> (<em>int</em>) – The number of random draws from the distributions specified by the
-parameters in each sample of the trace.</li>
 <li><strong>weights</strong> (<em>array-like</em>) – Individual weights for each trace. Default, same weight for each model.</li>
 <li><strong>random_seed</strong> (<em>int</em>) – Seed for the random number generator.</li>
 <li><strong>progressbar</strong> (<em>bool</em>) – Whether or not to display a progress bar in the command line. The
@@ -457,7 +275,7 @@ posterior predictive samples from the weighted models.</p>
 
 <dl class="function">
 <dt id="pymc3.sampling.init_nuts">
-<code class="descclassname">pymc3.sampling.</code><code class="descname">init_nuts</code><span class="sig-paren">(</span><em>init='auto'</em>, <em>njobs=1</em>, <em>n_init=500000</em>, <em>model=None</em>, <em>random_seed=-1</em>, <em>progressbar=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.init_nuts" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.sampling.</code><code class="descname">init_nuts</code><span class="sig-paren">(</span><em>init='auto'</em>, <em>chains=1</em>, <em>n_init=500000</em>, <em>model=None</em>, <em>random_seed=None</em>, <em>progressbar=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.sampling.init_nuts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up the mass matrix initialization for NUTS.</p>
 <p>NUTS convergence and sampling speed is extremely dependent on the
 choice of mass/scaling matrix. This function implements different
@@ -493,7 +311,7 @@ matrix.</li>
 the trace.</li>
 </ul>
 </li>
-<li><strong>njobs</strong> (<em>int</em>) – Number of parallel jobs to start.</li>
+<li><strong>chains</strong> (<em>int</em>) – Number of jobs to start.</li>
 <li><strong>n_init</strong> (<em>int</em>) – Number of iterations of initializer
 If ‘ADVI’, number of iterations, if ‘nuts’, number of draws.</li>
 <li><strong>model</strong> (Model (optional if in <cite>with</cite> context)) – </li>
@@ -629,7 +447,7 @@ This is usually achieved by setting the <cite>tune</cite> parameter if
 
 <dl class="staticmethod">
 <dt id="pymc3.step_methods.hmc.nuts.NUTS.competence">
-<em class="property">static </em><code class="descname">competence</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.nuts.NUTS.competence" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">competence</code><span class="sig-paren">(</span><em>var</em>, <em>has_grad</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.nuts.NUTS.competence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check how appropriate this class is for sampling a random variable.</p>
 </dd></dl>
 
@@ -787,7 +605,7 @@ of the scaling matrix.</li>
 
 <dl class="staticmethod">
 <dt id="pymc3.step_methods.hmc.hmc.HamiltonianMC.competence">
-<em class="property">static </em><code class="descname">competence</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.hmc.HamiltonianMC.competence" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">competence</code><span class="sig-paren">(</span><em>var</em>, <em>has_grad</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.step_methods.hmc.hmc.HamiltonianMC.competence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check how appropriate this class is for sampling a random variable.</p>
 </dd></dl>
 
@@ -2040,76 +1858,78 @@ arXiv:1608.04471</li>
 </div>
 
 
-           </div>
-           <div class="articleComments">
-            
-           </div>
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="glm.html" class="btn btn-neutral float-right" title="Generalized Linear Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="bounds.html" class="btn btn-neutral" title="Bounded Variables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2016, John Salvatier, Christopher Fonnesbeck, Thomas Wiecki.
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
         </div>
       </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Inference</a><ul>
+<li><a class="reference internal" href="#module-pymc3.sampling">Sampling</a></li>
+<li><a class="reference internal" href="#step-methods">Step-methods</a><ul>
+<li><a class="reference internal" href="#module-pymc3.step_methods.hmc.nuts">NUTS</a></li>
+<li><a class="reference internal" href="#module-pymc3.step_methods.metropolis">Metropolis</a></li>
+<li><a class="reference internal" href="#module-pymc3.step_methods.slicer">Slice</a></li>
+<li><a class="reference internal" href="#hamiltonian-monte-carlo">Hamiltonian Monte Carlo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variational">Variational</a><ul>
+<li><a class="reference internal" href="#module-pymc3.variational.opvi">OPVI</a></li>
+<li><a class="reference internal" href="#id7">Inference</a></li>
+<li><a class="reference internal" href="#module-pymc3.variational.approximations">Approximations</a></li>
+<li><a class="reference internal" href="#module-pymc3.variational.operators">Operators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API Reference</a><ul>
+      <li>Previous: <a href="bounds.html" title="previous chapter">Bounded Variables</a></li>
+      <li>Next: <a href="glm.html" title="next chapter">Generalized Linear Models</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/inference.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, John Salvatier, Christopher Fonnesbeck, Thomas Wiecki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/inference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
 
-    </section>
+    
 
-  </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
-      });
-  </script>
-   
-
-</body>
+    
+  </body>
 </html>

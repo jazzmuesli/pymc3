@@ -1,0 +1,352 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# STAN vs PyMC3: A biased comparison\n",
+    "\n",
+    "In this blog post I want to look at some differences between STAN and PyMC3. As a PyMC3 developer myself I won't even pretend that I would be able to do so in a fair and unbiased way. In fact the idea is rather to highlight PyMC3's strengths, but I will do my best to be fair.\n",
+    "\n",
+    "Lets start with how amazing STAN is. It is carefully crafted, written in highly performant C++, has a fantastic community, and has introduced many revolutionary features that PyMC3 has been directly inspired by or just straight-out copied (NUTS, ADVI, auto-transforming of variables to name but a few). The developers are also the academics resposnsible for advancing a lot of the theory underlying the inference. Moreover, the STAN developers have been very generous with their time and have been helping PyMC3 development on more than a few occasions.\n",
+    "\n",
+    "At the same time, I think PyMC3 has a few key advantages. These result mainly from being written to use `Theano`. Out of the gate, PyMC3 starts with autodiff, JIT compilation to C, powerful linear algebra support. All that without having to write a single line of C, C++, or CUDA code -- PyMC3's code base is 100% Python.\n",
+    "\n",
+    "Let's start with a few basic things:\n",
+    "\n",
+    "## Syntax\n",
+    "\n",
+    "STAN has a [DSL]() to write models that is heavily inspired by the BUGS language. With [PyStan] you can specify and fit models in Python but the model specification will have to be a string. \n",
+    "\n",
+    "PyMC3 allows you to build models and run inference in Python. The Random Variables are Theano expressions that can easily be linked together. This allows for more direct model interaction and easier debugging (although Theano can still give obscure error messages). Of course, this eternally marries PyMC3 to Python, whereas Stan has interfaces to all kind of different languages, including R, Julia and Mathematica. \n",
+    "\n",
+    "PyMC3 also has support for linear algebra which makes specification of multivariate models more succinct. I think this is a point that will become increasingly important as Probabilistic Programming and Machine Learning become more intertwined (more below). Lets look at a comparison:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "sns.set()\n",
+    "\n",
+    "import pymc3 as pm\n",
+    "from pymc3 import Model, MvNormal, HalfCauchy, sample, traceplot, summary, find_MAP, NUTS, Deterministic\n",
+    "import theano.tensor as tt\n",
+    "from theano import shared\n",
+    "from theano.tensor.nlinalg import matrix_inverse"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Stan model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "schools_dat = {'J': 8,\n",
+    "               'y': np.array([28,  8, -3,  7, -1,  1, 18, 12]),\n",
+    "               'sigma': np.array([15, 10, 16, 11,  9, 11, 10, 18])}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import pystan\n",
+    "schools_code = \"\"\"\n",
+    "data {\n",
+    "    int<lower=0> J; // number of schools\n",
+    "    real y[J]; // estimated treatment effects\n",
+    "    real<lower=0> sigma[J]; // s.e. of effect estimates\n",
+    "}\n",
+    "parameters {\n",
+    "    real mu;\n",
+    "    real<lower=0> tau;\n",
+    "    real eta[J];\n",
+    "}\n",
+    "transformed parameters {\n",
+    "    real theta[J];\n",
+    "    for (j in 1:J)\n",
+    "    theta[j] <- mu + tau * eta[j];\n",
+    "}\n",
+    "model {\n",
+    "    eta ~ normal(0, 1);\n",
+    "    tau ~ normal(0, 1);\n",
+    "    y ~ normal(theta, sigma);\n",
+    "}\n",
+    "\"\"\"\n",
+    "\n",
+    "fit = pystan.stan(model_code=schools_code, data=schools_dat,\n",
+    "                  iter=1000, chains=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The model specification is around 20 lines. What I don't like about this, although I bet there are good reasons for it, is how everything is broken up into different sections so in order to find out that theta is normal, positive and relates to theta I have to look in three different places. Let's compare that to PyMC3."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### PyMC3 model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Auto-assigning NUTS sampler...\n",
+      "INFO:pymc3:Auto-assigning NUTS sampler...\n",
+      "Initializing NUTS using ADVI...\n",
+      "INFO:pymc3:Initializing NUTS using ADVI...\n",
+      "Average Loss = 28.371:  11%|█         | 22180/200000 [00:01<00:12, 14364.15it/s]\n",
+      "Convergence archived at 23000\n",
+      "INFO:pymc3.variational.inference:Convergence archived at 23000\n",
+      "Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      " 99%|█████████▉| 1485/1500 [00:03<00:00, 419.00it/s]/Users/twiecki/working/projects/pymc/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 0 contains 1 diverging samples after tuning. If increasing `target_accept` doesn't help try to reparameterize.\n",
+      "  % (self._chain_id, n_diverging))\n",
+      "100%|██████████| 1500/1500 [00:03<00:00, 381.13it/s]\n"
+     ]
+    }
+   ],
+   "source": [
+    "with pm.Model() as eight_schools_model:\n",
+    "    η = pm.Normal('η', mu=0, sd=1, shape=schools_dat['J'])\n",
+    "    μ = pm.Flat('μ')\n",
+    "    τ = pm.HalfNormal('τ', sd=1)\n",
+    "\n",
+    "    θ = μ + τ * η\n",
+    "    y = pm.Normal('y', mu=θ, sd=schools_dat['sigma'], observed=schools_dat['y'])\n",
+    "    \n",
+    "    trace = pm.sample(1000, njobs=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The model specification takes 5 lines, you can read this from top to bottom like a regular program, and everything related to a variable like its shape or transformation is together with the declaration of the RV. We also get automatic broadcasting, so when we define $\\theta$ we do not have to loop. The other feature to note is that since everything is Python, we can directly pass in the data and don't need to restate it. We can also directly interact with each individual part."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/latex": [
+       "$y \\sim \\text{Normal}(\\mathit{mu}=f(f(μ),f(f(τ),η)), \\mathit{sd}=array)$"
+      ],
+      "text/plain": [
+       "y"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "However, Stan automatically assigns flat priors if you don't specify them."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Speed\n",
+    "\n",
+    "Proper benchmarks are very hard"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.\n",
+      "INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.\n",
+      "INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.\n",
+      "INFO:pystan:COMPILING THE C++ CODE FOR MODEL anon_model_96014f26ff2cfc2d80003c40f8ee0252 NOW.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1 loop, best of 3: 35.5 s per loop\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%timeit\n",
+    "\n",
+    "fit = pystan.stan(model_code=schools_code, data=schools_dat,\n",
+    "                  iter=1000, chains=4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Auto-assigning NUTS sampler...\n",
+      "INFO:pymc3:Auto-assigning NUTS sampler...\n",
+      "Initializing NUTS using ADVI...\n",
+      "INFO:pymc3:Initializing NUTS using ADVI...\n",
+      "Average Loss = 28.145:  11%|█         | 21566/200000 [00:01<00:12, 14373.57it/s]\n",
+      "Convergence archived at 23000\n",
+      "INFO:pymc3.variational.inference:Convergence archived at 23000\n",
+      "Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "100%|██████████| 1500/1500 [00:05<00:00, 268.90it/s]\n",
+      "Auto-assigning NUTS sampler...\n",
+      "INFO:pymc3:Auto-assigning NUTS sampler...\n",
+      "Initializing NUTS using ADVI...\n",
+      "INFO:pymc3:Initializing NUTS using ADVI...\n",
+      "Average Loss = 28.207:  11%|█         | 21774/200000 [00:01<00:13, 13700.90it/s]\n",
+      "Convergence archived at 23000\n",
+      "INFO:pymc3.variational.inference:Convergence archived at 23000\n",
+      "Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "100%|██████████| 1500/1500 [00:04<00:00, 325.60it/s]\n",
+      "Auto-assigning NUTS sampler...\n",
+      "INFO:pymc3:Auto-assigning NUTS sampler...\n",
+      "Initializing NUTS using ADVI...\n",
+      "INFO:pymc3:Initializing NUTS using ADVI...\n",
+      "Average Loss = 28.254:  11%|█         | 22433/200000 [00:01<00:14, 12055.09it/s]\n",
+      "Convergence archived at 23000\n",
+      "INFO:pymc3.variational.inference:Convergence archived at 23000\n",
+      "Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "100%|██████████| 1500/1500 [00:04<00:00, 316.86it/s]\n",
+      "Auto-assigning NUTS sampler...\n",
+      "INFO:pymc3:Auto-assigning NUTS sampler...\n",
+      "Initializing NUTS using ADVI...\n",
+      "INFO:pymc3:Initializing NUTS using ADVI...\n",
+      "Average Loss = 28.418:  11%|█         | 21934/200000 [00:01<00:14, 12675.27it/s]\n",
+      "Convergence archived at 23000\n",
+      "INFO:pymc3.variational.inference:Convergence archived at 23000\n",
+      "Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "INFO:pymc3.variational.inference:Interrupted at 23,000 [11%]: Average Loss = 28.782\n",
+      "100%|██████████| 1500/1500 [00:05<00:00, 271.78it/s]\n",
+      "/Users/twiecki/working/projects/pymc/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 1 contains 1 diverging samples after tuning. If increasing `target_accept` doesn't help try to reparameterize.\n",
+      "  % (self._chain_id, n_diverging))\n",
+      "/Users/twiecki/working/projects/pymc/pymc3/step_methods/hmc/nuts.py:456: UserWarning: Chain 2 contains 1 diverging samples after tuning. If increasing `target_accept` doesn't help try to reparameterize.\n",
+      "  % (self._chain_id, n_diverging))\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1 loop, best of 3: 10.7 s per loop\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%timeit\n",
+    "\n",
+    "#!theano-cache purge\n",
+    "\n",
+    "with pm.Model() as eight_schools_model:\n",
+    "    η = pm.Normal('η', mu=0, sd=1, shape=schools_dat['J'])\n",
+    "    μ = pm.Flat('μ')\n",
+    "    τ = pm.HalfNormal('τ', sd=1)\n",
+    "    \n",
+    "    θ = μ + τ * η\n",
+    "    y = pm.Normal('y', mu=θ, sd=schools_dat['sigma'], observed=schools_dat['y'])\n",
+    "    \n",
+    "    trace = pm.sample(1000, njobs=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Missing Data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Deployment"
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}

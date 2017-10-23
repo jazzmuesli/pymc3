@@ -1,219 +1,49 @@
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Plots &mdash; PyMC3 3.1 documentation</title>
-  
-
-  
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="PyMC3 3.1 documentation" href="../index.html"/>
-        <link rel="up" title="API Reference" href="../api.html"/>
-        <link rel="next" title="Stats" href="stats.html"/>
-        <link rel="prev" title="GP Implementations" href="gp.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
-</head>
-
-<body class="wy-body-for-nav" role="document">
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Plots &#8212; PyMC3 3.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Stats" href="stats.html" />
+    <link rel="prev" title="GP Implementations" href="gp.html" />
    
-  <div class="wy-grid-for-nav">
-
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
-
-          
-            <a href="../index.html" class="icon icon-home"> PyMC3
-          
-
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                3.1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../prob_dists.html">Probability Distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="distributions.html">Distributions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bounds.html">Bounded Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inference.html">Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glm.html">Generalized Linear Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gp.html">GP Implementations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gp.html#mean-functions">Mean Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gp.html#covariance-functions">Covariance Functions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stats.html">Stats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="diagnostics.html">Diagnostics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="backends.html">Backends</a></li>
-<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">PyMC3</a>
-        
-      </nav>
-
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-        
-      <li>Plots</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/api/plots.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
   
-<style>
-/* CSS overrides for sphinx_rtd_theme */
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
+  </head>
+  <body>
+  
 
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="section" id="plots">
-<h1>Plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-pymc3.plots"></span><dl class="function">
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pymc3.plots">
+<span id="plots"></span><h1>Plots<a class="headerlink" href="#module-pymc3.plots" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
 <dt id="pymc3.plots.traceplot">
 <code class="descclassname">pymc3.plots.</code><code class="descname">traceplot</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>figsize=None</em>, <em>lines=None</em>, <em>combined=False</em>, <em>plot_transformed=False</em>, <em>grid=False</em>, <em>alpha=0.35</em>, <em>priors=None</em>, <em>prior_alpha=1</em>, <em>prior_style='--'</em>, <em>ax=None</em>, <em>live_plot=False</em>, <em>skip_first=0</em>, <em>refresh_every=100</em>, <em>roll_over=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.traceplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot samples histograms and values.</p>
@@ -305,7 +135,7 @@ color=’#87ceeb’ will match the style in the book</li>
 
 <dl class="function">
 <dt id="pymc3.plots.forestplot">
-<code class="descclassname">pymc3.plots.</code><code class="descname">forestplot</code><span class="sig-paren">(</span><em>trace_obj</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>alpha=0.05</em>, <em>quartiles=True</em>, <em>rhat=True</em>, <em>main=None</em>, <em>xtitle=None</em>, <em>xlim=None</em>, <em>ylabels=None</em>, <em>chain_spacing=0.05</em>, <em>vline=0</em>, <em>gs=None</em>, <em>plot_transformed=False</em>, <em>**plot_kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.forestplot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pymc3.plots.</code><code class="descname">forestplot</code><span class="sig-paren">(</span><em>trace_obj</em>, <em>varnames=None</em>, <em>transform=&lt;function identity_transform&gt;</em>, <em>alpha=0.05</em>, <em>quartiles=True</em>, <em>rhat=True</em>, <em>main=None</em>, <em>xtitle=None</em>, <em>xlim=None</em>, <em>ylabels=None</em>, <em>chain_spacing=0.05</em>, <em>vline=0</em>, <em>gs=None</em>, <em>plot_transformed=False</em>, <em>plot_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.forestplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forest plot (model summary plot).</p>
 <p>Generates a “forest plot” of 100*(1-alpha)% credible intervals for either
 the set of variables in a given model, or a specified set of nodes.</p>
@@ -347,6 +177,37 @@ original variables (defaults to False).</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="pymc3.plots.compareplot">
+<code class="descclassname">pymc3.plots.</code><code class="descname">compareplot</code><span class="sig-paren">(</span><em>comp_df</em>, <em>insample_dev=True</em>, <em>se=True</em>, <em>dse=True</em>, <em>ax=None</em>, <em>plot_kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.compareplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model comparison summary plot in the style of the one used in the book
+Statistical Rethinking by Richard McElreath.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>comp_df</strong> (<em>DataFrame</em>) – the result of the <cite>pm.compare()</cite> function</li>
+<li><strong>insample_dev</strong> (<em>bool</em>) – plot the in-sample deviance, that is the value of the IC without the
+penalization given by the effective number of parameters (pIC).
+Defaults to True</li>
+<li><strong>se</strong> (<em>bool</em>) – plot the standard error of the IC estimate. Defaults to True</li>
+<li><strong>dse</strong> (<em>bool</em>) – plot standard error of the difference in IC between each model and the
+top-ranked model. Defaults to True</li>
+<li><strong>plot_kwargs</strong> (<em>dict</em>) – Optional arguments for plot elements. Currently accepts ‘color_ic’,
+‘marker_ic’, ‘color_insample_dev’, ‘marker_insample_dev’, ‘color_dse’,
+‘marker_dse’, ‘ls_min_ic’ ‘color_ls_min_ic’,  ‘fontsize’</li>
+<li><strong>ax</strong> (<em>axes</em>) – Matplotlib axes. Defaults to None</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>ax</strong> (<em>matplotlib axes</em>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="pymc3.plots.autocorrplot">
 <code class="descclassname">pymc3.plots.</code><code class="descname">autocorrplot</code><span class="sig-paren">(</span><em>trace</em>, <em>varnames=None</em>, <em>max_lag=100</em>, <em>burn=0</em>, <em>plot_transformed=False</em>, <em>symmetric_plot=False</em>, <em>ax=None</em>, <em>figsize=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.autocorrplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bar plot of the autocorrelation function for a trace.</p>
@@ -377,79 +238,114 @@ Note this is not used if ax is supplied.</li>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="pymc3.plots.energyplot">
+<code class="descclassname">pymc3.plots.</code><code class="descname">energyplot</code><span class="sig-paren">(</span><em>trace</em>, <em>kind='kde'</em>, <em>figsize=None</em>, <em>ax=None</em>, <em>legend=True</em>, <em>shade=0.35</em>, <em>frame=True</em>, <em>kwargs_shade=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.energyplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot energy transition distribution and marginal energy distribution in
+order to diagnose poor exploration by HMC algorithms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trace</strong> (<em>result of MCMC run</em>) – </li>
+<li><strong>kind</strong> (<em>str</em>) – Type of plot to display (kde or histogram)</li>
+<li><strong>figsize</strong> (<em>figure size tuple</em>) – If None, size is (8 x 6)</li>
+<li><strong>ax</strong> (<em>axes</em>) – Matplotlib axes.</li>
+<li><strong>legend</strong> (<em>bool</em>) – Flag for plotting legend (defaults to True)</li>
+<li><strong>shade</strong> (<em>float</em>) – Alpha blending value for the shaded area under the curve, between 0
+(no shade) and 1 (opaque). Defaults to 0.35</li>
+<li><strong>frame</strong> (<em>bool</em>) – Flag for plotting frame around figure.</li>
+<li><strong>kwargs_shade</strong> (<em>dicts</em><em>, </em><em>optional</em>) – Additional keywords passed to <cite>fill_between</cite> (to control the shade)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>ax</strong> (<em>matplotlib axes</em>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymc3.plots.kdeplot">
+<code class="descclassname">pymc3.plots.</code><code class="descname">kdeplot</code><span class="sig-paren">(</span><em>values</em>, <em>label=None</em>, <em>shade=0</em>, <em>ax=None</em>, <em>kwargs_shade=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymc3.plots.kdeplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D KDE plot taking into account boundary conditions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>values</strong> (<em>array-like</em>) – Values to plot</li>
+<li><strong>label</strong> (<em>string</em>) – Text to include as part of the legend</li>
+<li><strong>shade</strong> (<em>float</em>) – Alpha blending value for the shaded area under the curve, between 0
+(no shade) and 1 (opaque). Defaults to 0</li>
+<li><strong>ax</strong> (<em>matplotlib axes</em>) – </li>
+<li><strong>kwargs_shade</strong> (<em>dicts</em><em>, </em><em>optional</em>) – Additional keywords passed to <cite>matplotlib.axes.Axes.fill_between</cite>
+(to control the shade)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>ax</strong> (<em>matplotlib axes</em>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
-           </div>
-           <div class="articleComments">
-            
-           </div>
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="stats.html" class="btn btn-neutral float-right" title="Stats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="gp.html" class="btn btn-neutral" title="GP Implementations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2016, John Salvatier, Christopher Fonnesbeck, Thomas Wiecki.
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
         </div>
       </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../api.html">API Reference</a><ul>
+      <li>Previous: <a href="gp.html" title="previous chapter">GP Implementations</a></li>
+      <li>Next: <a href="stats.html" title="next chapter">Stats</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/plots.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, John Salvatier, Christopher Fonnesbeck, Thomas Wiecki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/plots.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
 
-    </section>
+    
 
-  </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
-      });
-  </script>
-   
-
-</body>
+    
+  </body>
 </html>
